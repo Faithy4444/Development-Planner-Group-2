@@ -1,1 +1,2 @@
-# Development-Planner-Group-2
+# Development-Planner
+# Will be documented in the future
