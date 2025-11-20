@@ -1,13 +1,25 @@
-import React from "react";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import { GoalForm } from "./components/goals/GoalForm";
-import "./components/goals/GoalForm.css";
+// Import your page components
+import LandingPage from './pages/LandingPage';
+import CreateGoalPage from './pages/CreateGoalPage';
+
+// Import any global styles you need
+// import './styles/global.css';
 
 function App() {
   return (
-    <main>
-      <GoalForm />
-    </main>
+    <Routes>
+      {/* Route for the main landing page */}
+      <Route path="/" element={<LandingPage />} />
+
+      {/* Route for the goal creation form */}
+      <Route path="/create-goal" element={<CreateGoalPage />} />
+
+      {/* You can add more pages here later, like the dashboard */}
+      {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
+    </Routes>
   );
 }
 
