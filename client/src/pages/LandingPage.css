@@ -1,0 +1,119 @@
+.landing-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+.hero-panel {
+  flex: 1.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+}
+
+.hero-content {
+  max-width: 550px;
+  text-align: left;
+}
+
+.hero-headline {
+  font-family: var(--font-family-base);
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--cyf-black);
+  margin-bottom: 1.5rem;
+}
+
+.hero-headline-pink {
+  color: var(--cyf-pink);
+}
+
+.hero-headline-secondary {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--cyf-text-gray);
+  margin-top: 0.5rem;
+}
+
+.hero-subheadline {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--cyf-text-gray);
+}
+.form-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  background-color: var(--cyf-white);
+  box-shadow: -10px 0px 30px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 2;
+}
+
+.form-content-wrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-toggle {
+  width: 100%;
+  display: flex;
+  border-radius: 8px;
+  background-color: var(--cyf-light-gray);
+  padding: 0.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 0.75rem;
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--cyf-text-gray);
+  transition: all 0.2s ease-in-out;
+}
+
+.toggle-btn.active {
+  background-color: var(--cyf-white);
+  color: var(--cyf-pink);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+@media (max-width: 768px) {
+  .landing-container {
+    flex-direction: column;
+  }
+  
+  .hero-panel {
+    flex: none;
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  
+  .form-panel {
+    padding: 2.5rem 1.5rem;
+    box-shadow: none;
+  }
+
+  .hero-headline {
+    font-size: 2.5rem;
+  }
+  
+  .hero-headline-secondary {
+    font-size: 1.8rem;
+  }
+
+  .hero-subheadline {
+    font-size: 1rem;
+  }
+}
