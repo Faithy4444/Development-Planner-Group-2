@@ -6,7 +6,7 @@ export const RegisterForm = () => {
     <div className="auth-form-container">
       <h2>Create Your Account</h2>
       <p className="form-subtitle">Start planning your future today.</p>
-      <form>
+      <form> 
         <div className="form-group">
           <label htmlFor="fullName">Full Name</label>
           <input id="fullName" type="text" placeholder="e.g., Jane Doe" />
