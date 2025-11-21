@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import CreateGoalPage from './pages/CreateGoalPage';
-
+ 
 function App() {
   return (
     <Routes>
@@ -12,4 +12,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 

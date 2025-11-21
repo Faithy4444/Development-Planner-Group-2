@@ -2,7 +2,7 @@ import React from 'react';
 import './AuthForms.css';
 
 export const LoginForm = () => {
-  return (
+  return ( 
     <div className="auth-form-container">
       <h2>Welcome Back!</h2>
       <p className="form-subtitle">Log in to access your dashboard.</p>

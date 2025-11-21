@@ -13,7 +13,7 @@ const LandingPage = () => {
           <h1 className="hero-headline">
   <span className="hero-headline-pink">Plan</span> Your Future,
   <span className="hero-headline-secondary">Launch Your Career.</span>
-</h1>
+</h1> 
           <p className="hero-subheadline">
             The essential development planner for CodeYourFuture graduates. 
             Set SMART goals, track your progress, and get feedback from mentors to land your first role in tech.
