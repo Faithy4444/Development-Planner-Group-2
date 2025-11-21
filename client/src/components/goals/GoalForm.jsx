@@ -128,5 +128,5 @@ export const GoalForm = () => {
         </div>
       </form>
     </div>
-  );
+  ); 
 };

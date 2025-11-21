@@ -1,14 +1,15 @@
-import React from "react";
-
-import { GoalForm } from "./components/goals/GoalForm";
-import "./components/goals/GoalForm.css";
-
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
+import CreateGoalPage from './pages/CreateGoalPage';
+ 
 function App() {
   return (
-    <main>
-      <GoalForm />
-    </main>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/create-goal" element={<CreateGoalPage />} />
+    </Routes>
   );
 }
 
-export default App;
+export default App; 
