@@ -1,0 +1,21 @@
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.task-list li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #495057;
+}
+.task-list li input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 18px;
+  height: 18px;
+}
+.task-list li.completed span {
+  text-decoration: line-through;
+  color: #adb5bd;
+}
