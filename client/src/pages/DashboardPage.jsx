@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // to link to my goal form
-import { mockGoals } from '../data/mockData';
 import { GoalList } from '../components/goals/GoalList';
 import './DashboardPage.css';
 
 
 const DashboardPage = () => {
-  const userGoals = mockGoals;
+
+  const [userGoals, setUserGoals] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch goals on component mount
+  useEffect(() => {
+    const fetchGoals = async () => {
+      try {
+        const response = await fetch('/api/goals'); 
+        if (!response.ok) throw new Error('Failed to fetch goals');
+
+        const data = await response.json();
+        setUserGoals(data);     
+      } catch (err) {
+        console.error("Error fetching goals:", err);
+      } finally {
+        setLoading(false);   
+      }
+    };
+
+    fetchGoals();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
+
 
   return (
     <div className="dashboard-container">
