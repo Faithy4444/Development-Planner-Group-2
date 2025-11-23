@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import "./TaskList.css";
 
-export const TaskList = ({ tasks }) => {
-  // using local state change because I didn't connect backend
-  const [localTasks, setLocalTasks] = useState(tasks);
+export const TaskList = ({ tasks, onToggle }) => {
+  const checkTask = async (id) => {
+    try {
+      const response = await fetch(`/api/tasks`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          taskId: id,
+        }),
+      });
 
-  const toggleTask = (id) => {
-    setLocalTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, is_completed: !task.is_completed } : task
-      )
-    );
+      onToggle(id);
+      if (!response.ok) {
+        throw new Error("Failed to save task");
+      }
+    } catch (err) {
+      console.log("Error saving task:", err);
+    }
   };
 
   return (
     <ul className="task-list">
-      {localTasks.map((task) => (
+      {tasks.map((task) => (
         <li key={task.id} className={task.is_completed ? "completed" : ""}>
           <input
             type="checkbox"
             checked={task.is_completed}
-            onChange={() => toggleTask(task.id)}
+            onChange={() => checkTask(task.id)}
           />
           <span>{task.title}</span>
         </li>

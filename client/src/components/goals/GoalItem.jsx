@@ -12,8 +12,16 @@ export const GoalItem = ({ goal }) => {
   const progressPercentage =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
-  const handleAddTaskClick = () => {
-    setShowAddForm(true);
+  const handleAddTaskClick = () => setShowAddForm(true);
+
+  const handleToggleTask = (taskId) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? { ...task, is_completed: !task.is_completed }
+          : task
+      )
+    );
   };
 
   const handleSaveTask = async (newTask) => {
@@ -84,7 +92,7 @@ export const GoalItem = ({ goal }) => {
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} onToggle={handleToggleTask} />
 
       {/* Show Add Task Form */}
       {showAddForm ? (
