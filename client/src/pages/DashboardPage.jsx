@@ -9,7 +9,6 @@ const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch goals on component mount
   useEffect(() => {
     const fetchGoals = async () => {
       try {
