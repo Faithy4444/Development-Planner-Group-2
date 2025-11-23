@@ -23,6 +23,38 @@ export const getFullUserData = async (req, res) => {
     if (result.rows.length === 0) return res.status(404).json({ message: "User not found" });
     const user = {
         user_id: result.rows[0].user_id,
+        username: result.rows[0].username,
+        email: result.rows[0].email,
+        goals: []
 
-    }
+    };
+    const goalMap = {};
+    result.rows.forEach(row => {
+      if (row.goal_id && !goalMap[row.goal_id]) {
+        goalMap[row.goal_id] = {
+          goal_id: row.goal_id,
+          title: row.goal_title,
+          specific: row.specific,
+          measurable: row.measurable,
+          achievable: row.achievable,
+          relevant: row.relevant,
+          time_bound: row.time_bound,
+          tasks: []
+        };
+        user.goals.push(goalMap[row.goal_id]);
+      }
+
+      if (row.task_id) {
+        goalMap[row.goal_id].tasks.push({
+          task_id: row.task_id,
+          title: row.task_title,
+          description: row.task_description,
+          due_date: row.due_date
+        });
+      }
+    });
+
+    res.json(user);
+
+
 }
