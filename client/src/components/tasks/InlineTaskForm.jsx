@@ -1,37 +1,40 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { taskSchema } from "../../validation/taskSchema";
 import "./InlineTaskForm.css";
+
 export const AddTaskForm = ({ onSave }) => {
-  const [title, setTitle] = useState("");
-  const [error, setError] = useState("");
-  const inputRef = useRef(null);
+  //validation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setFocus,
+  } = useForm({
+    resolver: zodResolver(taskSchema),
+    defaultValues: { title: "" },
+  });
 
-  // Auto-focus on input field when user click add task and field is rendered
+  // Auto-focus when the form appears
   useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+    setFocus("title");
+  }, [setFocus]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!title.trim()) {
-      setError("Task title is required");
-      return;
-    }
-
-    onSave({ title });
+  const onSubmit = async (title) => {
+    await onSave(title);
   };
 
   return (
-    <form className="task-inline-form" onSubmit={handleSubmit}>
+    <form className="task-inline-form" onSubmit={handleSubmit(onSubmit)}>
       <input
-        ref={inputRef}
+        id="inlineTaskTitle"
         type="text"
         placeholder="New task title..."
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        {...register("title")}
       />
 
-      {error && <p className="form-error">{error}</p>}
+      {errors.title && <p className="form-error">{errors.title.message}</p>}
 
       <div className="add-task-actions">
         <button type="submit" className="btn-save-task">
