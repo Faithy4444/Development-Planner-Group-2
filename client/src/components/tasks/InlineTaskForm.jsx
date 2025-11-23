@@ -1,9 +1,14 @@
-
-import React, { useState } from "react";
-
-export const AddTaskForm = ({ onSave  }) => {
+import React, { useState, useEffect, useRef } from "react";
+import "./InlineTaskForm.css";
+export const AddTaskForm = ({ onSave }) => {
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
+  const inputRef = useRef(null);
+
+  // Auto-focus on input field when user click add task and field is rendered
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,8 +22,9 @@ export const AddTaskForm = ({ onSave  }) => {
   };
 
   return (
-    <form className="add-task-form" onSubmit={handleSubmit}>
+    <form className="task-inline-form" onSubmit={handleSubmit}>
       <input
+        ref={inputRef}
         type="text"
         placeholder="New task title..."
         value={title}

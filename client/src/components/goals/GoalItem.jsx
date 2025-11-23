@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TaskList } from "../tasks/TaskList";
-import { AddTaskForm } from "../tasks/AddTaskForm";
+import { AddTaskForm } from "../tasks/InlineTaskForm";
 import "./GoalItem.css";
 
 export const GoalItem = ({ goal }) => {
