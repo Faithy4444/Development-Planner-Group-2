@@ -1,4 +1,4 @@
-import { pool } from "../config/db.js";
+import { pool } from "../db.js";
 
 // CREATE
 export const createGoal = async (req, res) => {
