@@ -1,12 +1,54 @@
-// src/components/goals/GoalItem.jsx
-import React from 'react';
-import { TaskList } from '../tasks/TaskList';
-import './GoalItem.css';
+import React, { useState } from "react";
+import { TaskList } from "../tasks/TaskList";
+import { AddTaskForm } from "../tasks/InlineTaskForm";
+import "./GoalItem.css";
 
 export const GoalItem = ({ goal }) => {
-  const totalTasks = goal.tasks.length;
-  const completedTasks = goal.tasks.filter(task => task.is_completed).length;
-  const progressPercentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  const [tasks, setTasks] = useState(goal.tasks || []);
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.is_completed).length;
+  const progressPercentage =
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  const handleAddTaskClick = () => setShowAddForm(true);
+
+  const handleToggleTask = (taskId) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? { ...task, is_completed: !task.is_completed }
+          : task
+      )
+    );
+  };
+
+  const handleSaveTask = async (newTask) => {
+    try {
+      const response = await fetch(`/api/tasks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          goalId: goal.id,
+          title: newTask.title,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save task");
+      }
+
+      const savedTask = await response.json();
+
+      // Update state and ui
+      setTasks((prev) => [...prev, savedTask]);
+
+      setShowAddForm(false);
+    } catch (err) {
+      console.log("Error saving task:", err);
+    }
+  };
 
   return (
     <div className={`goal-item-container status-${goal.status}`}>
@@ -41,8 +83,8 @@ export const GoalItem = ({ goal }) => {
 
       <div className="goal-progress">
         <div className="progress-bar-container">
-          <div 
-            className="progress-bar" 
+          <div
+            className="progress-bar"
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
@@ -50,11 +92,18 @@ export const GoalItem = ({ goal }) => {
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      <TaskList tasks={goal.tasks} />
+      <TaskList tasks={tasks} onToggle={handleToggleTask} />
 
-      <div className="goal-footer">
-        <button className="btn-add-task">+ Add Task</button>
-      </div>
+      {/* Show Add Task Form */}
+      {showAddForm ? (
+        <AddTaskForm onSave={handleSaveTask} />
+      ) : (
+        <div className="goal-footer">
+          <button onClick={handleAddTaskClick} className="btn-add-task">
+            + Add Task
+          </button>
+        </div>
+      )}
     </div>
   );
 };
