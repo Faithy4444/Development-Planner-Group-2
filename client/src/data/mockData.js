@@ -3,45 +3,73 @@ export const mockGoals = [
     id: 1,
     title: "Learn Backend Development",
     // --- NEW: Add the SMART details ---
-    specific: "Become proficient in Node.js and build a full-stack application.",
-    measurable: "Complete three backend-focused projects and contribute to an open-source library.",
-    achievable: "Follow the CodeYourFuture Node.js syllabus and dedicate 10 hours a week to coding.",
-    relevant: "Backend skills are in high demand and are essential for becoming a well-rounded developer.",
+    specific:
+      "Become proficient in Node.js and build a full-stack application.",
+    measurable:
+      "Complete three backend-focused projects and contribute to an open-source library.",
+    achievable:
+      "Follow the CodeYourFuture Node.js syllabus and dedicate 10 hours a week to coding.",
+    relevant:
+      "Backend skills are in high demand and are essential for becoming a well-rounded developer.",
     status: "in_progress",
     tasks: [
-      { id: 1, title: "Complete Node.js course", is_completed: true },
-      { id: 2, title: "Build a simple Express server", is_completed: true },
-      { id: 3, title: "Connect to a PostgreSQL database", is_completed: false },
-      { id: 4, title: "Learn about authentication (JWT)", is_completed: false },
+      { id: 0, title: "Complete Node.js course", is_completed: true },
+      { id: 1, title: "Build a simple Express server", is_completed: true },
+      { id: 2, title: "Connect to a PostgreSQL database", is_completed: false },
+      { id: 3, title: "Learn about authentication (JWT)", is_completed: false },
     ],
   },
   {
     id: 2,
     title: "Prepare for Technical Interviews",
     // --- NEW: Add the SMART details ---
-    specific: "Confidently solve medium-level algorithm problems and clearly articulate my thought process.",
-    measurable: "Solve 20 LeetCode problems and conduct 3 mock interviews with mentors.",
-    achievable: "Dedicate one hour per day to algorithm practice and schedule mock interviews in advance.",
-    relevant: "Strong interview performance is the final step to securing a job.",
+    specific:
+      "Confidently solve medium-level algorithm problems and clearly articulate my thought process.",
+    measurable:
+      "Solve 20 LeetCode problems and conduct 3 mock interviews with mentors.",
+    achievable:
+      "Dedicate one hour per day to algorithm practice and schedule mock interviews in advance.",
+    relevant:
+      "Strong interview performance is the final step to securing a job.",
     status: "in_progress",
     tasks: [
       { id: 5, title: "Update CV with new projects", is_completed: true },
-      { id: 6, title: "Practice 5 medium-level algorithm questions", is_completed: false },
-      { id: 7, title: "Prepare answers for common behavioral questions", is_completed: false },
+      {
+        id: 6,
+        title: "Practice 5 medium-level algorithm questions",
+        is_completed: false,
+      },
+      {
+        id: 7,
+        title: "Prepare answers for common behavioral questions",
+        is_completed: false,
+      },
     ],
   },
   {
     id: 3,
     title: "Master React Frontend",
     // --- NEW: Add the SMART details ---
-    specific: "Gain a deep understanding of React Hooks, state management, and performance optimization.",
-    measurable: "Refactor a class-based project to use functional components and hooks.",
-    achievable: "Read the official React documentation and build a small project with a complex state.",
-    relevant: "Advanced React skills will make me a more effective and valuable frontend developer.",
+    specific:
+      "Gain a deep understanding of React Hooks, state management, and performance optimization.",
+    measurable:
+      "Refactor a class-based project to use functional components and hooks.",
+    achievable:
+      "Read the official React documentation and build a small project with a complex state.",
+    relevant:
+      "Advanced React skills will make me a more effective and valuable frontend developer.",
     status: "completed",
     tasks: [
-      { id: 8, title: "Learn about state management with Context API", is_completed: true },
-      { id: 9, title: "Build a project using React Router", is_completed: true },
+      {
+        id: 8,
+        title: "Learn about state management with Context API",
+        is_completed: true,
+      },
+      {
+        id: 9,
+        title: "Build a project using React Router",
+        is_completed: true,
+      },
     ],
   },
 ];

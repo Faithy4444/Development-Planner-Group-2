@@ -3,7 +3,7 @@ import cors from "cors";
 import { mockGoals } from "../client/src/data/mockData.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+let counter = 5;
 //middleware accepts all endpoints for now
 app.use(cors());
 app.use(express.json());
@@ -26,14 +26,19 @@ app.post("/api/tasks", (req, res) => {
   // in this instance backend receive goal id and task title
   // after backend added it to the db, it send back the task object
   // I made this for a test, dataflow can be different in a future
-  res.json({ id: 5, title: "API", is_completed: false });
+  counter += 1;
+  res.json({ id: counter, title: `${req.body.title}`, is_completed: false });
 });
 
 app.put("/api/tasks", (req, res) => {
   //just a sample to test frontend, insert your backend code here
   const id = req.body.taskId;
   mockGoals[0].tasks[id].is_completed = !mockGoals[0].tasks[id].is_completed;
-  res.json("ok");
+  res.json({ status: "ok" });
+});
+
+app.post("/api/goals", (req, res) => {
+  res.json({ status: "ok" });
 });
 
 app.get("/api/goals", (req, res) => {

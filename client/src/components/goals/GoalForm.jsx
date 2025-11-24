@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { goalSchema } from "../../validation/goalSchema";
 import "./GoalForm.css";
+import { useFetch } from "../../useFetch";
 
 export const GoalForm = () => {
-  const [serverError, setServerError] = useState("");
+  const { executeFetch, loading, error } = useFetch();
 
   const {
     register,
@@ -17,38 +17,18 @@ export const GoalForm = () => {
   });
 
   const onSubmit = async (data) => {
-    setServerError("");
-    try {
-      const response = await fetch("/api/goals", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Something went wrong. Please try again."
-        );
-      }
-      const responseData = await response.json();
-      console.log("Form submitted successfully! Data sent:", data);
-      console.log("Data received from server:", responseData);
-      alert("Goal saved successfully! Check the browser console for details.");
-    } catch (error) {
-      setServerError(error.message);
-    }
+    const responseData = await executeFetch("/api/goals", "POST", data);
+    console.log("Form submitted successfully! Data sent:", data);
+    console.log("Data received from server:", responseData);
+    alert("Goal saved successfully! Check the browser console for details.");
   };
-
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error uploading {error}</p>;
   return (
     <div className="form-container">
       <h1>Create a New SMART Goal</h1>
 
-      {serverError && (
-        <p className="error-message server-error">{serverError}</p>
-      )}
+      {error && <p className="error-message server-error">{error}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
