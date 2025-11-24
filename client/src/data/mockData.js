@@ -73,3 +73,62 @@ export const mockGoals = [
     ],
   },
 ];
+
+export const users = [
+  { id: 0, username: "fixik", email: "droidan@gmail.com", password: "12345" },
+];
+
+export const goals = [
+  {
+    id: 0,
+    user_id: 0,
+    title: "Learn Backend Development",
+    specific:
+      "Become proficient in Node.js and build a full-stack application.",
+    measurable:
+      "Complete three backend-focused projects and contribute to an open-source library.",
+    achievable:
+      "Follow the CodeYourFuture Node.js syllabus and dedicate 10 hours a week to coding.",
+    relevant:
+      "Backend skills are in high demand and are essential for becoming a well-rounded developer.",
+    time_bound: "1 jan 2026",
+  },
+];
+export const tasks = [
+  {
+    id: 0,
+    user_id: 0,
+    title: "Complete Node.js course",
+    description: "",
+    dueDate: "",
+    is_completed: true,
+    goalId: 0,
+  },
+  {
+    id: 1,
+    user_id: 0,
+    title: "Build a simple Express server",
+    description: "",
+    dueDate: "",
+    is_completed: true,
+    goalId: 0,
+  },
+  {
+    id: 2,
+    user_id: 0,
+    title: "Connect to a PostgreSQL database",
+    description: "",
+    dueDate: "",
+    is_completed: false,
+    goalId: 0,
+  },
+  {
+    id: 3,
+    user_id: 0,
+    title: "Learn about authentication (JWT)",
+    description: "",
+    dueDate: "",
+    is_completed: false,
+    goalId: 0,
+  },
+];
