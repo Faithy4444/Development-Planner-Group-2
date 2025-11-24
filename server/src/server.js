@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import userRoute from "./routes/userRoute.js";
+import goalsRoutes from "./routes/goalsRoute.js"
 import { pool } from "./db.js";
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/user", userRoute);
+app.use("/api/goals", goalsRoutes)
 
 
 app.get("/", (req, res) => {
