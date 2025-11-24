@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import { mockGoals } from "../client/src/data/mockData.js";
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -35,4 +34,6 @@ app.put("/api/tasks", (req, res) => {
   const id = req.body.taskId;
   mockGoals[0].tasks[id].is_completed = !mockGoals[0].tasks[id].is_completed;
   res.json("ok");
+app.get("/api/goals", (req, res) => {
+  res.json(mockGoals);
 });
