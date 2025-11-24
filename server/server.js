@@ -34,6 +34,8 @@ app.put("/api/tasks", (req, res) => {
   const id = req.body.taskId;
   mockGoals[0].tasks[id].is_completed = !mockGoals[0].tasks[id].is_completed;
   res.json("ok");
+});
+
 app.get("/api/goals", (req, res) => {
   res.json(mockGoals);
 });
