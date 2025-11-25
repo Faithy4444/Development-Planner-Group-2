@@ -3,7 +3,7 @@ import cors from "cors";
 import { mockGoals, users, goals, tasks } from "../client/src/data/mockData.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
-let counter = 5;
+let counter = 15;
 //middleware accepts all endpoints for now
 app.use(cors());
 app.use(express.json());
@@ -18,22 +18,6 @@ app.listen(PORT, () => {
 });
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-app.post("/api/tasks", (req, res) => {
-  // sample answer, insert your backend code here
-  // in this instance backend receive goal id and task title
-  // after backend added it to the db, it send back the task object
-  // I made this for a test, dataflow can be different in a future
-  counter += 1;
-  res.json({ id: counter, title: `${req.body.title}`, is_completed: false });
-});
-
-app.put("/api/tasks", (req, res) => {
-  //just a sample to test frontend, insert your backend code here
-  const id = req.body.taskId;
-  mockGoals[0].tasks[id].is_completed = !mockGoals[0].tasks[id].is_completed;
   res.json({ status: "ok" });
 });
 
@@ -61,6 +45,40 @@ app.get("/api/goals", (req, res) => {
   res.json(result);
 });
 
+app.post("/api/tasks", (req, res) => {
+  // sample answer, insert your backend code here
+  // in this instance backend receive goal id and task title
+  // after backend added it to the db, it send back the task object
+  // I made this for a test, dataflow can be different in a future
+  const newTask = {
+    id: counter,
+    user_id: 0,
+    title: req.body.title,
+    description: "",
+    dueDate: "",
+    is_completed: false,
+    goalId: req.body.goalId,
+  };
+  tasks.push(newTask);
+  console.log(tasks[tasks.length - 1]);
+  counter += 1;
+  const lastTask = tasks[tasks.length - 1];
+  res.json(lastTask);
+});
+
 app.get("/api/tasks", (req, res) => {
   res.json(tasks);
+});
+
+app.put("/api/tasks", (req, res) => {
+  const idToUpdate = parseInt(req.body.taskId, 10);
+
+  const taskToUpdate = tasks.find((task) => task.id === idToUpdate);
+
+  if (taskToUpdate) {
+    taskToUpdate.is_completed = !taskToUpdate.is_completed;
+    res.json(taskToUpdate);
+  } else {
+    res.status(404).json({ error: "Task not found" });
+  }
 });
