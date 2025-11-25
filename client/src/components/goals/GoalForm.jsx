@@ -19,8 +19,9 @@ export const GoalForm = () => {
   });
 
   const onSubmit = async (data) => {
-    const responseData = await executeFetch("/api/goals", "POST", data);
-    console.log("Form submitted successfully! Data sent:", data);
+    const dataWithUser = { ...data, user_id: 1 }; //insert user id to simulate user
+    const responseData = await executeFetch("/api/goals", "POST", dataWithUser);
+    console.log("Form submitted successfully! Data sent:", dataWithUser);
     console.log("Data received from server:", responseData);
     // alert("Goal saved successfully! Check the browser console for details.");
     navigate("/dashboard");
