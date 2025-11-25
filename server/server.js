@@ -23,7 +23,7 @@ app.get("/health", (req, res) => {
 
 app.post("/api/goals", (req, res) => {
   // console.log({ ...req.body, userid: 0 });
-  goals.push({ ...req.body, user_id: 0 });
+  goals.push({ ...req.body, user_id: 0, id: counter });
   const lastGoal = goals[goals.length - 1];
   res.json({ lastGoal });
 });
