@@ -35,6 +35,21 @@ export const GoalForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
+          <label htmlFor="title">Goal title</label>
+          <p className="helper-text">What's your goal?</p>
+          <textarea
+            id="title"
+            rows="3"
+            className={errors.title ? "input-error" : ""}
+            disabled={isSubmitting}
+            {...register("title")}
+          />
+          {errors.title && (
+            <p className="error-message">{errors.title.message}</p>
+          )}
+        </div>
+
+        <div className="form-group">
           <label htmlFor="specific">Specific</label>
           <p className="helper-text">What exactly do you want to achieve?</p>
           <textarea

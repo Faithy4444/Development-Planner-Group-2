@@ -1,11 +1,10 @@
 import { z } from "zod";
 export const goalSchema = z.object({
-  specific: z
-    .string()
-    .min(10, {
-      message:
-        "Please be more specific. A good goal is at least 10 characters long.",
-    }),
+  title: z.string(),
+  specific: z.string().min(10, {
+    message:
+      "Please be more specific. A good goal is at least 10 characters long.",
+  }),
   measurable: z.string().optional(),
   achievable: z.string().optional(),
   relevant: z.string().optional(),
