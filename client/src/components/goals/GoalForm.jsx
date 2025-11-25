@@ -28,7 +28,6 @@ export const GoalForm = () => {
       });
 
       if (!response.ok) {
-
         const errorData = await response.json();
         throw new Error(
           errorData.message || "Something went wrong. Please try again."
@@ -52,7 +51,6 @@ export const GoalForm = () => {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-
         <div className="form-group">
           <label htmlFor="specific">Specific</label>
           <p className="helper-text">What exactly do you want to achieve?</p>
@@ -81,7 +79,6 @@ export const GoalForm = () => {
           />
         </div>
 
-
         <div className="form-group">
           <label htmlFor="achievable">Achievable</label>
           <p className="helper-text">What steps will you take to achieve it?</p>
@@ -104,7 +101,6 @@ export const GoalForm = () => {
           />
         </div>
 
-
         <div className="form-group">
           <label htmlFor="time_bound">Time-Bound</label>
           <p className="helper-text">When will you achieve this by?</p>
@@ -120,7 +116,6 @@ export const GoalForm = () => {
           )}
         </div>
 
-
         <div className="form-actions">
           <button type="submit" className="btn-primary" disabled={isSubmitting}>
             {isSubmitting ? "Saving..." : "Save Goal"}
@@ -128,5 +123,5 @@ export const GoalForm = () => {
         </div>
       </form>
     </div>
-  ); 
+  );
 };
