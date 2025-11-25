@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { mockGoals } from "../client/src/data/mockData.js";
+import { mockGoals, users, goals, tasks } from "../client/src/data/mockData.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 let counter = 5;
@@ -42,5 +42,25 @@ app.post("/api/goals", (req, res) => {
 });
 
 app.get("/api/goals", (req, res) => {
-  res.json(mockGoals);
+  // I think we need to tell the backed who is trying to access all the goal in account, so we can take the goals only for that user
+  function getUserGoalsWithTasks(userId) {
+    const userGoals = goals.filter((goal) => goal.user_id === userId);
+
+    const goalsWithTasks = userGoals.map((goal) => {
+      const relatedTasks = tasks.filter((task) => task.goalId === goal.id);
+      return {
+        ...goal,
+        tasks: relatedTasks,
+      };
+    });
+
+    return goalsWithTasks;
+  }
+  const result = getUserGoalsWithTasks(0);
+
+  res.json(result);
+});
+
+app.get("/api/tasks", (req, res) => {
+  res.json(tasks);
 });
