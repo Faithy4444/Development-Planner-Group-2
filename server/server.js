@@ -48,6 +48,19 @@ app.get("/api/goals", (req, res) => {
   res.json(result);
 });
 
+app.delete("/api/goals/:id", (req, res) => {
+  const idToDelete = parseInt(req.params.id, 10);
+
+  const initialLength = goals.length;
+  goals = goals.filter((goal) => goal.id !== idToDelete);
+
+  if (goals.length < initialLength) {
+    return jsonify({ success: True });
+  } else {
+    res.status(404).json({ error: "Goal not found" });
+  }
+});
+
 app.post("/api/tasks", (req, res) => {
   // sample answer, insert your backend code here
   // in this instance backend receive goal id and task title

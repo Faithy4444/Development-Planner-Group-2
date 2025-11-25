@@ -25,6 +25,18 @@ export const GoalItem = ({ goal }) => {
       )
     );
   };
+
+  const handleDelete = async () => {
+    const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
+
+    // If the deletion was successful (your backend returns 204 or 200)
+    if (result !== null) {
+      // You need to notify the parent component (DashboardPage) to remove the goal from the list
+      // This requires passing a prop, e.g., onDelete(goal.id)
+      onDelete(goal.id);
+    }
+  };
+
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
   const handleSaveTask = async (newTask) => {
     const body = {
