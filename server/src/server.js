@@ -14,9 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/user", userRoute);
-app.use("/api/goals", goalsRoutes)
+app.use("/api/goals", goalsRoutes);
 app.use("/api/tasks", taskRoutes);
-
 
 app.get("/", (req, res) => {
   res.send("Server is running! Go to /health or /user/:id/full");
