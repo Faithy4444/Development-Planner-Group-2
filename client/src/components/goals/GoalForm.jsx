@@ -4,9 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { goalSchema } from "../../validation/goalSchema";
 import "./GoalForm.css";
 import { useFetch } from "../../useFetch";
+import { useNavigate } from "react-router-dom";
 
 export const GoalForm = () => {
   const { executeFetch, loading, error } = useFetch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -20,9 +22,10 @@ export const GoalForm = () => {
     const responseData = await executeFetch("/api/goals", "POST", data);
     console.log("Form submitted successfully! Data sent:", data);
     console.log("Data received from server:", responseData);
-    alert("Goal saved successfully! Check the browser console for details.");
+    // alert("Goal saved successfully! Check the browser console for details.");
+    navigate("/dashboard");
   };
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Saving...</p>;
   if (error) return <p>Error uploading {error}</p>;
   return (
     <div className="form-container">
