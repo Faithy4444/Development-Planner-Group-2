@@ -54,7 +54,7 @@ export const getFullUserData = async (req, res) => {
         res.json(user);
 
 
-    } catch {
+    } catch(err) {
         console.error(err);
         res.status(500).send("Server error");
     };
