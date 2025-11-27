@@ -2,7 +2,15 @@ import { pool } from "../db.js";
 
 // CREATE
 export const createGoal = async (req, res) => {
-  const { user_id, title, specific, measurable, achievable, relevant, time_bound } = req.body;
+  const {
+    user_id,
+    title,
+    specific,
+    measurable,
+    achievable,
+    relevant,
+    time_bound,
+  } = req.body;
   try {
     const result = await pool.query(
       `INSERT INTO goals (user_id, title, specific, measurable, achievable, relevant, time_bound)
@@ -32,7 +40,8 @@ export const getGoalById = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM goals WHERE id=$1", [id]);
-    if (result.rows.length === 0) return res.status(404).json({ message: "Goal not found" });
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -43,7 +52,8 @@ export const getGoalById = async (req, res) => {
 // UPDATE
 export const updateGoal = async (req, res) => {
   const { id } = req.params;
-  const { title, specific, measurable, achievable, relevant, time_bound } = req.body;
+  const { title, specific, measurable, achievable, relevant, time_bound } =
+    req.body;
   try {
     const result = await pool.query(
       `UPDATE goals
@@ -51,7 +61,8 @@ export const updateGoal = async (req, res) => {
        WHERE id=$7 RETURNING *`,
       [title, specific, measurable, achievable, relevant, time_bound, id]
     );
-    if (result.rows.length === 0) return res.status(404).json({ message: "Goal not found" });
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -63,8 +74,12 @@ export const updateGoal = async (req, res) => {
 export const deleteGoal = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query("DELETE FROM goals WHERE id=$1 RETURNING *", [id]);
-    if (result.rows.length === 0) return res.status(404).json({ message: "Goal not found" });
+    const result = await pool.query(
+      "DELETE FROM goals WHERE id=$1 RETURNING *",
+      [id]
+    );
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
     res.json({ message: "Goal deleted successfully" });
   } catch (err) {
     console.error(err);

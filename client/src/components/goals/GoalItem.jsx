@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { TaskList } from "../tasks/TaskList";
 import { AddTaskForm } from "../tasks/InlineTaskForm";
 import "./GoalItem.css";
+import { useFetch } from "../../useFetch";
 
 export const GoalItem = ({ goal }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
+  const { executeFetch, loading, error } = useFetch();
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.is_completed).length;
@@ -24,31 +26,33 @@ export const GoalItem = ({ goal }) => {
     );
   };
 
+  //--------Here I started to work on delete functionality---------
+
+  // const handleDelete = async () => {
+  //   const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
+
+  //   // If the deletion was successful (your backend returns 204 or 200)
+  //   if (result !== null) {
+  //     // You need to notify the parent component (DashboardPage) to remove the goal from the list
+  //     // This requires passing a prop, e.g., onDelete(goal.id)
+  //     onDelete(goal.id);
+  //   }
+  // };
+
+  //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
   const handleSaveTask = async (newTask) => {
-    try {
-      const response = await fetch(`/api/tasks`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          goalId: goal.id,
-          title: newTask.title,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save task");
-      }
-
-      const savedTask = await response.json();
-
-      // Update state and ui
-      setTasks((prev) => [...prev, savedTask]);
-
-      setShowAddForm(false);
-    } catch (err) {
-      console.log("Error saving task:", err);
-    }
+    const body = {
+      goalId: goal.id,
+      title: newTask.title,
+    };
+    const savedTask = await executeFetch("/api/tasks", "POST", body);
+    // Update state and ui
+    setTasks((prev) => [...prev, savedTask]);
+    console.log(savedTask);
+    setShowAddForm(false);
   };
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading goals: {error}</p>;
 
   return (
     <div className={`goal-item-container status-${goal.status}`}>

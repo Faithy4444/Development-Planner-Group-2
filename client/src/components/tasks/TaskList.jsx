@@ -1,23 +1,16 @@
 import React from "react";
 import "./TaskList.css";
+import { useFetch } from "../../useFetch";
 
 export const TaskList = ({ tasks, onToggle }) => {
-  const checkTask = async (id) => {
-    try {
-      const response = await fetch(`/api/tasks`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          taskId: id,
-        }),
-      });
+  const { executeFetch } = useFetch();
 
+  const checkTask = async (id) => {
+    const body = { taskId: id };
+    const data = await executeFetch("/api/tasks", "PUT", body);
+    console.log(data);
+    if (data !== undefined && data !== null) {
       onToggle(id);
-      if (!response.ok) {
-        throw new Error("Failed to save task");
-      }
-    } catch (err) {
-      console.log("Error saving task:", err);
     }
   };
 

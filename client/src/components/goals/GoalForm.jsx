@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { goalSchema } from "../../validation/goalSchema";
 import "./GoalForm.css";
+import { useFetch } from "../../useFetch";
+import { useNavigate } from "react-router-dom";
 
 export const GoalForm = () => {
-  const [serverError, setServerError] = useState("");
+  const { executeFetch, loading, error } = useFetch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -17,40 +19,37 @@ export const GoalForm = () => {
   });
 
   const onSubmit = async (data) => {
-    setServerError("");
-    try {
-      const response = await fetch("/api/goals", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Something went wrong. Please try again."
-        );
-      }
-      const responseData = await response.json();
-      console.log("Form submitted successfully! Data sent:", data);
-      console.log("Data received from server:", responseData);
-      alert("Goal saved successfully! Check the browser console for details.");
-    } catch (error) {
-      setServerError(error.message);
-    }
+    const dataWithUser = { ...data, user_id: 1 }; //insert user id to simulate user
+    const responseData = await executeFetch("/api/goals", "POST", dataWithUser);
+    console.log("Form submitted successfully! Data sent:", dataWithUser);
+    console.log("Data received from server:", responseData);
+    // alert("Goal saved successfully! Check the browser console for details.");
+    navigate("/dashboard");
   };
-
+  if (loading) return <p>Saving...</p>;
+  if (error) return <p>Error uploading {error}</p>;
   return (
     <div className="form-container">
       <h1>Create a New SMART Goal</h1>
 
-      {serverError && (
-        <p className="error-message server-error">{serverError}</p>
-      )}
+      {error && <p className="error-message server-error">{error}</p>}
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group">
+          <label htmlFor="title">Goal title</label>
+          <p className="helper-text">What's your goal?</p>
+          <textarea
+            id="title"
+            rows="3"
+            className={errors.title ? "input-error" : ""}
+            disabled={isSubmitting}
+            {...register("title")}
+          />
+          {errors.title && (
+            <p className="error-message">{errors.title.message}</p>
+          )}
+        </div>
+
         <div className="form-group">
           <label htmlFor="specific">Specific</label>
           <p className="helper-text">What exactly do you want to achieve?</p>
