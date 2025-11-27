@@ -2,30 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
 import "./DashboardPage.css";
+import { useFetch } from "../useFetch";
 
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { executeFetch, loading, error } = useFetch();
 
   useEffect(() => {
     const fetchGoals = async () => {
-      try {
-        const response = await fetch("/api/goals");
-        if (!response.ok) throw new Error("Failed to fetch goals");
+      const data = await executeFetch("/api/goals", "GET");
 
-        const data = await response.json();
-        setUserGoals(data || []);
-      } catch (err) {
-        console.error("Error fetching goals:", err);
-      } finally {
-        setLoading(false);
-      }
+      setUserGoals(data || []);
     };
 
     fetchGoals();
-  }, []);
+  }, [executeFetch]);
 
   if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading goals: {error}</p>;
 
   return (
     <div className="dashboard-container">
