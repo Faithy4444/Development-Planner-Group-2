@@ -141,7 +141,7 @@ const seed = async () => {
 
     const taskIds = [];
     for (const task of tasks) {
-      result = await pool.query(
+      const result = await pool.query(
         `INSERT INTO tasks (user_id, goal_id, title, description, due_date)
          VALUES ($1, $2, $3, $4, $5) RETURNING id`,
         [
