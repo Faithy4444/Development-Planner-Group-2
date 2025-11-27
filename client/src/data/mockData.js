@@ -74,11 +74,11 @@ export const mockGoals = [
   },
 ];
 
-export const users = [
+export let users = [
   { id: 0, username: "fixik", email: "droidan@gmail.com", password: "12345" },
 ];
 
-export const goals = [
+export let goals = [
   {
     id: 0,
     user_id: 0,
@@ -94,7 +94,7 @@ export const goals = [
     time_bound: "1 jan 2026",
   },
 ];
-export const tasks = [
+export let tasks = [
   {
     id: 0,
     user_id: 0,

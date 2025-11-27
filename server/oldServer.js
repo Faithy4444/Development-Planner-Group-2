@@ -1,4 +1,6 @@
+"use strict";
 import express from "express";
+
 import cors from "cors";
 import { mockGoals, users, goals, tasks } from "../client/src/data/mockData.js";
 const app = express();
@@ -52,10 +54,13 @@ app.delete("/api/goals/:id", (req, res) => {
   const idToDelete = parseInt(req.params.id, 10);
 
   const initialLength = goals.length;
-  goals = goals.filter((goal) => goal.id !== idToDelete);
-
+  const indexToRemove = goals.findIndex((goal) => goal.id === idToDelete);
+  console.log(indexToRemove);
+  // goals.splice(indexToRemove, 1);
+  console.log(goals.splice(indexToRemove, 1));
+  console.log(goals);
   if (goals.length < initialLength) {
-    return jsonify({ success: True });
+    return res.json({ success: true });
   } else {
     res.status(404).json({ error: "Goal not found" });
   }

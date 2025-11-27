@@ -6,6 +6,7 @@ import { useFetch } from "../useFetch";
 
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
+  console.log(userGoals);
   const { executeFetch, loading, error } = useFetch();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const DashboardPage = () => {
       </div>
 
       {userGoals && userGoals.length > 0 ? (
-        <GoalList goals={userGoals} />
+        <GoalList goals={userGoals} setUserGoals={setUserGoals} />
       ) : (
         <div className="empty-state">
           <h2>Welcome to your planner!</h2>
