@@ -51,6 +51,7 @@ export const up = (pgm) => {
     description: { type: "varchar(500)" },
     due_date: { type: "date" },
     goal_id: { type: "bigint", notNull: true },
+    is_completed: { type: "boolean", notNull: true, default: false },
   });
 
   pgm.addConstraint("tasks", "fk_tasks_user", {
