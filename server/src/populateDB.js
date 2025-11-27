@@ -131,15 +131,17 @@ const seed = async () => {
       },
     ];
 
+    const taskIds = [];
     for (const task of tasks) {
-      await pool.query(
+      result = await pool.query(
         `INSERT INTO tasks (user_id, goal_id, title, description, due_date)
-         VALUES ($1, $2, $3, $4, $5)`,
+         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
         [task.user_id, task.goal_id, task.title, task.description, task.due_date]
       );
+      taskIds.push(result.rows[0].id);
     }
 
-    console.log('Tasks seeded successfully!');
+    console.log('Tasks seeded successfully! with IDs:', taskIds);
     process.exit();
   } catch (err) {
     console.error('Error seeding DB:', err);
