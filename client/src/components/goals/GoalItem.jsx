@@ -42,8 +42,9 @@ export const GoalItem = ({ goal }) => {
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
   const handleSaveTask = async (newTask) => {
     const body = {
-      goalId: goal.id,
+      goal_id: goal.id,
       title: newTask.title,
+      user_id: 6,
     };
     const savedTask = await executeFetch("/api/tasks", "POST", body);
     // Update state and ui
