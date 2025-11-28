@@ -6,7 +6,6 @@ import { useFetch } from "../useFetch";
 
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
-  console.log(userGoals);
   const { executeFetch, loading, error } = useFetch();
 
   useEffect(() => {

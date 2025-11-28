@@ -32,8 +32,6 @@ export const GoalItem = ({ goal, onDelete }) => {
     const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
 
     if (result !== null) {
-      // You need to notify the parent component (DashboardPage) to remove the goal from the list
-      // This requires passing a prop, e.g., onDelete(goal.id)
       onDelete(goal.id);
     }
   };
@@ -48,7 +46,6 @@ export const GoalItem = ({ goal, onDelete }) => {
     const savedTask = await executeFetch("/api/tasks", "POST", body);
     // Update state and ui
     setTasks((prev) => [...prev, savedTask]);
-    console.log(savedTask);
     setShowAddForm(false);
   };
   if (loading) return <p>Loading...</p>;
