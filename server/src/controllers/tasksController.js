@@ -1,66 +1,64 @@
-import { pool } from "../db.js"
+import { pool } from "../db.js";
 
 //creating
 
 export const createTask = async (req, res) => {
-    const { user_id, goal_id, title, description, due_date } = req.body;
-    try {
-        const result = await pool.query(
+  const { user_id, goal_id, title, description, due_date } = req.body;
+  try {
+    const result = await pool.query(
       `INSERT INTO tasks (user_id, goal_id, title, description, due_date)
        VALUES ($1,$2,$3,$4,$5) RETURNING *`,
       [user_id, goal_id, title, description, due_date]
-        );
-        res.status(201).json(result.rows[0]);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Server error")
-    }
-}
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
 
 //Get all tasks for a user
 
 export const getAllTasks = async (req, res) => {
-    const { user_id } = req.params;
+  const { user_id } = req.params;
 
-    try {
-        const results = await pool.query(
-            `SELECT * FROM tasks 
+  try {
+    const results = await pool.query(
+      `SELECT * FROM tasks 
             WHERE use_id = $1
             ORDER BY due_date ASC`,
-            [user_id]
-        );
-        res.status(200).json(results.rows);
-    } catch (err) {
-        console.error("getAllTasks error:", err);
-        res.status(500).json({ message: "Server error fetching tasks." });
-    }
+      [user_id]
+    );
+    res.status(200).json(results.rows);
+  } catch (err) {
+    console.error("getAllTasks error:", err);
+    res.status(500).json({ message: "Server error fetching tasks." });
+  }
 };
 
 export const getTaskById = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-        const results = await pool.query(
-            `SELECT * FROM tasks WHERE ID = $1`, [id]
-        );
-        if (results.rows.length === 0) {
-            return res.status(404).json({ message: "Task not found." });
-        };
-    } catch (err) {
-        console.error("getTaskById error:", err);
-        res.status(500).json({ message: "Server error fetching task." });
+  try {
+    const results = await pool.query(`SELECT * FROM tasks WHERE ID = $1`, [id]);
+    if (results.rows.length === 0) {
+      return res.status(404).json({ message: "Task not found." });
     }
+  } catch (err) {
+    console.error("getTaskById error:", err);
+    res.status(500).json({ message: "Server error fetching task." });
+  }
 };
 
-//update tasks 
+//update tasks
 
 export const updateTasks = async (req, res) => {
-    const { id } = req.params;
-    const { title, description, due_date, is_completed } = req.body;
+  const { id } = req.params;
+  const { title, description, due_date, is_completed } = req.body;
 
-    try {
-        const results = await pool.query(
-            `UPDATE tasks 
+  try {
+    const results = await pool.query(
+      `UPDATE tasks 
              SET title = COALESCE($1, title),
                  description = COALESCE($2, description),
                  due_date = COALESCE($3, due_date),
@@ -68,14 +66,14 @@ export const updateTasks = async (req, res) => {
              WHERE id = $5
              RETURNING *`,
       [title, description, due_date, completed, id]
-        );
-        
-        if (results.rows.length === 0) {
-          return res.status(404).json({ message: "Task not found." });
+    );
+
+    if (results.rows.length === 0) {
+      return res.status(404).json({ message: "Task not found." });
     }
 
     res.status(200).json(result.rows[0]);
-    }catch(err) {
+  } catch (err) {
     console.error("updateTask error:", err);
     res.status(500).json({ message: "Server error updating task." });
   }
