@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { GoalItem } from "./GoalItem";
 import "./GoalList.css";
 
 export const GoalList = ({ goals, setUserGoals }) => {
   const onDelete = (goalId) => {
-    setUserGoals(goals.filter((goal) => goal.user_id != goalId));
+    setUserGoals(goals.filter((goal) => goal.id != goalId));
   };
 
   return (
