@@ -2,7 +2,15 @@ import { pool } from "../db.js";
 
 // CREATE
 export const createGoal = async (req, res) => {
-  const { user_id, title, specific, measurable, achievable, relevant, time_bound } = req.body;
+  const {
+    user_id,
+    title,
+    specific,
+    measurable,
+    achievable,
+    relevant,
+    time_bound,
+  } = req.body;
   if (!user_id || !title) {
     return res.status(400).json({ message: "user_id and title are required" });
   }
@@ -14,7 +22,7 @@ export const createGoal = async (req, res) => {
     );
     res.status(201).json({
       ...result.rows[0],
-      tasks:[]
+      tasks: [],
     });
   } catch (err) {
     console.error(err);
@@ -26,27 +34,43 @@ export const createGoal = async (req, res) => {
 export const getAllGoalsWithTasks = async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT g.id AS goal_id, g.title, g.specific,
-             t.id AS task_id, t.title AS task_title, t.is_completed
-      FROM goals g
-      LEFT JOIN tasks t ON t.goal_id = g.id
-      ORDER BY g.id, t.id
+SELECT 
+    g.id AS goal_id,
+    g.user_id,
+    g.title,
+    g.specific,
+    g.measurable,
+    g.achievable,
+    g.relevant,
+    g.time_bound,
+    t.id AS task_id,
+    t.title AS task_title,
+    t.is_completed
+FROM goals g
+LEFT JOIN tasks t 
+    ON t.goal_id = g.id
+ORDER BY g.id, t.id;
     `);
     const goalsMap = {};
-    result.rows.forEach(row => {
+    result.rows.forEach((row) => {
       if (!goalsMap[row.goal_id]) {
         goalsMap[row.goal_id] = {
           id: row.goal_id,
+          user_id: row.user_id,
           title: row.title,
           specific: row.specific,
-          tasks: []
+          measurable: row.measurable,
+          achievable: row.achievable,
+          relevant: row.relevant,
+          time_bound: row.time_bound,
+          tasks: [],
         };
       }
       if (row.task_id) {
         goalsMap[row.goal_id].tasks.push({
           id: row.task_id,
           title: row.task_title,
-          is_completed: row.is_completed
+          is_completed: row.is_completed,
         });
       }
     });
@@ -62,30 +86,33 @@ export const getAllGoalsWithTasks = async (req, res) => {
 export const getGoalsByUser = async (req, res) => {
   const { user_id } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT g.id AS goal_id, g.title, g.specific,
              t.id AS task_id, t.title AS task_title, t.is_completed
       FROM goals g
       LEFT JOIN tasks t ON t.goal_id = g.id
       WHERE g.user_id = $1
       ORDER BY g.id, t.id
-    `, [user_id]);
+    `,
+      [user_id]
+    );
 
     const goalsMap = {};
-    result.rows.forEach(row => {
+    result.rows.forEach((row) => {
       if (!goalsMap[row.goal_id]) {
         goalsMap[row.goal_id] = {
           id: row.goal_id,
           title: row.title,
           specific: row.specific,
-          tasks: []
+          tasks: [],
         };
       }
       if (row.task_id) {
         goalsMap[row.goal_id].tasks.push({
           id: row.task_id,
           title: row.task_title,
-          is_completed: row.is_completed
+          is_completed: row.is_completed,
         });
       }
     });
@@ -97,35 +124,38 @@ export const getGoalsByUser = async (req, res) => {
   }
 };
 
-
 // READ ONE Goal by ID
 export const getGoalById = async (req, res) => {
-const { id } = req.params;
+  const { id } = req.params;
   try {
-    const result = await pool.query(`
+    const result = await pool.query(
+      `
       SELECT g.id AS goal_id, g.title, g.specific,
              t.id AS task_id, t.title AS task_title, t.is_completed
       FROM goals g
       LEFT JOIN tasks t ON t.goal_id = g.id
       WHERE g.id = $1
       ORDER BY t.id
-    `, [id]);
+    `,
+      [id]
+    );
 
-    if (result.rows.length === 0) return res.status(404).json({ message: "Goal not found" });
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
 
     const goal = {
       id: result.rows[0].goal_id,
       title: result.rows[0].title,
       specific: result.rows[0].specific,
-      tasks: []
+      tasks: [],
     };
 
-    result.rows.forEach(row => {
+    result.rows.forEach((row) => {
       if (row.task_id) {
         goal.tasks.push({
           id: row.task_id,
           title: row.task_title,
-          is_completed: row.is_completed
+          is_completed: row.is_completed,
         });
       }
     });
@@ -149,11 +179,12 @@ export const updateGoal = async (req, res) => {
        WHERE id=$7 RETURNING *`,
       [title, specific, measurable, achievable, relevant, time_bound, id]
     );
-    if (result.rows.length === 0) return res.status(404).json({ message: "Goal not found" });
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
     res.json({
       ...result.rows[0],
-      tasks: []
-     });
+      tasks: [],
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");

@@ -23,7 +23,6 @@ export const GoalForm = () => {
     const responseData = await executeFetch("/api/goals", "POST", dataWithUser);
     console.log("Form submitted successfully! Data sent:", dataWithUser);
     console.log("Data received from server:", responseData);
-    // alert("Goal saved successfully! Check the browser console for details.");
     navigate("/dashboard");
   };
   if (loading) return <p>Saving...</p>;

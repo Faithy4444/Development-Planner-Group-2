@@ -31,7 +31,7 @@ const DashboardPage = () => {
       </div>
 
       {userGoals && userGoals.length > 0 ? (
-        <GoalList goals={userGoals} />
+        <GoalList goals={userGoals} setUserGoals={setUserGoals} />
       ) : (
         <div className="empty-state">
           <h2>Welcome to your planner!</h2>
