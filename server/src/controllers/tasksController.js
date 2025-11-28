@@ -62,17 +62,17 @@ export const updateTasks = async (req, res) => {
              SET title = COALESCE($1, title),
                  description = COALESCE($2, description),
                  due_date = COALESCE($3, due_date),
-                 completed = COALESCE($4, completed)
+                 is_completed = COALESCE($4, is_completed)
              WHERE id = $5
              RETURNING *`,
-      [title, description, due_date, completed, id]
+      [title, description, due_date, is_completed, id]
     );
 
     if (results.rows.length === 0) {
       return res.status(404).json({ message: "Task not found." });
     }
 
-    res.status(200).json(result.rows[0]);
+    res.status(200).json(results.rows[0]);
   } catch (err) {
     console.error("updateTask error:", err);
     res.status(500).json({ message: "Server error updating task." });
