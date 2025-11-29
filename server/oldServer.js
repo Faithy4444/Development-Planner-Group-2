@@ -50,6 +50,23 @@ app.get("/api/goals", (req, res) => {
   res.json(result);
 });
 
+app.get("/api/goals/:id", (req, res) => {
+  const goalId = parseInt(req.params.id, 10);
+  const goal = goals.find((goal) => goal.id === goalId);
+  if (goal) {
+    function getUserGoalWithTasks(goalId) {
+      const relatedTasks = tasks.filter((task) => task.goalId === goalId);
+
+      return { ...goal, tasks: relatedTasks };
+    }
+    const result = getUserGoalWithTasks(goalId);
+    console.log(result);
+    res.json(result);
+  } else {
+    res.status(404).json({ error: "Goal not found" });
+  }
+});
+
 app.put("/api/goals/:id", (req, res) => {
   const idToChange = parseInt(req.params.id, 10);
 

@@ -79,9 +79,10 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
           </button>
           <Modal
             isOpen={PrivacyModalOpen}
-            privacy={goal.private}
+            privateSetting={goal.private}
             onChange={handlePrivacy}
             onClose={closePrivacyModal}
+            goalId={goal.id}
           />
           <button className="btn-icon">Edit</button>
           <button className="btn-icon" onClick={handleDelete}>
