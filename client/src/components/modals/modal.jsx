@@ -1,45 +1,32 @@
-import React, { useState } from "react";
+// PrivacyModal.jsx
+import React from "react";
 import "./modal.css";
 
-export function Modal({ handlePrivacy }) {
-  const [modal, setModal] = useState(false);
-  const toggleModal = () => setModal(!modal);
-
-  if (modal) {
-    document.body.classList.add("active-modal");
-  } else {
-    document.body.classList.remove("active-modal");
-  }
+export function Modal({ isOpen, onClose, privacy, onChange }) {
+  if (!isOpen) return null;
 
   return (
-    <>
-      <button onClick={toggleModal} className="btn-modal">
-        Open
-      </button>
+    <div className="modal">
+      <div onClick={onClose} className="overlay"></div>
 
-      {modal && (
-        <div className="modal">
-          <div onClick={toggleModal} className="overlay"></div>
-          <div className="modal-content">
-            <h2>Make plan open to public</h2>
+      <div className="modal-content">
+        <h2>Manage Plan Privacy</h2>
 
-            <label htmlFor="privacy-select">Manage access</label>
+        <label htmlFor="privacy-select">Access Level</label>
 
-            <select
-              name="privacySetting"
-              id="privacy-select"
-              onChange={handlePrivacy}
-            >
-              <option value="restricted">Restricted</option>
-              <option value="withLink">Anyone with the link</option>
-            </select>
+        <select
+          id="privacy-select"
+          value={privacy}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="restricted">Restricted</option>
+          <option value="withLink">Anyone with the link</option>
+        </select>
 
-            <button className="close-modal" onClick={toggleModal}>
-              CLOSE
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+        <button className="close-modal" onClick={onClose}>
+          Close
+        </button>
+      </div>
+    </div>
   );
 }

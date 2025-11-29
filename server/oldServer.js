@@ -25,7 +25,7 @@ app.get("/health", (req, res) => {
 
 app.post("/api/goals", (req, res) => {
   // console.log({ ...req.body, userid: 0 });
-  goals.push({ ...req.body, user_id: 0, id: counter });
+  goals.push({ ...req.body, user_id: 0, id: counter, private: true });
   const lastGoal = goals[goals.length - 1];
   res.json({ lastGoal });
 });
@@ -57,7 +57,7 @@ app.put("/api/goals/:id", (req, res) => {
   const privateSetting = goalToEditPrivacy.private;
   goalToEditPrivacy.private = !goalToEditPrivacy.private;
   if (goalToEditPrivacy.private == !privateSetting) {
-    return res.json({ success: true, result: goalToEditPrivacy.private });
+    return res.json({ success: true, newValue: goalToEditPrivacy.private });
   } else {
     res.status(404).json({ error: "Goal not found" });
   }

@@ -5,10 +5,15 @@ import "./GoalItem.css";
 import { useFetch } from "../../useFetch";
 import { Modal } from "../modals/modal";
 
-export const GoalItem = ({ goal, onDelete }) => {
+export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const { executeFetch, loading, error } = useFetch();
+
+  const [PrivacyModalOpen, setPrivacyModalOpen] = useState(false);
+
+  const openPrivacyModal = () => setPrivacyModalOpen(true);
+  const closePrivacyModal = () => setPrivacyModalOpen(false);
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.is_completed).length;
@@ -35,11 +40,17 @@ export const GoalItem = ({ goal, onDelete }) => {
     }
   };
 
-  const handlePrivacy = async (e) => {
-    const value = e.target.value;
+  const handlePrivacy = async (value) => {
     console.log("new value:", value);
+    console.log(goal.private);
     const result = await executeFetch(`/api/goals/${goal.id}`, "PUT");
     console.log(result);
+    if (result) {
+      // Update state in Dashboard
+      updateGoalPrivacy(goal.id, result.newValue);
+    }
+
+    closePrivacyModal();
   };
 
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
@@ -62,10 +73,16 @@ export const GoalItem = ({ goal, onDelete }) => {
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
-          <Modal handlePrivacy={handlePrivacy} />
-          <button className="btn-icon" onClick={handlePrivacy}>
-            Plan privacy
+          <button className="btn-icon" onClick={openPrivacyModal}>
+            Change plan privacy:
+            {goal.private ? " Private" : " Public"}
           </button>
+          <Modal
+            isOpen={PrivacyModalOpen}
+            privacy={goal.private}
+            onChange={handlePrivacy}
+            onClose={closePrivacyModal}
+          />
           <button className="btn-icon">Edit</button>
           <button className="btn-icon" onClick={handleDelete}>
             Delete
