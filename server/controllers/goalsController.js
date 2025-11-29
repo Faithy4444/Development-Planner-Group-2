@@ -78,7 +78,7 @@ ORDER BY g.id, t.id;
     res.json(Object.values(goalsMap));
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error");
+    res.status(500).send("Server error", err);
   }
 };
 
