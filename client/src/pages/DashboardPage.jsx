@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
+import { apiUrl } from "../api";
 
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
@@ -10,7 +11,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const fetchGoals = async () => {
-      const data = await executeFetch("/api/goals", "GET");
+      const data = await executeFetch(apiUrl("/api/goals"), "GET");
 
       setUserGoals(data || []);
     };
