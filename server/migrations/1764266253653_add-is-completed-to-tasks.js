@@ -10,11 +10,14 @@ export const shorthands = undefined;
  */
 
 export const up = (pgm) => {
-  pgm.addColumn("tasks", {
-    is_completed: { type: "boolean", notNull: true, default: false },
-  });
+  pgm.addColumn(
+    "tasks",
+    {
+      is_completed: { type: "boolean", notNull: true, default: false },
+    },
+    { ifNotExists: true }
+  );
 };
-
 
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
