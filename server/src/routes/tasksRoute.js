@@ -1,19 +1,20 @@
 import express from "express";
-import { getFullUserData } from "../controllers/userController.js";
+import authMiddleware from '../middleware/auth.js';
 import {
     createTask,
-    getAllTasks,
+    getTasksByGoal, 
     getTaskById,
-    updateTasks,
+    updateTask,
     deleteTask,
-} from "../controllers/tasksController.js"
+} from "../controllers/tasksController.js";
 
 const router = express.Router();
 
-router.post("/", createTask);
-router.get("/user/:user_id", getAllTasks);
-router.get("/:id", getTaskById);
-router.put("/:id", updateTasks);
-router.delete("/:id", deleteTask);
+router.post("/", authMiddleware, createTask);
+router.get("/goal/:goalId", authMiddleware, getTasksByGoal);
+router.get("/:id", authMiddleware, getTaskById);
+router.put("/:id", authMiddleware, updateTask);
+router.delete("/:id", authMiddleware, deleteTask);
 
-export default router
+
+export default router;

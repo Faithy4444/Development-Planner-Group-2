@@ -1,15 +1,18 @@
 import express from "express";
+import authMiddleware from '../middleware/auth.js';
 import {
-  createGoal, getAllGoalsWithTasks,getGoalsByUser, getGoalById, updateGoal, deleteGoal
+  createGoal,
+  getAllGoalsWithTasks,
+  getGoalById,
+  updateGoal,
+  deleteGoal
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
-
-router.post("/", createGoal);
-router.get("/", getAllGoalsWithTasks);
-router.get("/user/:user_id", getGoalsByUser);
-router.get("/:id", getGoalById);
-router.put("/:id", updateGoal);
-router.delete("/:id", deleteGoal);
+router.post("/", authMiddleware, createGoal);
+router.get("/", authMiddleware, getAllGoalsForUser);
+router.get("/:id", authMiddleware, getGoalById);
+router.put("/:id", authMiddleware, updateGoal);
+router.delete("/:id", authMiddleware, deleteGoal);
 
 export default router;
