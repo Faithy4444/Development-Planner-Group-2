@@ -11,7 +11,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const fetchGoals = async () => {
-      const data = await executeFetch(apiUrl("/api/goals"), "GET");
+      const data = await executeFetch(apiUrl("api/goals"), "GET");
 
       setUserGoals(data || []);
     };
