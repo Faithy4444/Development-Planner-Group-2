@@ -50,6 +50,19 @@ app.get("/api/goals", (req, res) => {
   res.json(result);
 });
 
+app.put("/api/goals/:id", (req, res) => {
+  const idToChange = parseInt(req.params.id, 10);
+
+  const goalToEditPrivacy = goals.find((goal) => goal.id === idToChange);
+  const privateSetting = goalToEditPrivacy.private;
+  goalToEditPrivacy.private = !goalToEditPrivacy.private;
+  if (goalToEditPrivacy.private == !privateSetting) {
+    return res.json({ success: true, result: goalToEditPrivacy.private });
+  } else {
+    res.status(404).json({ error: "Goal not found" });
+  }
+});
+
 app.delete("/api/goals/:id", (req, res) => {
   const idToDelete = parseInt(req.params.id, 10);
 

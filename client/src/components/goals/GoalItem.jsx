@@ -3,6 +3,7 @@ import { TaskList } from "../tasks/TaskList";
 import { AddTaskForm } from "../tasks/InlineTaskForm";
 import "./GoalItem.css";
 import { useFetch } from "../../useFetch";
+import { Modal } from "../modals/modal";
 
 export const GoalItem = ({ goal, onDelete }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
@@ -26,14 +27,19 @@ export const GoalItem = ({ goal, onDelete }) => {
     );
   };
 
-  //--------Here I started to work on delete functionality---------
-
   const handleDelete = async () => {
     const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
 
     if (result !== null) {
       onDelete(goal.id);
     }
+  };
+
+  const handlePrivacy = async (e) => {
+    const value = e.target.value;
+    console.log("new value:", value);
+    const result = await executeFetch(`/api/goals/${goal.id}`, "PUT");
+    console.log(result);
   };
 
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
@@ -56,6 +62,10 @@ export const GoalItem = ({ goal, onDelete }) => {
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
+          <Modal handlePrivacy={handlePrivacy} />
+          <button className="btn-icon" onClick={handlePrivacy}>
+            Plan privacy
+          </button>
           <button className="btn-icon">Edit</button>
           <button className="btn-icon" onClick={handleDelete}>
             Delete

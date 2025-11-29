@@ -92,6 +92,7 @@ export let goals = [
     relevant:
       "Backend skills are in high demand and are essential for becoming a well-rounded developer.",
     time_bound: "1 jan 2026",
+    private: true,
   },
 ];
 export let tasks = [
