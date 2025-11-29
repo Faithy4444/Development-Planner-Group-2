@@ -17,7 +17,7 @@ app.use('/api/auth', require('./routes/userRoute'));
 app.use("/api/user", userRoute);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/tasks", taskRoutes);
-
+app.use('/api/users', userRouter); 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
 
