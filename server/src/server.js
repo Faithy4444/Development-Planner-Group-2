@@ -12,10 +12,15 @@ const PORT = process.env.PORT || 5000;
 //middleware accepts all endpoints for now
 app.use(cors());
 app.use(express.json());
+app.use('/api/auth', require('./routes/userRoute'));
 
 app.use("/api/user", userRoute);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/tasks", taskRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+
 
 app.get("/", (req, res) => {
   res.send("Server is running! Go to /health or /user/:id/full");
