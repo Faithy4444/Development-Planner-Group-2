@@ -7,6 +7,7 @@ export const useFetch = () => {
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
     const actualUrl = apiUrl(url);
+    setLoading(true);
     setError(null);
 
     const options = {
