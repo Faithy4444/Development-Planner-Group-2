@@ -2,7 +2,7 @@ import "dotenv/config";
 
 export default {
   // Folder where migration files are located
-  migrationFolder: "migrations",
+  migrationFolder: "./src/migrations",
 
   // Direction of migration
   direction: "up",
@@ -11,5 +11,5 @@ export default {
   logFileName: "migrate.log",
 
   // Database connection details
-  databaseUrl:process.env.DATABASE_URL,
+  databaseUrl: process.env.DATABASE_URL,
 };
