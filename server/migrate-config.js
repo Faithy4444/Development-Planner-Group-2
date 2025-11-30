@@ -1,15 +1,11 @@
-import "dotenv/config";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default {
-  // Folder where migration files are located
-  migrationFolder: "./src/migrations",
-
-  // Direction of migration
-  direction: "up",
-
-  // Optional log file
-  logFileName: "migrate.log",
-
-  // Database connection details
+  migrationsTable: "pgmigrations",
+  dir: path.join(__dirname, "src/migrations"),
   databaseUrl: process.env.DATABASE_URL,
 };
