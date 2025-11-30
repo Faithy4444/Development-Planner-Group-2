@@ -79,7 +79,8 @@ router.post(
         }
       );
     } catch (err) {
-      // ... error handling
+      console.error(err.message);
+      res.status(500).send('Server error');
     }
   }
 );
