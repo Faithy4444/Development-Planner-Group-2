@@ -2,7 +2,12 @@
 import express from "express";
 
 import cors from "cors";
-import { mockGoals, users, goals, tasks } from "../client/src/data/mockData.js";
+import {
+  mockGoals,
+  users,
+  goals,
+  tasks,
+} from "../../client/src/data/mockData.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 let counter = 15; // used counter to create unique id
