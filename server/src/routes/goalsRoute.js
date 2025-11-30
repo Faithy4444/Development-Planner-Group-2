@@ -1,6 +1,11 @@
 import express from "express";
 import {
-  createGoal, getAllGoalsWithTasks,getGoalsByUser, getGoalById, updateGoal, deleteGoal
+  createGoal,
+  getAllGoalsWithTasks,
+  getGoalsByUser,
+  getGoalById,
+  updateGoal,
+  deleteGoal,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();

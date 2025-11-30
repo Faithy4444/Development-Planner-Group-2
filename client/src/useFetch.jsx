@@ -1,10 +1,12 @@
 import { useState, useCallback } from "react";
+import { apiUrl } from "./api";
 
 export const useFetch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
+    const actualUrl = apiUrl(url);
     setLoading(true);
     setError(null);
 
@@ -17,7 +19,7 @@ export const useFetch = () => {
     };
 
     try {
-      const response = await fetch(url, options);
+      const response = await fetch(actualUrl, options);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

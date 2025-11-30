@@ -4,7 +4,7 @@ import "dotenv/config";
 import userRoute from "./routes/userRoute.js";
 import goalsRoutes from "./routes/goalsRoute.js";
 import taskRoutes from "./routes/tasksRoute.js";
-import { pool } from "./db.js";
+import { pool } from "./db/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
