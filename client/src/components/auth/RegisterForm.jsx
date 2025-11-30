@@ -12,8 +12,10 @@ export const RegisterForm = () => {
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
+
   const onSubmit = async (data) => {
-    const apiUrl = import.meta.env.VITE_API_URL;
+    // This onSubmit logic is correct as it sends the data object.
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     try {
       const response = await fetch(`${apiUrl}/api/users/register`, {
         method: 'POST',
@@ -22,7 +24,7 @@ export const RegisterForm = () => {
       });
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.msg || 'Registration failed. Please try again.');
+        throw new Error(errorData.msg || 'Registration failed.');
       }
       alert('Registration successful! You can now log in.');
     } catch (error) {
@@ -30,20 +32,23 @@ export const RegisterForm = () => {
       alert(error.message);
     }
   };
+
   return (
     <div className="auth-form-container">
       <h2>Create Your Account</h2>
       <p className="form-subtitle">Start planning your future today.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
-          <label htmlFor="fullName">Full Name</label>
+          {/* CRITICAL FIX: Changed label and placeholder to 'Username' */}
+          <label htmlFor="username">Username</label>
           <input 
-            id="fullName" 
+            id="username" 
             type="text" 
-            placeholder="e.g., Jane Doe" 
-            {...register('fullName')} 
+            placeholder="e.g., janedoe" 
+            {...register('username')} // This was already correct
           />
-          {errors.fullName && <p className="error-message">{errors.fullName.message}</p>}
+          {/* CRITICAL FIX: Changed error check to 'username' */}
+          {errors.username && <p className="error-message">{errors.username.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="email">Email</label>
