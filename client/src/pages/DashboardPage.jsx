@@ -20,7 +20,7 @@ const DashboardPage = () => {
 
   const updateGoalPrivacy = (goalId, newPrivacy) => {
     setUserGoals((prev) =>
-      prev.map((g) => (g.id === goalId ? { ...g, private: newPrivacy } : g))
+      prev.map((g) => (g.id === goalId ? { ...g, is_private: newPrivacy } : g))
     );
   };
 

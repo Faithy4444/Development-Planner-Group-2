@@ -40,11 +40,8 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
     }
   };
 
-  const handlePrivacy = async (value) => {
-    console.log("new value:", value);
-    console.log(goal.private);
-    const result = await executeFetch(`/api/goals/${goal.id}`, "PUT");
-    console.log(result);
+  const handlePrivacy = async () => {
+    const result = await executeFetch(`/api/goals/privacy/${goal.id}`, "PUT");
     if (result) {
       // Update state in Dashboard
       updateGoalPrivacy(goal.id, result.newValue);
@@ -75,11 +72,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
         <div className="goal-actions">
           <button className="btn-icon" onClick={openPrivacyModal}>
             Change plan privacy:
-            {goal.private ? " Private" : " Public"}
+            {goal.is_private ? " Private" : " Public"}
           </button>
           <Modal
             isOpen={PrivacyModalOpen}
-            privateSetting={goal.private}
+            privateSetting={goal.is_private}
             onChange={handlePrivacy}
             onClose={closePrivacyModal}
             goalId={goal.id}
