@@ -4,6 +4,7 @@ import { AddTaskForm } from "../tasks/InlineTaskForm";
 import "./GoalItem.css";
 import { useFetch } from "../../useFetch";
 import { Modal } from "../modals/modal";
+import { createPortal } from "react-dom";
 
 export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
@@ -74,13 +75,16 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
             Change plan privacy:
             {goal.is_private ? " Private" : " Public"}
           </button>
-          <Modal
-            isOpen={PrivacyModalOpen}
-            privateSetting={goal.is_private}
-            onChange={handlePrivacy}
-            onClose={closePrivacyModal}
-            goalId={goal.id}
-          />
+          {createPortal(
+            <Modal
+              isOpen={PrivacyModalOpen}
+              privateSetting={goal.is_private}
+              onChange={handlePrivacy}
+              onClose={closePrivacyModal}
+              goalId={goal.id}
+            />,
+            document.body
+          )}
           <button className="btn-icon">Edit</button>
           <button className="btn-icon" onClick={handleDelete}>
             Delete
