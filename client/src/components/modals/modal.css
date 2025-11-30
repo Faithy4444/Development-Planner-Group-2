@@ -1,14 +1,14 @@
-body.active-modal {
-    overflow-y: hidden;
-}
-
-
 .modal, .overlay {
+   position: fixed;
+   inset: 0;
+}
+.modal {
     position: fixed;
+    background: hsla(0deg, 0%, 0%, .5);
 }
 
 .modal-content {
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
