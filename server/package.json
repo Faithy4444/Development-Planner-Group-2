@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "node-pg-migrate -m src/migrations",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "db:up": "docker-compose -f src/docker-compose.yaml --env-file .env up -d",
+  "db:down": "docker-compose -f src/docker-compose.yaml --env-file .env down -v"
   },
   "keywords": [],
   "author": "",
