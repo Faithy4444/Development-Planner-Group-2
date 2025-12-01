@@ -12,12 +12,12 @@ export const up = (pgm) => {
   // -------------------------
   // 1. Users table
   // -------------------------
- pgm.createTable("users", {
-  id: "bigserial primary key",
-  username: { type: "varchar(50)", notNull: true },
-  email: { type: "varchar(50)", notNull: true, unique: true },
-  password_hash: { type: "varchar(250)", notNull: true },
-});
+  pgm.createTable("users", {
+    id: "bigserial primary key",
+    username: { type: "varchar(50)", notNull: true },
+    email: { type: "varchar(50)", notNull: true, unique: true },
+    password: { type: "varchar(250)", notNull: true },
+  });
 
   // -------------------------
   // 2. Goals table
