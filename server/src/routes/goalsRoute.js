@@ -6,6 +6,8 @@ import {
   getGoalById,
   updateGoal,
   deleteGoal,
+  getActiveGoals,
+  markGoalComplete
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
@@ -16,5 +18,7 @@ router.get("/user/:user_id", getGoalsByUser);
 router.get("/:id", getGoalById);
 router.put("/:id", updateGoal);
 router.delete("/:id", deleteGoal);
+router.get("/goals/active", getActiveGoals);
+router.patch("/goals/:id/complete", markGoalComplete);
 
 export default router;
