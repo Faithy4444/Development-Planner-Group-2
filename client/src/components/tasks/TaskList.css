@@ -3,13 +3,7 @@
   padding: 0;
   margin: 0;
 }
-.task-list li {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0;
-  font-size: 0.95rem;
-  color: #495057;
-}
+
 .task-list li input[type="checkbox"] {
   margin-right: 0.75rem;
   width: 18px;
@@ -18,4 +12,69 @@
 .task-list li.completed span {
   text-decoration: line-through;
   color: #adb5bd;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 0.5rem 0;
+  color: #495057;
+}
+
+.task-item:hover{  
+  background-color: #f9f9f9;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-wrapper {
+  position: relative;
+}
+
+/* Hide menu button by default */
+.menu-button {
+  opacity: 0;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.2s ease;
+}
+
+/* Show menu button on hover */
+.task-item:hover .menu-button {
+  opacity: 1;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 120%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  min-width: 100px;
+  z-index: 20;
+}
+
+.dropdown-menu button {
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-menu button:hover {
+  background: #f3f3f3;
 }
