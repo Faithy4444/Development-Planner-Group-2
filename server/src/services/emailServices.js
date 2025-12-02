@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (to, subject, text) => {
   try {
     await transporter.sendMail({
-      from: `"Goal Reminder" <${process.env.SMTP_USER}>`,
+      from: `"PlanYourFuture" <${process.env.SMTP_USER}>`,
       to,
       subject,
       text
