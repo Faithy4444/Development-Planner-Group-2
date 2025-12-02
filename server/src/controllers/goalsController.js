@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../db/db.js";
 
 // CREATE
 export const createGoal = async (req, res) => {
@@ -214,6 +214,7 @@ export const getActiveGoals = async () => {
   try {
     const result = await pool.query(`
       SELECT g.id,
+       g.user_id,
        g.title,
        g.time_bound, 
        g.is_completed, 
