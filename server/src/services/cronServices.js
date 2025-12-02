@@ -1,10 +1,15 @@
 import cron from "node-cron";
-import { getActiveGoals } from "../controllers/goalsController";
-import { sendEmail } from "./emailServices";
+import { getActiveGoals } from "../controllers/goalsController.js";
+import { sendEmail } from "./emailServices.js";
 
 export const startCronJobs = () => {
-    cron.schedule("0 0 * * *", async () => {
+    cron.schedule("* * * * *", async () => {
+        console.log("Cron job triggered! ✅");
         const goals = await getActiveGoals();
+        if (!goals.length) {
+            console.log("No active goals found.");
+            return;
+        };
         for (const goal of goals) {
             try {
                 const goalDate = new Date(goal.time_bound);
