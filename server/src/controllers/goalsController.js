@@ -210,7 +210,7 @@ export const deleteGoal = async (req, res) => {
 };
 
 //get all active users with emails
-export const getActiveGoals = async (req, res) => {
+export const getActiveGoals = async () => {
   try {
     const result = await pool.query(`
       SELECT g.id,
@@ -223,14 +223,15 @@ export const getActiveGoals = async (req, res) => {
       WHERE g.is_completed = false
       ORDER BY g.id
     `);
-    res.json(result.rows);
+    return result.rows;
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('getActiveGoalsData error:', err);
+    return [];
   }
 };
 
 //marking goal as complete
-export const markGoalComplete = async (req, res) => {
+export const markGoalComplete = async (res, req) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
