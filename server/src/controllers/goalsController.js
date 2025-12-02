@@ -43,6 +43,7 @@ SELECT
     g.achievable,
     g.relevant,
     g.time_bound,
+    g.is_private,
     t.id AS task_id,
     t.title AS task_title,
     t.is_completed
@@ -63,6 +64,7 @@ ORDER BY g.id, t.id;
           achievable: row.achievable,
           relevant: row.relevant,
           time_bound: row.time_bound,
+          is_private: row.is_private,
           tasks: [],
         };
       }
@@ -130,8 +132,17 @@ export const getGoalById = async (req, res) => {
   try {
     const result = await pool.query(
       `
-      SELECT g.id AS goal_id, g.title, g.specific,
-             t.id AS task_id, t.title AS task_title, t.is_completed
+      SELECT     
+      g.id AS goal_id,
+      g.user_id,
+      g.title,
+      g.specific,
+      g.measurable,
+      g.achievable,
+      g.relevant,
+      g.time_bound,
+      g.is_private,
+      t.id AS task_id, t.title AS task_title, t.is_completed
       FROM goals g
       LEFT JOIN tasks t ON t.goal_id = g.id
       WHERE g.id = $1
@@ -142,11 +153,17 @@ export const getGoalById = async (req, res) => {
 
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
-
+    const row = result.rows[0];
     const goal = {
-      id: result.rows[0].goal_id,
-      title: result.rows[0].title,
-      specific: result.rows[0].specific,
+      id: row.goal_id,
+      user_id: row.user_id,
+      title: row.title,
+      specific: row.specific,
+      measurable: row.measurable,
+      achievable: row.achievable,
+      relevant: row.relevant,
+      time_bound: row.time_bound,
+      is_private: row.is_private,
       tasks: [],
     };
 
@@ -170,21 +187,62 @@ export const getGoalById = async (req, res) => {
 // UPDATE
 export const updateGoal = async (req, res) => {
   const { id } = req.params;
-  const { title, specific, measurable, achievable, relevant, time_bound } =
-    req.body;
+  const {
+    title,
+    specific,
+    measurable,
+    achievable,
+    relevant,
+    time_bound,
+    is_private,
+  } = req.body;
   try {
     const result = await pool.query(
       `UPDATE goals
-       SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6
-       WHERE id=$7 RETURNING *`,
-      [title, specific, measurable, achievable, relevant, time_bound, id]
+       SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6, is_private=$7
+       WHERE id=$8 RETURNING *`,
+      [
+        title,
+        specific,
+        measurable,
+        achievable,
+        relevant,
+        time_bound,
+        is_private,
+        id,
+      ]
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
     res.json({
       ...result.rows[0],
-      tasks: [],
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
+
+//UPDATE GOAL PRIVACY
+
+export const updateGoalPrivacy = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      `UPDATE goals
+       SET is_private= NOT is_private
+       WHERE id=$1
+       RETURNING *`,
+      [id]
+    );
+
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
+    console.log(
+      `user changed privacy of goal with id ${id} to ${result.rows[0].is_private}`
+    );
+    res.json({ newValue: result.rows[0].is_private });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");

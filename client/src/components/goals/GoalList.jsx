@@ -2,7 +2,7 @@ import React from "react";
 import { GoalItem } from "./GoalItem";
 import "./GoalList.css";
 
-export const GoalList = ({ goals, setUserGoals }) => {
+export const GoalList = ({ goals, setUserGoals, updateGoalPrivacy }) => {
   const onDelete = (goalId) => {
     setUserGoals(goals.filter((goal) => goal.id != goalId));
   };
@@ -10,7 +10,12 @@ export const GoalList = ({ goals, setUserGoals }) => {
   return (
     <div className="goal-list">
       {goals.map((goal) => (
-        <GoalItem key={goal.id} goal={goal} onDelete={onDelete} />
+        <GoalItem
+          key={goal.id}
+          goal={goal}
+          onDelete={onDelete}
+          updateGoalPrivacy={updateGoalPrivacy}
+        />
       ))}
     </div>
   );

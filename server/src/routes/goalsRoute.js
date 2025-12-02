@@ -6,6 +6,7 @@ import {
   getGoalById,
   updateGoal,
   deleteGoal,
+  updateGoalPrivacy,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.get("/", getAllGoalsWithTasks);
 router.get("/user/:user_id", getGoalsByUser);
 router.get("/:id", getGoalById);
 router.put("/:id", updateGoal);
+router.put("/privacy/:id", updateGoalPrivacy);
 router.delete("/:id", deleteGoal);
 
 export default router;
