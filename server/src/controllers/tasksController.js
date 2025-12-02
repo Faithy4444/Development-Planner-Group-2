@@ -3,17 +3,26 @@ import { pool } from "../db.js";
 //creating
 
 export const createTask = async (req, res) => {
-  const { user_id, goal_id, title, description, due_date } = req.body;
+  const { title, goal_id } = req.body;
+  const { id: userId } = req.user;
   try {
-    const result = await pool.query(
-      `INSERT INTO tasks (user_id, goal_id, title, description, due_date)
-       VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-      [user_id, goal_id, title, description, due_date]
+    const parentGoal = await dbQuery(
+      "SELECT user_id FROM goals WHERE id = $1",
+      [goal_id]
     );
-    res.status(201).json(result.rows[0]);
+    if (parentGoal.rows.length === 0 || parentGoal.rows[0].user_id !== userId) {
+      return res
+        .status(403)
+        .json({ msg: "Forbidden: You do not own the parent goal." });
+    }
+    const newTask = await dbQuery(
+      "INSERT INTO tasks (title, goal_id, user_id) VALUES ($1, $2, $3) RETURNING *",
+      [title, goal_id, userId]
+    );
+    res.status(201).json(newTask.rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 };
 
@@ -53,50 +62,53 @@ export const getTaskById = async (req, res) => {
 //update tasks
 
 export const updateTasks = async (req, res) => {
-  const { id } = req.params;
-  const { title, description, due_date, is_completed } = req.body;
-
+  const { id: taskId } = req.params;
+  const { title, is_completed } = req.body;
+  const { id: userId } = req.user;
   try {
-    const results = await pool.query(
-      `UPDATE tasks 
-             SET title = COALESCE($1, title),
-                 description = COALESCE($2, description),
-                 due_date = COALESCE($3, due_date),
-                 is_completed = COALESCE($4, is_completed)
-             WHERE id = $5
-             RETURNING *`,
-      [title, description, due_date, is_completed, id]
+    const updatedTask = await dbQuery(
+      `
+            UPDATE tasks t SET title = $1, is_completed = $2
+            FROM goals g
+            WHERE t.id = $3 AND t.goal_id = g.id AND g.user_id = $4
+            RETURNING t.*;
+        `,
+      [title, is_completed, taskId, userId]
     );
-
-    if (results.rows.length === 0) {
-      return res.status(404).json({ message: "Task not found." });
+    if (updatedTask.rows.length === 0) {
+      return res
+        .status(404)
+        .json({ msg: "Task not found or you do not have permission." });
     }
-
-    res.status(200).json(results.rows[0]);
+    res.json(updatedTask.rows[0]);
   } catch (err) {
-    console.error("updateTask error:", err);
-    res.status(500).json({ message: "Server error updating task." });
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 };
 
 //Deleting task
 
 export const deleteTask = async (req, res) => {
-  const { id } = req.params;
-
+  const { id: taskId } = req.params;
+  const { id: userId } = req.user;
   try {
-    const result = await pool.query(
-      `DELETE FROM tasks WHERE id = $1 RETURNING *`,
-      [id]
+    const result = await dbQuery(
+      `
+            DELETE FROM tasks t
+            USING goals g
+            WHERE t.id = $1 AND t.goal_id = g.id AND g.user_id = $2;
+        `,
+      [taskId, userId]
     );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: "Task not found." });
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ msg: "Task not found or you do not have permission." });
     }
-
-    res.status(200).json({ message: "Task deleted successfully." });
+    res.json({ msg: "Task deleted successfully." });
   } catch (err) {
-    console.error("deleteTask error:", err);
-    res.status(500).json({ message: "Server error deleting task." });
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 };

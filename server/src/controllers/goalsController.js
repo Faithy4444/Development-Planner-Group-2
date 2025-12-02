@@ -2,125 +2,38 @@ import { pool } from "../db.js";
 
 // CREATE
 export const createGoal = async (req, res) => {
-  const {
-    user_id,
-    title,
-    specific,
-    measurable,
-    achievable,
-    relevant,
-    time_bound,
-  } = req.body;
-  if (!user_id || !title) {
-    return res.status(400).json({ message: "user_id and title are required" });
-  }
+  const { specific, measurable, achievable, relevant, time_bound, title } =
+    req.body;
+  const { id: userId } = req.user;
   try {
-    const result = await pool.query(
-      `INSERT INTO goals (user_id, title, specific, measurable, achievable, relevant, time_bound)
-       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
-      [user_id, title, specific, measurable, achievable, relevant, time_bound]
+    const newGoal = await dbQuery(
+      "INSERT INTO goals (user_id, title, specific, measurable, achievable, relevant, time_bound) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [userId, title, specific, measurable, achievable, relevant, time_bound]
     );
-    res.status(201).json({
-      ...result.rows[0],
-      tasks: [],
-    });
+    res.status(201).json(newGoal.rows[0]);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
-
-// READ ALL
-export const getAllGoalsWithTasks = async (req, res) => {
-  try {
-    const result = await pool.query(`
-SELECT 
-    g.id AS goal_id,
-    g.user_id,
-    g.title,
-    g.specific,
-    g.measurable,
-    g.achievable,
-    g.relevant,
-    g.time_bound,
-    t.id AS task_id,
-    t.title AS task_title,
-    t.is_completed
-FROM goals g
-LEFT JOIN tasks t 
-    ON t.goal_id = g.id
-ORDER BY g.id, t.id;
-    `);
-    const goalsMap = {};
-    result.rows.forEach((row) => {
-      if (!goalsMap[row.goal_id]) {
-        goalsMap[row.goal_id] = {
-          id: row.goal_id,
-          user_id: row.user_id,
-          title: row.title,
-          specific: row.specific,
-          measurable: row.measurable,
-          achievable: row.achievable,
-          relevant: row.relevant,
-          time_bound: row.time_bound,
-          tasks: [],
-        };
-      }
-      if (row.task_id) {
-        goalsMap[row.goal_id].tasks.push({
-          id: row.task_id,
-          title: row.task_title,
-          is_completed: row.is_completed,
-        });
-      }
-    });
-
-    res.json(Object.values(goalsMap));
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 };
 
 //READ ALL GOALS FOR A SPECIFIC USER
 export const getGoalsByUser = async (req, res) => {
-  const { user_id } = req.params;
+  const { id: userId } = req.user;
   try {
-    const result = await pool.query(
+    const goalData = await dbQuery(
       `
-      SELECT g.id AS goal_id, g.title, g.specific,
-             t.id AS task_id, t.title AS task_title, t.is_completed
+      SELECT g.*, COALESCE((SELECT json_agg(t.* ORDER BY t.created_at) FROM tasks t WHERE t.goal_id = g.id), '[]') AS tasks
       FROM goals g
-      LEFT JOIN tasks t ON t.goal_id = g.id
       WHERE g.user_id = $1
-      ORDER BY g.id, t.id
+      ORDER BY g.created_at DESC;
     `,
-      [user_id]
+      [userId]
     );
-
-    const goalsMap = {};
-    result.rows.forEach((row) => {
-      if (!goalsMap[row.goal_id]) {
-        goalsMap[row.goal_id] = {
-          id: row.goal_id,
-          title: row.title,
-          specific: row.specific,
-          tasks: [],
-        };
-      }
-      if (row.task_id) {
-        goalsMap[row.goal_id].tasks.push({
-          id: row.task_id,
-          title: row.task_title,
-          is_completed: row.is_completed,
-        });
-      }
-    });
-
-    res.json(Object.values(goalsMap));
+    res.json(goalData.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 };
 
@@ -193,17 +106,21 @@ export const updateGoal = async (req, res) => {
 
 // DELETE
 export const deleteGoal = async (req, res) => {
-  const { id } = req.params;
+  const { id: goalId } = req.params;
+  const { id: userId } = req.user;
   try {
-    const result = await pool.query(
-      "DELETE FROM goals WHERE id=$1 RETURNING *",
-      [id]
+    const result = await dbQuery(
+      "DELETE FROM goals WHERE id = $1 AND user_id = $2",
+      [goalId, userId]
     );
-    if (result.rows.length === 0)
-      return res.status(404).json({ message: "Goal not found" });
-    res.json({ message: "Goal deleted successfully" });
+    if (result.rowCount === 0) {
+      return res
+        .status(404)
+        .json({ msg: "Goal not found or you do not own this goal." });
+    }
+    res.json({ msg: "Goal deleted successfully." });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 };
