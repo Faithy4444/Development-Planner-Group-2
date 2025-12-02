@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "node-cron": "^4.2.1",
     "node-pg-migrate": "^8.0.3",
     "nodemailer": "^7.0.11",
     "pg": "^8.16.3"

@@ -1,4 +1,4 @@
-import { pool } from "../db/db.js";
+import { pool } from "../db.js";
 
 // CREATE
 export const createGoal = async (req, res) => {
@@ -78,7 +78,7 @@ ORDER BY g.id, t.id;
     res.json(Object.values(goalsMap));
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error", err);
+    res.status(500).send("Server error");
   }
 };
 
