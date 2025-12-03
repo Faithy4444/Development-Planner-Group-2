@@ -83,7 +83,7 @@ export const updateTasks = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   const { id } = req.params;
-
+  console.log("user want to delete task under id", id);
   try {
     const result = await pool.query(
       `DELETE FROM tasks WHERE id = $1 RETURNING *`,

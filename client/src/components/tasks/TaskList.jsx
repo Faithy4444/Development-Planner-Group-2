@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./TaskList.css";
 import { useFetch } from "../../useFetch";
 
 export const TaskList = ({ tasks, onToggle }) => {
+  const [userTasks, setUserTasks] = useState(tasks);
   const { executeFetch } = useFetch();
   const [openMenuId, setOpenMenuId] = useState(null);
 
@@ -15,6 +16,29 @@ export const TaskList = ({ tasks, onToggle }) => {
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
+
+  const deleteTask = async (id) => {
+    const response = await executeFetch(`/api/tasks/${id}`, "DELETE");
+    console.log(response);
+    // ---- notes ----
+    //After fronted receive successful message from backend
+    //Frontend needs to tell the dashboard page to update userGoals state
+  };
+
+  // Close menu if clicking outside of dropdown
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (!event.target.closest(".menu-wrapper")) {
+        setOpenMenuId(null);
+      }
+    };
+
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   return (
     <ul className="task-list">
@@ -40,7 +64,7 @@ export const TaskList = ({ tasks, onToggle }) => {
             {openMenuId === task.id && (
               <div className="dropdown-menu">
                 <button>Edit</button>
-                <button>Delete</button>
+                <button onClick={() => deleteTask(task.id)}>Delete</button>
               </div>
             )}
           </div>
