@@ -293,7 +293,7 @@ export const getActiveGoals = async () => {
 };
 
 //marking goal as complete
-export const markGoalComplete = async (res, req) => {
+export const markGoalComplete = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(

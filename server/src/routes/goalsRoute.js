@@ -21,6 +21,6 @@ router.put("/:id", updateGoal);
 router.put("/privacy/:id", updateGoalPrivacy);
 router.delete("/:id", deleteGoal);
 router.get("/goals/active", getActiveGoals);
-router.patch("/goals/:id/complete", markGoalComplete);
+router.patch("/:id/complete", markGoalComplete);
 
 export default router;
