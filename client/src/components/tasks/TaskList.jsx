@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./TaskList.css";
 import { useFetch } from "../../useFetch";
 
-export const TaskList = ({ tasks, onToggle }) => {
-  const [userTasks, setUserTasks] = useState(tasks);
+export const TaskList = ({ tasks, onToggle, onDelete }) => {
   const { executeFetch } = useFetch();
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const checkTask = async (id) => {
-    const data = await executeFetch(`/api/tasks/${id}`, "PUT");
+    const body = tasks.find((task) => task.id == id);
+    body.is_completed = !body.is_completed;
+    const data = await executeFetch(`/api/tasks/${id}`, "PUT", body);
     if (data !== undefined && data !== null) {
       onToggle(id);
     }
+    console.log(data);
   };
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
@@ -20,6 +22,12 @@ export const TaskList = ({ tasks, onToggle }) => {
   const deleteTask = async (id) => {
     const response = await executeFetch(`/api/tasks/${id}`, "DELETE");
     console.log(response);
+    if (response.message == "Task deleted successfully.") {
+      console.log("del");
+      onDelete(id);
+      setOpenMenuId(null);
+    }
+
     // ---- notes ----
     //After fronted receive successful message from backend
     //Frontend needs to tell the dashboard page to update userGoals state

@@ -26,9 +26,7 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
   const handleToggleTask = (taskId) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === taskId
-          ? { ...task, is_completed: !task.is_completed }
-          : task
+        task.id === taskId ? { ...task, is_completed: task.is_completed } : task
       )
     );
   };
@@ -124,7 +122,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      <TaskList tasks={tasks} onToggle={handleToggleTask} />
+      <TaskList
+        tasks={tasks}
+        onToggle={handleToggleTask}
+        onDelete={(taskId) => deleteTaskFromGoal(goal.id, taskId)}
+      />
 
       {/* Show Add Task Form */}
       {showAddForm ? (

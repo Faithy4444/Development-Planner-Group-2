@@ -55,7 +55,7 @@ export const getTaskById = async (req, res) => {
 export const updateTasks = async (req, res) => {
   const { id } = req.params;
   const { title, description, due_date, is_completed } = req.body;
-
+  console.log(req.body);
   try {
     const results = await pool.query(
       `UPDATE tasks 
@@ -77,6 +77,10 @@ export const updateTasks = async (req, res) => {
     console.error("updateTask error:", err);
     res.status(500).json({ message: "Server error updating task." });
   }
+};
+
+export const completeTask = async (req, res) => {
+  const { id } = req.params;
 };
 
 //Deleting task
