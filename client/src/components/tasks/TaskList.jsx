@@ -2,19 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./TaskList.css";
 import { useFetch } from "../../useFetch";
 
-export const TaskList = ({ tasks, onToggle, onDelete }) => {
+export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
   const { executeFetch } = useFetch();
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const checkTask = async (id) => {
-    const body = tasks.find((task) => task.id == id);
-    body.is_completed = !body.is_completed;
-    const data = await executeFetch(`/api/tasks/${id}`, "PUT", body);
+    const data = await executeFetch(`/api/tasks/complete/${id}`, "PUT");
     if (data !== undefined && data !== null) {
       onToggle(id);
     }
     console.log(data);
   };
+
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
@@ -24,7 +23,7 @@ export const TaskList = ({ tasks, onToggle, onDelete }) => {
     console.log(response);
     if (response.message == "Task deleted successfully.") {
       console.log("del");
-      onDelete(id);
+      handleDeleteTask(id);
       setOpenMenuId(null);
     }
 

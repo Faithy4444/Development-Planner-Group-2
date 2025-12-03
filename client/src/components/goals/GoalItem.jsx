@@ -26,7 +26,9 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
   const handleToggleTask = (taskId) => {
     setTasks((prev) =>
       prev.map((task) =>
-        task.id === taskId ? { ...task, is_completed: task.is_completed } : task
+        task.id === taskId
+          ? { ...task, is_completed: !task.is_completed }
+          : task
       )
     );
   };
@@ -61,6 +63,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
     setTasks((prev) => [...prev, savedTask]);
     setShowAddForm(false);
   };
+
+  const handleDeleteTask = async (taskId) => {
+    setTasks(tasks.filter((task) => task.id != taskId));
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
 
@@ -125,7 +132,7 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
       <TaskList
         tasks={tasks}
         onToggle={handleToggleTask}
-        onDelete={(taskId) => deleteTaskFromGoal(goal.id, taskId)}
+        handleDeleteTask={handleDeleteTask}
       />
 
       {/* Show Add Task Form */}
