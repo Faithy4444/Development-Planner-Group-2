@@ -11,7 +11,6 @@ export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
     if (data !== undefined && data !== null) {
       onToggle(id);
     }
-    console.log(data);
   };
 
   const toggleMenu = (id) => {
@@ -20,9 +19,7 @@ export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
 
   const deleteTask = async (id) => {
     const response = await executeFetch(`/api/tasks/${id}`, "DELETE");
-    console.log(response);
     if (response.message == "Task deleted successfully.") {
-      console.log("del");
       handleDeleteTask(id);
       setOpenMenuId(null);
     }
