@@ -116,6 +116,18 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
           <strong>Relevant</strong>
           <p>{goal.relevant}</p>
         </div>
+        <div className="detail-item">
+          <strong>Time bound</strong>
+          {/* <p>{time_bound}</p> */}
+          <p>
+            {/* need to convert date from iso format to more user-friendly interface */}
+            {new Date(goal.time_bound).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+        </div>
       </div>
 
       <div className="goal-progress">
