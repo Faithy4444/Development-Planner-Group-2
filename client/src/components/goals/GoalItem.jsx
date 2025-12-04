@@ -8,26 +8,30 @@ import { createPortal } from "react-dom";
 
 
 
-export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
+
+export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelete }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const { executeFetch, loading, error } = useFetch();
 
   const [PrivacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(goal.is_completed);
+  
+  //toggle logic
   const handleToggleComplete = async () => {
-    const updatedValue = !isCompleted;
-    setIsCompleted(updatedValue);
-
+    const newState = !isCompleted;
+    setIsCompleted(newState);
+    updateGoalCompletion(goal.id, newState);
+  
     try {
       const data = await executeFetch(`http://localhost:5000/api/goals/${goal.id}/complete`,"PATCH");
-      if (data?.goal) {
-        setIsCompleted(data.goal.is_completed);
-      }
+      console.log("Toggle response:", data);
     } catch (err) {
+       setIsCompleted(!newState);
+       updateGoalCompletion(goal.id, !newState);
+       console.error(err);
       console.error(err);
       alert("Couldn't update goal 😭");
-      setIsCompleted(!updatedValue);
     }
   };
 

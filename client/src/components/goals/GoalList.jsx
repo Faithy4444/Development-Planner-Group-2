@@ -7,6 +7,15 @@ export const GoalList = ({ goals, setUserGoals, updateGoalPrivacy }) => {
     setUserGoals(goals.filter((goal) => goal.id != goalId));
   };
 
+  const updateGoalCompletion = (id, newValue) => {
+  setUserGoals(prevGoals =>
+    prevGoals.map(g =>
+      g.id === id ? { ...g, is_completed: newValue } : g
+    )
+  );
+};
+
+
   return (
     <div className="goal-list">
       {goals.map((goal) => (
@@ -15,6 +24,7 @@ export const GoalList = ({ goals, setUserGoals, updateGoalPrivacy }) => {
           goal={goal}
           onDelete={onDelete}
           updateGoalPrivacy={updateGoalPrivacy}
+          updateGoalCompletion={updateGoalCompletion}
         />
       ))}
     </div>
