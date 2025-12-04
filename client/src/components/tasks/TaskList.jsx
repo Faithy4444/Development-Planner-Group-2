@@ -23,10 +23,6 @@ export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
       handleDeleteTask(id);
       setOpenMenuId(null);
     }
-
-    // ---- notes ----
-    //After fronted receive successful message from backend
-    //Frontend needs to tell the dashboard page to update userGoals state
   };
 
   // Close menu if clicking outside of dropdown
