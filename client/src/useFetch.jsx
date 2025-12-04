@@ -6,7 +6,7 @@ export const useFetch = () => {
   const [error, setError] = useState(null);
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
-     const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     setLoading(true);
     setError(null);
 
@@ -14,9 +14,15 @@ export const useFetch = () => {
       method,
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
+        'Authorization': `Bearer ${token}`
+        
       },
     };
+
+    if (token) {
+      options.headers.Authorization = `Bearer ${token}`;
+    }
+
      if (body && method !== "GET" && method !== "HEAD") {
       options.body = JSON.stringify(body);
     }
@@ -25,6 +31,11 @@ export const useFetch = () => {
       const response = await fetch(url, options);
 
       if (!response.ok) {
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+          return null;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
