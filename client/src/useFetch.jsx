@@ -1,10 +1,12 @@
 import { useState, useCallback } from "react";
 
 export const useFetch = () => {
+ 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
+     const token = localStorage.getItem("token");
     setLoading(true);
     setError(null);
 
@@ -12,9 +14,12 @@ export const useFetch = () => {
       method,
       headers: {
         "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
-      ...(body ? { body: JSON.stringify(body) } : {}),
     };
+     if (body && method !== "GET" && method !== "HEAD") {
+      options.body = JSON.stringify(body);
+    }
 
     try {
       const response = await fetch(url, options);
