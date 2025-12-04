@@ -23,6 +23,7 @@ test("get started link", async ({ page }) => {
 test("see the dashboard", async ({ page }) => {
   await page.goto("/dashboard");
   await expect(page.locator(".dashboard-container")).toBeVisible();
+  await page.pause();
 });
 
 test("User can create a goal", async ({ page }) => {
@@ -36,9 +37,6 @@ test("User can create a goal", async ({ page }) => {
   await page.getByRole("button", { name: "Save Goal" }).click();
   await expect(page).toHaveURL("/dashboard");
   await expect(
-    page
-      // .locator(".form-container")
-      .getByRole("heading", { name: "jdfkjgkdfjhgkdhfjkdfghjk" })
+    page.getByRole("heading", { name: "ghjfghjkgfhjgkhgfjk" })
   ).toBeVisible();
-  // await expect(page.getByText("jdfkjgkdfjhgkdhfjkdfghjk")).toBeVisible();
 });
