@@ -100,8 +100,8 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
             onChange={handleToggleComplete}
             style={{ marginRight: "6px" }}
            />
-  {isCompleted ? "Completed" : "Mark as complete"}
-</label>
+           {isCompleted ? "Completed" : "Mark Goal complete"}
+          </label>
           {createPortal(
             <Modal
               isOpen={PrivacyModalOpen}
