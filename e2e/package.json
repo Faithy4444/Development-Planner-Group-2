@@ -1,0 +1,25 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "Playwright end-to-end tests",
+  "type": "module",
+  "license": "UNLICENSED",
+	"scripts": {
+		"e2e": "npx playwright test --ui"
+	},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Faithy4444/Development-Planner-Group-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/Faithy4444/Development-Planner-Group-2/issues"
+  },
+  "homepage": "https://github.com/Faithy4444/Development-Planner-Group-2#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^24.10.1"
+  }
+}
+
