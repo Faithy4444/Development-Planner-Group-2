@@ -1,5 +1,6 @@
 import express from "express";
-import { getFullUserData } from "../controllers/userController.js";
+import authMiddleware from "../middleware/auth.js";
+//import { query as dbQuery } from "../db.js"; // Use the corrected named import
 import {
   createTask,
   getAllTasks,
@@ -8,14 +9,14 @@ import {
   deleteTask,
   completeTask,
 } from "../controllers/tasksController.js";
-
 const router = express.Router();
-
-router.post("/", createTask);
+// POST a new task for a specific goal
+router.post("/", authMiddleware, createTask);
 router.get("/user/:user_id", getAllTasks);
 router.get("/:id", getTaskById);
-router.put("/:id", updateTasks);
+router.put("/:id", authMiddleware, updateTasks);
 router.put("/complete/:id", completeTask);
-router.delete("/:id", deleteTask);
+router.delete("/:id", authMiddleware, deleteTask);
+
 
 export default router;

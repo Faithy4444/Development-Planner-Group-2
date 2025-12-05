@@ -24,7 +24,7 @@ export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelet
     updateGoalCompletion(goal.id, newState);
   
     try {
-      const data = await executeFetch(`http://localhost:5000/api/goals/${goal.id}/complete`,"PATCH");
+       const data = await executeFetch(`/api/goals/${goal.id}/complete`, "PATCH");
       console.log("Toggle response:", data);
     } catch (err) {
        setIsCompleted(!newState);

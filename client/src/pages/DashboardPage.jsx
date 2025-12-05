@@ -3,18 +3,24 @@ import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
-
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const { executeFetch, loading, error } = useFetch();
-
   useEffect(() => {
     const fetchGoals = async () => {
-      const data = await executeFetch("/api/goals", "GET");
-
+      const token = localStorage.getItem('token');
+      if (!token) {
+      console.error("No token found. User is not authenticated.");
+      return;
+    }
+    const options = {
+      headers: {
+        'x-auth-token': token,
+      },
+    };
+      const data = await executeFetch("http://localhost:3000/api/goals", "GET", options);
       setUserGoals(data || []);
     };
-
     fetchGoals();
   }, [executeFetch]);
 
@@ -30,7 +36,6 @@ const DashboardPage = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
-
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -39,7 +44,6 @@ const DashboardPage = () => {
           Create New Goal
         </Link>
       </div>
-
       {userGoals && userGoals.length > 0 ? (
         <GoalList
           goals={userGoals}

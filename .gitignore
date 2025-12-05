@@ -49,6 +49,12 @@ Thumbs.db
 !.vscode/extensions.json
 .idea/
 
+# Playwright
+/e2e/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+e2e/test-results
 # testing
 oldServer.js
 
