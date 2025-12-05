@@ -32,6 +32,11 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+
+    // this option is slowing down the test, so tester can see what app is doing in a page
+    launchOptions: {
+      slowMo: 700,
+    },
   },
 
   /* Configure projects for major browsers */
@@ -40,40 +45,6 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-
-    // ----- Note from Andrei: this was enabled by default, but I decided to comment for 2 reasons:
-    // 1. Those 2 browsers in not present in Legacy code playwright config
-    // 2. I want to see how to configure test in a simple way
-    // ----------
-    // {
-    //   name: "firefox",
-    //   use: { ...devices["Desktop Firefox"] },
-    // },
-
-    // {
-    //   name: "webkit",
-    //   use: { ...devices["Desktop Safari"] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */
