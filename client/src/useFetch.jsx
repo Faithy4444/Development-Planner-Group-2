@@ -2,13 +2,13 @@ import { useState, useCallback } from "react";
 import { apiUrl } from "./api";
 
 export const useFetch = () => {
- 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
     const token = localStorage.getItem("token");
     const actualUrl = apiUrl(url);
+
     setLoading(true);
     setError(null);
 
@@ -16,8 +16,7 @@ export const useFetch = () => {
       method,
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${token}`
-        
+        Authorization: `Bearer ${token}`,
       },
     };
 
@@ -25,23 +24,28 @@ export const useFetch = () => {
       options.headers.Authorization = `Bearer ${token}`;
     }
 
-     if (body && method !== "GET" && method !== "HEAD") {
+    if (body && method !== "GET" && method !== "HEAD") {
       options.body = JSON.stringify(body);
     }
 
     try {
       const response = await fetch(actualUrl, options);
-      const data = await response.json();
+
+      // Try to read JSON, but safely
+      let data = null;
+      data = await response.json();
+
       if (!response.ok) {
+        // Handle expired tokens
         if (response.status === 401) {
           localStorage.removeItem("token");
           window.location.href = "/login";
           return null;
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
-        // Use backend message if available
+
         const message =
           data?.message || `HTTP error! status: ${response.status}`;
+
         throw new Error(message);
       }
 

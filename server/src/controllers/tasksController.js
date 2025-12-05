@@ -114,7 +114,7 @@ export const completeTask = async (req, res) => {
 export const deleteTask = async (req, res) => {
   const { id: taskId } = req.params;
   const { id: userId } = req.user;
-  console.log("user want to delete task under id", id);
+  console.log("user want to delete task under id", taskId);
 
   try {
     const result = await pool.query(

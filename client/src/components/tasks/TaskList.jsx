@@ -19,7 +19,8 @@ export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
 
   const deleteTask = async (id) => {
     const response = await executeFetch(`/api/tasks/${id}`, "DELETE");
-    if (response.message == "Task deleted successfully.") {
+    console.log(response);
+    if (response.msg == "Task deleted successfully.") {
       handleDeleteTask(id);
       setOpenMenuId(null);
     }
