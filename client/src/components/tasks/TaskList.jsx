@@ -6,7 +6,7 @@ export const TaskList = ({ tasks, onToggle }) => {
   const { executeFetch } = useFetch();
 
   const checkTask = async (id) => {
-    const data = await executeFetch(`/api/tasks/${id}`, "PUT");
+    const data = await executeFetch(`/api/tasks/complete/${id}`, "PUT");
     if (data !== undefined && data !== null) {
       onToggle(id);
     }

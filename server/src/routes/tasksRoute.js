@@ -7,6 +7,7 @@ import {
   getTaskById,
   updateTasks,
   deleteTask,
+  completeTask,
 } from "../controllers/tasksController.js";
 const router = express.Router();
 // POST a new task for a specific goal
@@ -16,6 +17,7 @@ router.get("/:id", getTaskById);
 
 // PUT (update) a task
 router.put("/:id", authMiddleware, updateTasks);
+router.put("/complete/:id", completeTask);
 
 // DELETE a task
 router.delete("/:id", authMiddleware, deleteTask);
