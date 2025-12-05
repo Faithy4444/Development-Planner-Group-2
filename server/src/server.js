@@ -4,7 +4,7 @@ import "dotenv/config";
 import userRoute from "./routes/userRoute.js";
 import goalsRoutes from "./routes/goalsRoute.js";
 import taskRoutes from "./routes/tasksRoute.js";
-import { pool } from "./db/db.js";
+//import { pool } from "../db/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRoute);
-app.use("/api/goals", goalsRoute);
-app.use("/api/tasks", taskRoute);
+app.use("/api/goals", goalsRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/", (req, res) => {
   res.send("PlanYourFuture API Server is running!");

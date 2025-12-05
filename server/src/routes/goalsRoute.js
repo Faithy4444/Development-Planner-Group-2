@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
-import { query as dbQuery } from "../db.js"; // Use the corrected named import //remove
+//import { pool } from "../db/db.js";
+//import { query as dbQuery } from "../db.js"; // Use the corrected named import //remove
 import {
   createGoal,
   getAllGoalsWithTasks,

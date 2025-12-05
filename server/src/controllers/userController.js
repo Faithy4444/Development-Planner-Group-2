@@ -1,6 +1,5 @@
 import { pool } from "../db/db.js";
-import { pool } from "../db.js";
-import { query as dbQuery } from "../db.js"; // Correctly import 'query' and rename it to 'dbQuery'.
+//import { pool } from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
@@ -10,7 +9,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password);
   try {
-    const user = await dbQuery("SELECT * FROM users WHERE email = $1", [email]); // Use dbQuery
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]); // Use dbQuery
     if (user.rows.length === 0) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
@@ -47,7 +46,7 @@ export const register = async (req, res) => {
 
   try {
     // Use 'dbQuery' to check if the user exists.
-    const userExists = await dbQuery("SELECT * FROM users WHERE email = $1", [
+    const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
     if (userExists.rows.length > 0) {
@@ -60,7 +59,7 @@ export const register = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // CRITICAL FIX: The SQL query now uses the correct 'username' column.
-    await dbQuery(
+    await pool.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
       [username, email, passwordHash]
     );

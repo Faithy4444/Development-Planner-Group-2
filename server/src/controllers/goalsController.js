@@ -22,6 +22,62 @@ export const createGoal = async (req, res) => {
     }
 };
 
+// READ ALL
+export const getAllGoalsWithTasks = async (req, res) => {
+  try {
+    const result = await pool.query(`
+SELECT 
+    g.id AS goal_id,
+    g.user_id,
+    g.title,
+    g.specific,
+    g.measurable,
+    g.achievable,
+    g.relevant,
+    g.time_bound,
+    g.is_private,
+    t.id AS task_id,
+    t.title AS task_title,
+    t.is_completed
+FROM goals g
+LEFT JOIN tasks t 
+    ON t.goal_id = g.id
+ORDER BY g.id, t.id;
+    `);
+    const goalsMap = {};
+    result.rows.forEach((row) => {
+      if (!goalsMap[row.goal_id]) {
+        goalsMap[row.goal_id] = {
+          id: row.goal_id,
+          user_id: row.user_id,
+          title: row.title,
+          specific: row.specific,
+          measurable: row.measurable,
+          achievable: row.achievable,
+          relevant: row.relevant,
+          time_bound: row.time_bound,
+          is_completed: row.is_completed,
+          is_private: row.is_private,
+          tasks: [],
+        };
+      }
+      if (row.task_id) {
+        goalsMap[row.goal_id].tasks.push({
+          id: row.task_id,
+          title: row.task_title,
+          is_completed: row.is_completed,
+        });
+      }
+    });
+
+    res.json(Object.values(goalsMap));
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
+
+
 //READ ALL GOALS FOR A SPECIFIC USER
 export const getGoalsByUser = async (req, res) => {
   const { id: userId } = req.user;
