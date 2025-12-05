@@ -43,6 +43,7 @@ const DashboardPage = () => {
       {userGoals && userGoals.length > 0 ? (
         <GoalList
           goals={userGoals}
+          setUserGoals={setUserGoals}
           updateGoalPrivacy={updateGoalPrivacy}
           deleteGoal={deleteGoal}
         />
