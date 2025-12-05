@@ -1,4 +1,5 @@
 import { pool } from "../db.js";
+import { query as dbQuery } from "../db.js"
 
 // CREATE
 export const createGoal = async (req, res) => {

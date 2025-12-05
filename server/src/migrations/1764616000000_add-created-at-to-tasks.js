@@ -8,20 +8,17 @@ export const shorthands = undefined;
  * @param run {() => void | undefined}
  * @returns {Promise<void> | void}
  */
-
 export const up = (pgm) => {
-  pgm.addColumn("tasks", {
-    is_completed: { type: "boolean", notNull: true, default: false },
+  pgm.addColumn('tasks', {
+    created_at: { type: 'timestamp', notNull: true, default: pgm.func('current_timestamp') },
   });
 };
-
 
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
  * @param run {() => void | undefined}
  * @returns {Promise<void> | void}
  */
-
 export const down = (pgm) => {
-  pgm.dropColumn("tasks", "is_completed");
+  pgm.dropColumn('tasks', 'created_at');
 };
