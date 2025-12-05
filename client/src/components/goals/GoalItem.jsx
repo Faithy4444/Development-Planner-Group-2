@@ -55,6 +55,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelet
   };
 
   const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this goal?"
+    );
+    if (!confirmed) return;
+
     const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
 
     if (result !== null) {
@@ -77,13 +82,18 @@ export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelet
     const body = {
       goal_id: goal.id,
       title: newTask.title,
-      user_id: 6,
+      user_id: 3,
     };
     const savedTask = await executeFetch("/api/tasks", "POST", body);
     // Update state and ui
     setTasks((prev) => [...prev, savedTask]);
     setShowAddForm(false);
   };
+
+  const handleDeleteTask = async (taskId) => {
+    setTasks(tasks.filter((task) => task.id != taskId));
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
 
@@ -141,6 +151,18 @@ export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelet
           <strong>Relevant</strong>
           <p>{goal.relevant}</p>
         </div>
+        <div className="detail-item">
+          <strong>Time bound</strong>
+          {/* <p>{time_bound}</p> */}
+          <p>
+            {/* need to convert date from iso format to more user-friendly interface */}
+            {new Date(goal.time_bound).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+        </div>
       </div>
 
       <div className="goal-progress">
@@ -154,7 +176,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelet
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      <TaskList tasks={tasks} onToggle={handleToggleTask} />
+      <TaskList
+        tasks={tasks}
+        onToggle={handleToggleTask}
+        handleDeleteTask={handleDeleteTask}
+      />
 
       {/* Show Add Task Form */}
       {showAddForm ? (
