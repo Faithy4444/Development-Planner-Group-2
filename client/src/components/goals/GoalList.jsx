@@ -8,20 +8,18 @@ export const GoalList = ({ goals, setUserGoals, updateGoalPrivacy }) => {
   };
 
   const updateGoalCompletion = (id, newValue) => {
-  setUserGoals(prevGoals =>
-    prevGoals.map(g =>
-      g.id === id ? { ...g, is_completed: newValue } : g
-    )
-  );
-};
-  
+    setUserGoals((prevGoals) =>
+      prevGoals.map((g) => (g.id === id ? { ...g, is_completed: newValue } : g))
+    );
+  };
+
   return (
     <div className="goal-list">
       {goals.map((goal) => (
         <GoalItem
           key={goal.id}
           goal={goal}
-          onDelete={deleteGoal}
+          onDelete={onDelete}
           updateGoalPrivacy={updateGoalPrivacy}
           updateGoalCompletion={updateGoalCompletion}
         />
