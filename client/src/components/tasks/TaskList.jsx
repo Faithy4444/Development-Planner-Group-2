@@ -3,7 +3,7 @@ import "./TaskList.css";
 import { useFetch } from "../../useFetch";
 
 export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
-  const { executeFetch } = useFetch();
+  const { executeFetch, error } = useFetch();
   const [openMenuId, setOpenMenuId] = useState(null);
 
   const checkTask = async (id) => {
@@ -39,6 +39,8 @@ export const TaskList = ({ tasks, onToggle, handleDeleteTask }) => {
       window.removeEventListener("click", handleClick);
     };
   }, []);
+
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <ul className="task-list">

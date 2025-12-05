@@ -34,6 +34,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
   };
 
   const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this goal?"
+    );
+    if (!confirmed) return;
+
     const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
 
     if (result !== null) {
@@ -56,7 +61,7 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
     const body = {
       goal_id: goal.id,
       title: newTask.title,
-      user_id: 6,
+      user_id: 3,
     };
     const savedTask = await executeFetch("/api/tasks", "POST", body);
     // Update state and ui

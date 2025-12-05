@@ -20,12 +20,14 @@ export const useFetch = () => {
 
     try {
       const response = await fetch(actualUrl, options);
-
+      const data = await response.json();
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Use backend message if available
+        const message =
+          data?.message || `HTTP error! status: ${response.status}`;
+        throw new Error(message);
       }
 
-      const data = await response.json();
       return data;
     } catch (err) {
       console.error("Fetch error:", err);
