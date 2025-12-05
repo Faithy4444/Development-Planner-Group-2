@@ -293,18 +293,26 @@ export const getActiveGoals = async () => {
 };
 
 //marking goal as complete
-export const markGoalComplete = async (res, req) => {
+export const markGoalComplete = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "UPDATE goals SET is_completed = true WHERE id = $1 RETURNING *",
+      "SELECT is_completed FROM goals WHERE id = $1",
       [id]
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
+    
+    const currentValue = !result.rows[0].is_completed;
+
+    const updated = await pool.query(
+      "UPDATE goals SET is_completed = $1 WHERE id = $2 RETURNING *",
+      [!currentValue, id]
+    );
+
     res.json({
-      message: "Goal marked complete",
-      goal: result.rows[0]
+      message: `Goal ${currentValue ? 'marked complete' : 'marked incomplete'}`,
+      goal: updated.rows[0]
     });
   } catch (err) {
     console.error(err);

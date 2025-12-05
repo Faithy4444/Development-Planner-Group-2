@@ -6,12 +6,33 @@ import { useFetch } from "../../useFetch";
 import { Modal } from "../modals/modal";
 import { createPortal } from "react-dom";
 
-export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
+
+
+
+export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelete }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const { executeFetch, loading, error } = useFetch();
 
   const [PrivacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(goal.is_completed);
+  
+  //toggle logic
+  const handleToggleComplete = async () => {
+    const newState = !isCompleted;
+    setIsCompleted(newState);
+    updateGoalCompletion(goal.id, newState);
+  
+    try {
+      const data = await executeFetch(`http://localhost:5000/api/goals/${goal.id}/complete`,"PATCH");
+      console.log("Toggle response:", data);
+    } catch (err) {
+       setIsCompleted(!newState);
+       updateGoalCompletion(goal.id, !newState);
+       console.error(err);
+       alert("Couldn't update goal 😭");
+    }
+  };
 
   const openPrivacyModal = () => setPrivacyModalOpen(true);
   const closePrivacyModal = () => setPrivacyModalOpen(false);
@@ -75,6 +96,15 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
             Change plan privacy:
             {goal.is_private ? " Private" : " Public"}
           </button>
+          <label className="btn-icon" style={{ cursor: "pointer" }}>
+            <input
+            type="checkbox"
+            checked={isCompleted}
+            onChange={handleToggleComplete}
+            style={{ marginRight: "6px" }}
+           />
+           {isCompleted ? "Completed" : "Mark Goal complete"}
+          </label>
           {createPortal(
             <Modal
               isOpen={PrivacyModalOpen}
@@ -138,4 +168,6 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
       )}
     </div>
   );
+
+  
 };
