@@ -7,9 +7,9 @@
     "start": "node src/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "migrate": "node-pg-migrate -m src/migrations",
+    "migrate": "node-pg-migrate -m migrations",
     "db:up": "docker-compose -f src/docker-compose.yaml --env-file .env up -d",
-  "db:down": "docker-compose -f src/docker-compose.yaml --env-file .env down -v"
+    "db:down": "docker-compose -f src/docker-compose.yaml --env-file .env down -v"
   },
   "keywords": [],
   "author": "",
