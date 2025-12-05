@@ -57,3 +57,10 @@ Thumbs.db
 e2e/test-results
 # testing
 oldServer.js
+
+# Playwright
+/e2e/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+e2e/test-results

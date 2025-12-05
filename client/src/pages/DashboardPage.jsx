@@ -30,6 +30,10 @@ const DashboardPage = () => {
     );
   };
 
+  const deleteGoal = (goalId) => {
+    setUserGoals(userGoals.filter((goal) => goal.id != goalId));
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
   return (
@@ -45,6 +49,7 @@ const DashboardPage = () => {
           goals={userGoals}
           setUserGoals={setUserGoals}
           updateGoalPrivacy={updateGoalPrivacy}
+          deleteGoal={deleteGoal}
         />
       ) : (
         <div className="empty-state">
