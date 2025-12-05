@@ -1,3 +1,4 @@
+import { pool } from "../db/db.js";
 import { pool } from "../db.js";
 import { query as dbQuery } from "../db.js"; // Correctly import 'query' and rename it to 'dbQuery'.
 import bcrypt from "bcryptjs";

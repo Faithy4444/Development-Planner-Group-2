@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { apiUrl } from "./api";
 
 export const useFetch = () => {
  
@@ -7,6 +8,7 @@ export const useFetch = () => {
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
     const token = localStorage.getItem("token");
+    const actualUrl = apiUrl(url);
     setLoading(true);
     setError(null);
 
@@ -28,7 +30,7 @@ export const useFetch = () => {
     }
 
     try {
-      const response = await fetch(url, options);
+      const response = await fetch(actualUrl, options);
 
       if (!response.ok) {
         if (response.status === 401) {

@@ -1,5 +1,5 @@
 import { pool } from "../db.js";
-// for some reason we only import pool here, so I changed all queries. I think it's better now, because we import only essentials
+import { pool } from "../db/db.js";
 
 //creating
 export const createTask = async (req, res) => {

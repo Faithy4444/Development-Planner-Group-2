@@ -3,10 +3,14 @@ import authMiddleware from "../middleware/auth.js";
 import { query as dbQuery } from "../db.js"; // Use the corrected named import //remove
 import {
   createGoal,
+  getAllGoalsWithTasks,
   getGoalsByUser,
   getGoalById,
   updateGoal,
   deleteGoal,
+  getActiveGoals,
+  markGoalComplete,
+   updateGoalPrivacy,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
@@ -22,5 +26,10 @@ router.put("/:id", updateGoal);
 
 //Not sure if we need to get goal by ID, but will keep it here, in case we need it in a future
 router.get("/:id", getGoalById);
+router.put("/:id", updateGoal);
+router.put("/privacy/:id", updateGoalPrivacy);
+router.delete("/:id", deleteGoal);
+router.get("/goals/active", getActiveGoals);
+router.patch("/:id/complete", markGoalComplete);
 
 export default router;

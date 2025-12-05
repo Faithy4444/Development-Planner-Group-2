@@ -3,11 +3,39 @@ import { TaskList } from "../tasks/TaskList";
 import { AddTaskForm } from "../tasks/InlineTaskForm";
 import "./GoalItem.css";
 import { useFetch } from "../../useFetch";
+import { Modal } from "../modals/modal";
+import { createPortal } from "react-dom";
 
-export const GoalItem = ({ goal, onDelete }) => {
+
+
+
+export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelete }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const { executeFetch, loading, error } = useFetch();
+
+  const [PrivacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(goal.is_completed);
+  
+  //toggle logic
+  const handleToggleComplete = async () => {
+    const newState = !isCompleted;
+    setIsCompleted(newState);
+    updateGoalCompletion(goal.id, newState);
+  
+    try {
+      const data = await executeFetch(`http://localhost:5000/api/goals/${goal.id}/complete`,"PATCH");
+      console.log("Toggle response:", data);
+    } catch (err) {
+       setIsCompleted(!newState);
+       updateGoalCompletion(goal.id, !newState);
+       console.error(err);
+       alert("Couldn't update goal 😭");
+    }
+  };
+
+  const openPrivacyModal = () => setPrivacyModalOpen(true);
+  const closePrivacyModal = () => setPrivacyModalOpen(false);
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.is_completed).length;
@@ -26,14 +54,22 @@ export const GoalItem = ({ goal, onDelete }) => {
     );
   };
 
-  //--------Here I started to work on delete functionality---------
-
   const handleDelete = async () => {
     const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
 
     if (result !== null) {
       onDelete(goal.id);
     }
+  };
+
+  const handlePrivacy = async () => {
+    const result = await executeFetch(`/api/goals/privacy/${goal.id}`, "PUT");
+    if (result) {
+      // Update state in Dashboard
+      updateGoalPrivacy(goal.id, result.newValue);
+    }
+
+    closePrivacyModal();
   };
 
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
@@ -56,6 +92,29 @@ export const GoalItem = ({ goal, onDelete }) => {
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
+          <button className="btn-icon" onClick={openPrivacyModal}>
+            Change plan privacy:
+            {goal.is_private ? " Private" : " Public"}
+          </button>
+          <label className="btn-icon" style={{ cursor: "pointer" }}>
+            <input
+            type="checkbox"
+            checked={isCompleted}
+            onChange={handleToggleComplete}
+            style={{ marginRight: "6px" }}
+           />
+           {isCompleted ? "Completed" : "Mark Goal complete"}
+          </label>
+          {createPortal(
+            <Modal
+              isOpen={PrivacyModalOpen}
+              privateSetting={goal.is_private}
+              onChange={handlePrivacy}
+              onClose={closePrivacyModal}
+              goalId={goal.id}
+            />,
+            document.body
+          )}
           <button className="btn-icon">Edit</button>
           <button className="btn-icon" onClick={handleDelete}>
             Delete
@@ -109,4 +168,6 @@ export const GoalItem = ({ goal, onDelete }) => {
       )}
     </div>
   );
+
+  
 };

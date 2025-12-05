@@ -23,6 +23,13 @@ const DashboardPage = () => {
     };
     fetchGoals();
   }, [executeFetch]);
+
+  const updateGoalPrivacy = (goalId, newPrivacy) => {
+    setUserGoals((prev) =>
+      prev.map((g) => (g.id === goalId ? { ...g, is_private: newPrivacy } : g))
+    );
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
   return (
@@ -34,7 +41,11 @@ const DashboardPage = () => {
         </Link>
       </div>
       {userGoals && userGoals.length > 0 ? (
-        <GoalList goals={userGoals} setUserGoals={setUserGoals} />
+        <GoalList
+          goals={userGoals}
+          setUserGoals={setUserGoals}
+          updateGoalPrivacy={updateGoalPrivacy}
+        />
       ) : (
         <div className="empty-state">
           <h2>Welcome to your planner!</h2>

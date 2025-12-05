@@ -2,8 +2,9 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import userRoute from "./routes/userRoute.js";
-import goalsRoute from "./routes/goalsRoute.js";
-import taskRoute from "./routes/tasksRoute.js";
+import goalsRoutes from "./routes/goalsRoute.js";
+import taskRoutes from "./routes/tasksRoute.js";
+import { pool } from "./db/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;

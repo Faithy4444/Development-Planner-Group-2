@@ -4,17 +4,11 @@ import bcrypt from "bcryptjs";
 
 const seed = async () => {
   try {
-    //Clear existing data (tasks first due to foreign keys)
-    await pool.query("DELETE FROM tasks");
-    await pool.query("DELETE FROM goals");
-    await pool.query("DELETE FROM users");
-    console.log("Old data cleared.");
-
     //Seed Users
     const users = [
       {
         username: "faith",
-        email: "faith@example.com",
+        email: "muzondofaith6@gmail.com",
         password: "password123",
       },
       {
