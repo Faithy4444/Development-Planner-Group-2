@@ -18,7 +18,7 @@ const DashboardPage = () => {
         'x-auth-token': token,
       },
     };
-      const data = await executeFetch("/api/goals", "GET", options);
+      const data = await executeFetch("http://localhost:3000/api/goals", "GET", options);
       setUserGoals(data || []);
     };
     fetchGoals();

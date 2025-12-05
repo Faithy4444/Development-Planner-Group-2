@@ -1,5 +1,4 @@
 import { pool } from "../db.js";
-import { query as dbQuery } from "../db.js"
 
 // CREATE
 export const createGoal = async (req, res) => {
@@ -7,22 +6,27 @@ export const createGoal = async (req, res) => {
     req.body;
   const { id: userId } = req.user;
   try {
-    const newGoal = await dbQuery(
+    const newGoal = await pool.query(
       "INSERT INTO goals (user_id, title, specific, measurable, achievable, relevant, time_bound) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [userId, title, specific, measurable, achievable, relevant, time_bound]
     );
     res.status(201).json(newGoal.rows[0]);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
+    console.error('Create goal error:', err.message);
+    if (err.code === '23505') {  // Duplicate key error
+      return res.status(409).json({ error: 'Goal creation conflict. Reset sequence or try different data.' });
+    }
+    res.status(500).json({
+      error: 'Server Error', details: err.message
+    });
+    }
 };
 
 //READ ALL GOALS FOR A SPECIFIC USER
 export const getGoalsByUser = async (req, res) => {
   const { id: userId } = req.user;
   try {
-    const goalData = await dbQuery(
+    const goalData = await pool.query(
       `
       SELECT g.*, COALESCE((SELECT json_agg(t.* ORDER BY t.created_at) FROM tasks t WHERE t.goal_id = g.id), '[]') AS tasks
       FROM goals g
@@ -110,7 +114,7 @@ export const deleteGoal = async (req, res) => {
   const { id: goalId } = req.params;
   const { id: userId } = req.user;
   try {
-    const result = await dbQuery(
+    const result = await pool.query(
       "DELETE FROM goals WHERE id = $1 AND user_id = $2",
       [goalId, userId]
     );
