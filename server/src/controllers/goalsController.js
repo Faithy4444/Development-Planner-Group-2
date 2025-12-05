@@ -64,6 +64,7 @@ ORDER BY g.id, t.id;
           achievable: row.achievable,
           relevant: row.relevant,
           time_bound: row.time_bound,
+          is_completed: row.is_completed,
           is_private: row.is_private,
           tasks: [],
         };
@@ -80,7 +81,7 @@ ORDER BY g.id, t.id;
     res.json(Object.values(goalsMap));
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server error", err);
+    res.status(500).send("Server error");
   }
 };
 
@@ -194,13 +195,14 @@ export const updateGoal = async (req, res) => {
     achievable,
     relevant,
     time_bound,
+    is_completed,
     is_private,
   } = req.body;
   try {
     const result = await pool.query(
       `UPDATE goals
-       SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6, is_private=$7
-       WHERE id=$8 RETURNING *`,
+       SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6,is_completed=$7, is_private=$8
+       WHERE id=$9 RETURNING *`,
       [
         title,
         specific,
@@ -208,9 +210,11 @@ export const updateGoal = async (req, res) => {
         achievable,
         relevant,
         time_bound,
+        is_completed || false,
         is_private,
         id,
       ]
+
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
@@ -260,6 +264,56 @@ export const deleteGoal = async (req, res) => {
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
     res.json({ message: "Goal deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+};
+
+//get all active users with emails
+export const getActiveGoals = async () => {
+  try {
+    const result = await pool.query(`
+      SELECT g.id,
+       g.user_id,
+       g.title,
+       g.time_bound, 
+       g.is_completed, 
+       u.email AS user_email
+      FROM goals g
+      JOIN users u ON g.user_id = u.id
+      WHERE g.is_completed = false
+      ORDER BY g.id
+    `);
+    return result.rows;
+  } catch (err) {
+    console.error('getActiveGoalsData error:', err);
+    return [];
+  }
+};
+
+//marking goal as complete
+export const markGoalComplete = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT is_completed FROM goals WHERE id = $1",
+      [id]
+    );
+    if (result.rows.length === 0)
+      return res.status(404).json({ message: "Goal not found" });
+    
+    const currentValue = !result.rows[0].is_completed;
+
+    const updated = await pool.query(
+      "UPDATE goals SET is_completed = $1 WHERE id = $2 RETURNING *",
+      [!currentValue, id]
+    );
+
+    res.json({
+      message: `Goal ${currentValue ? 'marked complete' : 'marked incomplete'}`,
+      goal: updated.rows[0]
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
