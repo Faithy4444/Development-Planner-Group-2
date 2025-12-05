@@ -30,8 +30,7 @@ export const GoalItem = ({ goal, updateGoalPrivacy,updateGoalCompletion, onDelet
        setIsCompleted(!newState);
        updateGoalCompletion(goal.id, !newState);
        console.error(err);
-      console.error(err);
-      alert("Couldn't update goal 😭");
+       alert("Couldn't update goal 😭");
     }
   };
 
