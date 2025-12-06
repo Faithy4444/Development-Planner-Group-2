@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-
+import SharedGoalPage from './pages/SharedGoalPage';
 import LandingPage from './pages/LandingPage';
 import { MainLayout } from './components/layout/MainLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -15,6 +15,8 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       {/* The LandingPage now contains the login/register forms */}
       {/*private route for logged in users security checkpoint */}
+      {/* This is the new public route for sharing a single goal */}
+      <Route path="/share/goal/:id" element={<SharedGoalPage />} />
       <Route element={<ProtectedRoute />}>
         {/* All routes nested inside here are now protected */}
         <Route element={<MainLayout />}>

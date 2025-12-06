@@ -1,0 +1,130 @@
+/*
+ * Styles for the Public Shared Goal Page
+ * This file uses the global CSS variables from src/styles/global.css
+ */
+
+.shared-goal-container {
+  max-width: 800px; /* A comfortable reading width, similar to the dashboard */
+  margin: 0 auto;
+  padding: 2rem 1.5rem; /* Standard padding for pages */
+}
+
+/* --- Header Section --- */
+.shared-goal-header {
+  text-align: center;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--cyf-light-gray);
+}
+
+.shared-goal-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--cyf-black);
+  margin: 0 0 0.5rem 0;
+}
+
+.shared-goal-header p {
+  font-size: 1.1rem;
+  color: var(--cyf-text-gray);
+  margin: 0;
+}
+
+/* --- Content Cards --- */
+.goal-card-public,
+.tasks-section-public,
+.feedback-section {
+  background-color: var(--cyf-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+}
+
+.goal-card-public h3,
+.tasks-section-public h3,
+.feedback-section h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cyf-black);
+  margin-top: 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cyf-light-gray);
+}
+
+.goal-card-public p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--cyf-text-gray);
+}
+
+.goal-card-public p strong {
+  color: var(--cyf-black);
+}
+
+/* --- Tasks List --- */
+.tasks-section-public ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tasks-section-public li {
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  color: var(--cyf-black);
+  border-bottom: 1px solid var(--cyf-light-gray);
+}
+
+.tasks-section-public li:last-child {
+  border-bottom: none;
+}
+
+.tasks-section-public li.completed {
+  text-decoration: line-through;
+  color: var(--cyf-text-gray);
+}
+
+/* --- Feedback Form --- */
+.feedback-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Creates space between the form elements */
+}
+
+.feedback-section input,
+.feedback-section textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.875rem;
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  background-color: var(--cyf-light-gray);
+  transition: all 0.2s ease-in-out;
+}
+
+.feedback-section input:focus,
+.feedback-section textarea:focus {
+  outline: none;
+  background-color: var(--cyf-white);
+  border-color: var(--cyf-pink);
+  box-shadow: 0 0 0 4px rgba(217, 68, 138, 0.15);
+}
+
+.feedback-section .btn-primary {
+  align-self: flex-end; /* Aligns the button to the right */
+  background-color: var(--cyf-pink);
+  color: var(--cyf-white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.feedback-section .btn-primary:hover {
+  transform: translateY(-2px);
+}
