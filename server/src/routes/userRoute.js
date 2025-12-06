@@ -3,8 +3,10 @@ import { body, validationResult } from "express-validator";
 import {
   register,
   login,
-  getFullUserData,
+  getFullUserData, 
+  getUserName , 
 } from "../controllers/userController.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -26,20 +28,8 @@ router.post(
 );
 
 router.get("/:id/full", getFullUserData);
-//GET /api/users/me To load username
-router.get('/me', authMiddleware, async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const user = await dbQuery('SELECT id, username, email FROM users WHERE id = $1', [userId]);
 
-    if (user.rows.length === 0) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-    res.json(user.rows[0]);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+//GET /api/users/me To load username
+router.get('/:id', authMiddleware, getUserName );
 
 export default router;

@@ -13,11 +13,12 @@ export const Navbar = () => {
           const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
           //'/me' endpoint.
           const response = await fetch(`${apiUrl}/api/users/me`, {
-            headers: {
-              'x-auth-token': token,
-            },
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                },
           });
 
+    
           if (response.ok) {
             const userData = await response.json();
             setUser(userData); //Saveing the fetched user data into state
