@@ -4,7 +4,6 @@ import "dotenv/config";
 import userRoute from "./routes/userRoute.js";
 import goalsRoutes from "./routes/goalsRoute.js";
 import taskRoutes from "./routes/tasksRoute.js";
-//import { pool } from "../db/db.js";
 import publicRoute from "./routes/publicRoute.js";
 
 const app = express();
