@@ -294,3 +294,34 @@ export const markGoalComplete = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+ 
+
+
+//Public route for public view of goal
+export const getPublicGoalById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const goalResult = await pool.query(
+      'SELECT * FROM goals WHERE id = $1 AND is_private = false',
+      [id]
+    );
+    if (goalResult.rows.length === 0) {
+      return res.status(404).json({ msg: 'Goal not found or is private.' });
+    }
+    const goal = goalResult.rows[0];
+    const tasksResult = await pool.query('SELECT * FROM tasks WHERE goal_id = $1 ORDER BY id', [goal.id]);
+    const userResult = await pool.query('SELECT username FROM users WHERE id = $1', [goal.user_id]);
+    
+    const responsePayload = { 
+      goal: {
+        ...goal,
+        tasks: tasksResult.rows
+      },
+      owner_username: userResult.rows[0].username,
+    };
+    res.json(responsePayload);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
