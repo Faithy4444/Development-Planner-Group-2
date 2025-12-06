@@ -23,7 +23,7 @@ router.post("/", authMiddleware, createGoal);
 // DELETE a goal for the logged-in user
 router.delete("/:id", authMiddleware, deleteGoal);
 
-router.put("/:id", updateGoal);
+router.put("/:id", authMiddleware, updateGoal);
 
 //Not sure if we need to get goal by ID, but will keep it here, in case we need it in a future
 router.get("/:id", getGoalById);

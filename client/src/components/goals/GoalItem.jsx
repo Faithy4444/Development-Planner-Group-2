@@ -157,6 +157,12 @@ export const GoalItem = ({
     setTasks(tasks.filter((task) => task.id != taskId));
   };
 
+  const handleEditTask = async (editedTask) => {
+    setTasks((tasks) =>
+      tasks.map((task) => (task.id === editedTask.id ? editedTask : task))
+    );
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
 
@@ -298,10 +304,10 @@ export const GoalItem = ({
 
       {isEditing && (
         <div className="edit-actions">
-          <button onClick={handleSaveEdit} className="btn-primary">
+          <button onClick={handleSaveEdit} className="btn-save">
             Save
           </button>
-          <button onClick={handleCancelEdit} className="btn-primary">
+          <button onClick={handleCancelEdit} className="btn-cancel">
             Cancel
           </button>
         </div>
@@ -322,6 +328,7 @@ export const GoalItem = ({
         tasks={tasks}
         onToggle={handleToggleTask}
         handleDeleteTask={handleDeleteTask}
+        handleEditTask={handleEditTask}
       />
 
       {/* Show Add Task Form */}
