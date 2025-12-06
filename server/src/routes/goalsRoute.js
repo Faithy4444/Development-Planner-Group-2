@@ -1,7 +1,5 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
-//import { pool } from "../db/db.js";
-//import { query as dbQuery } from "../db.js"; // Use the corrected named import //remove
 import {
   createGoal,
   getAllGoalsWithTasks,
@@ -32,5 +30,8 @@ router.put("/privacy/:id", updateGoalPrivacy);
 router.delete("/:id", deleteGoal);
 router.get("/goals/active", getActiveGoals);
 router.patch("/:id/complete", markGoalComplete);
+//NEW ROUTE: Toggle a goal's privacy
+//will be called when the user clicks the "Share" button.
+router.patch("/:id/toggle-privacy", authMiddleware, updateGoalPrivacy);
 
 export default router;
