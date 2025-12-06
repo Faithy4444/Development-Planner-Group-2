@@ -127,4 +127,21 @@ export const getFullUserData = async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: "Server error" });
   }
+
 };
+
+//Data for displaying username
+export const getUserName = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await pool.query('SELECT id, username, email FROM users WHERE id = $1', [userId]);
+
+    if (user.rows.length === 0) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+}

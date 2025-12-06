@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node --watch src/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "migrate": "node-pg-migrate -m migrations",
