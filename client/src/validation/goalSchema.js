@@ -1,6 +1,8 @@
 import { z } from "zod";
 export const goalSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1, {
+    message: "Please add title",
+  }),
   specific: z.string().min(10, {
     message:
       "Please be more specific. A good goal is at least 10 characters long.",
