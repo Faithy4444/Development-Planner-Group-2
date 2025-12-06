@@ -1,16 +1,31 @@
 import { z } from "zod";
 export const goalSchema = z.object({
-  title: z.string().min(1, {
-    message: "Please add title",
-  }),
-  specific: z.string().min(10, {
-    message:
-      "Please be more specific. A good goal is at least 10 characters long.",
-  }),
-  measurable: z.string().optional(),
-  achievable: z.string().optional(),
-  relevant: z.string().optional(),
+  title: z
+    .string()
+    .min(1, {
+      message: "Please add title",
+    })
+    .max(500, "Title is too long (max 500 characters)."),
+  specific: z
+    .string()
+    .min(10, {
+      message:
+        "Please be more specific. A good goal is at least 10 characters long.",
+    })
+    .max(500, "Title is too long (max 500 characters)."),
+  measurable: z
+    .string()
+    .max(500, "Title is too long (max 500 characters).")
+    .optional(),
 
+  achievable: z
+    .string()
+    .max(500, "Title is too long (max 500 characters).")
+    .optional(),
+  relevant: z
+    .string()
+    .max(500, "Title is too long (max 500 characters).")
+    .optional(),
   time_bound: z.date().optional().nullable(),
 });
 

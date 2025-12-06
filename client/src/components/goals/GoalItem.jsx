@@ -65,7 +65,7 @@ export const GoalItem = ({
     );
   };
 
-  const handleDelete = async () => {
+  const handleGoalDelete = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this goal?"
     );
@@ -79,16 +79,6 @@ export const GoalItem = ({
   };
 
   const handleGoalEdit = async () => {
-    setEditedGoal({
-      title: goal.title,
-      specific: goal.specific,
-      measurable: goal.measurable,
-      achievable: goal.achievable,
-      relevant: goal.relevant,
-      time_bound: goal.time_bound,
-      ...goal,
-    });
-
     setIsEditing(true);
   };
 
@@ -102,7 +92,6 @@ export const GoalItem = ({
     };
 
     const check = goalSchema.safeParse(convertGoal);
-    console.log(check);
     if (!check.success) {
       const messages = check.error.issues.map((err) => err.message).join("\n");
 
@@ -112,7 +101,6 @@ export const GoalItem = ({
 
     // If valid → send to server
     const validGoal = { ...goal, ...check.data };
-    console.log(validGoal);
     const result = await executeFetch(
       `/api/goals/${goal.id}`,
       "PUT",
@@ -145,7 +133,6 @@ export const GoalItem = ({
     const body = {
       goal_id: goal.id,
       title: newTask.title,
-      user_id: 3,
     };
     const savedTask = await executeFetch("/api/tasks", "POST", body);
     // Update state and ui
@@ -197,7 +184,7 @@ export const GoalItem = ({
           <button className="btn-icon" onClick={handleGoalEdit}>
             Edit
           </button>
-          <button className="btn-icon" onClick={handleDelete}>
+          <button className="btn-icon" onClick={handleGoalDelete}>
             Delete
           </button>
         </div>
