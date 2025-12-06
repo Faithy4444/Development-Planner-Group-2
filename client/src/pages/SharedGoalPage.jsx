@@ -14,7 +14,7 @@ const SharedGoalPage = () => {
     const fetchGoal = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-        // Call the new public endpoint with the goal's ID.
+        //Call the new public endpoint with the goal's ID.
         const response = await fetch(`${apiUrl}/api/public/goal/${id}`);
         
         if (!response.ok) {
