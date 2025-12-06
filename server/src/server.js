@@ -5,6 +5,7 @@ import userRoute from "./routes/userRoute.js";
 import goalsRoutes from "./routes/goalsRoute.js";
 import taskRoutes from "./routes/tasksRoute.js";
 //import { pool } from "../db/db.js";
+import publicRoute from "./routes/publicRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use("/api/users", userRoute);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/tasks", taskRoutes);
-
+app.use("/api/public", publicRoute); //public route
 app.get("/", (req, res) => {
   res.send("PlanYourFuture API Server is running!");
 });
