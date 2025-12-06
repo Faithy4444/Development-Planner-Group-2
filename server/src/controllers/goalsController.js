@@ -295,9 +295,7 @@ export const markGoalComplete = async (req, res) => {
   }
 };
  
-
-
-//Public route for public view of goal
+//Public route for PUBLIC VIEW of goal
 export const getPublicGoalById = async (req, res) => {
   const { id } = req.params;
   try {
