@@ -8,17 +8,17 @@ const DashboardPage = () => {
   const { executeFetch, loading, error } = useFetch();
   useEffect(() => {
     const fetchGoals = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-      console.error("No token found. User is not authenticated.");
-      return;
-    }
-    const options = {
-      headers: {
-        'x-auth-token': token,
-      },
-    };
-      const data = await executeFetch("http://localhost:3000/api/goals", "GET", options);
+        console.error("No token found. User is not authenticated.");
+        return;
+      }
+      const options = {
+        headers: {
+          "x-auth-token": token,
+        },
+      };
+      const data = await executeFetch("/api/goals", "GET", options);
       setUserGoals(data || []);
     };
     fetchGoals();
