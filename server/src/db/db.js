@@ -1,5 +1,7 @@
 import pg from "pg";
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config();
+
 const { Pool } = pg;
 
 const pool = new Pool({
@@ -7,12 +9,11 @@ const pool = new Pool({
 });
 
 pool
-  .connect()
+  .query("SELECT NOW()")
   .then(() => console.log("Connected to PostgreSQL!"))
   .catch((err) => console.error("Connection error:", err));
 
 export { pool };
 
-export async function query(text, params) {
-  return pool.query(text, params);
-}
+//just neater import
+export const query = (text, params) => pool.query(text, params);

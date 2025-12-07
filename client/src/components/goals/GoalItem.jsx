@@ -6,12 +6,38 @@ import { useFetch } from "../../useFetch";
 import { Modal } from "../modals/modal";
 import { createPortal } from "react-dom";
 
-export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
+export const GoalItem = ({
+  goal,
+  updateGoalPrivacy,
+  updateGoalCompletion,
+  onDelete,
+}) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const { executeFetch, loading, error } = useFetch();
 
   const [PrivacyModalOpen, setPrivacyModalOpen] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(goal.is_completed);
+
+  //toggle logic
+  const handleToggleComplete = async () => {
+    const newState = !isCompleted;
+    setIsCompleted(newState);
+    updateGoalCompletion(goal.id, newState);
+
+    try {
+      const data = await executeFetch(
+        `/api/goals/${goal.id}/complete`,
+        "PATCH"
+      );
+      console.log("Toggle response:", data);
+    } catch (err) {
+      setIsCompleted(!newState);
+      updateGoalCompletion(goal.id, !newState);
+      console.error(err);
+      alert("Couldn't update goal 😭");
+    }
+  };
 
   const openPrivacyModal = () => setPrivacyModalOpen(true);
   const closePrivacyModal = () => setPrivacyModalOpen(false);
@@ -34,6 +60,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
   };
 
   const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this goal?"
+    );
+    if (!confirmed) return;
+
     const result = await executeFetch(`/api/goals/${goal.id}`, "DELETE");
 
     if (result !== null) {
@@ -47,8 +78,6 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
       // Update state in Dashboard
       updateGoalPrivacy(goal.id, result.newValue);
     }
-
-    closePrivacyModal();
   };
 
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
@@ -56,13 +85,18 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
     const body = {
       goal_id: goal.id,
       title: newTask.title,
-      user_id: 6,
+      user_id: 3,
     };
     const savedTask = await executeFetch("/api/tasks", "POST", body);
     // Update state and ui
     setTasks((prev) => [...prev, savedTask]);
     setShowAddForm(false);
   };
+
+  const handleDeleteTask = async (taskId) => {
+    setTasks(tasks.filter((task) => task.id != taskId));
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
 
@@ -75,6 +109,15 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
             Change plan privacy:
             {goal.is_private ? " Private" : " Public"}
           </button>
+          <label className="btn-icon" style={{ cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={isCompleted}
+              onChange={handleToggleComplete}
+              style={{ marginRight: "6px" }}
+            />
+            {isCompleted ? "Completed" : "Mark Goal complete"}
+          </label>
           {createPortal(
             <Modal
               isOpen={PrivacyModalOpen}
@@ -111,6 +154,18 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
           <strong>Relevant</strong>
           <p>{goal.relevant}</p>
         </div>
+        <div className="detail-item">
+          <strong>Time bound</strong>
+          {/* <p>{time_bound}</p> */}
+          <p>
+            {/* need to convert date from iso format to more user-friendly interface */}
+            {new Date(goal.time_bound).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+        </div>
       </div>
 
       <div className="goal-progress">
@@ -124,7 +179,11 @@ export const GoalItem = ({ goal, updateGoalPrivacy, onDelete }) => {
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      <TaskList tasks={tasks} onToggle={handleToggleTask} />
+      <TaskList
+        tasks={tasks}
+        onToggle={handleToggleTask}
+        handleDeleteTask={handleDeleteTask}
+      />
 
       {/* Show Add Task Form */}
       {showAddForm ? (

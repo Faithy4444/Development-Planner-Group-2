@@ -6,7 +6,9 @@ export const useFetch = () => {
   const [error, setError] = useState(null);
 
   const executeFetch = useCallback(async (url, method = "GET", body = null) => {
+    const token = localStorage.getItem("token");
     const actualUrl = apiUrl(url);
+
     setLoading(true);
     setError(null);
 
@@ -14,18 +16,39 @@ export const useFetch = () => {
       method,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      ...(body ? { body: JSON.stringify(body) } : {}),
     };
+
+    if (token) {
+      options.headers.Authorization = `Bearer ${token}`;
+    }
+
+    if (body && method !== "GET" && method !== "HEAD") {
+      options.body = JSON.stringify(body);
+    }
 
     try {
       const response = await fetch(actualUrl, options);
 
+      // Try to read JSON, but safely
+      let data = null;
+      data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Handle expired tokens
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return null;
+        }
+
+        const message =
+          data?.message || `HTTP error! status: ${response.status}`;
+
+        throw new Error(message);
       }
 
-      const data = await response.json();
       return data;
     } catch (err) {
       console.error("Fetch error:", err);
