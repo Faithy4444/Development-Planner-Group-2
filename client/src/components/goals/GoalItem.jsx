@@ -105,19 +105,18 @@ export const GoalItem = ({
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
-          <button className="btn-icon" onClick={openPrivacyModal}>
-            Change plan privacy:
-            {goal.is_private ? " Private" : " Public"}
-          </button>
-          <label className="btn-icon" style={{ cursor: "pointer" }}>
+          <label className="btn-icon">
             <input
               type="checkbox"
               checked={isCompleted}
               onChange={handleToggleComplete}
-              style={{ marginRight: "6px" }}
             />
             {isCompleted ? "Completed" : "Mark Goal complete"}
           </label>
+          <button className="btn-icon" onClick={openPrivacyModal}>
+            Change plan privacy:
+            {goal.is_private ? " Private" : " Public"}
+          </button>
           {createPortal(
             <Modal
               isOpen={PrivacyModalOpen}
