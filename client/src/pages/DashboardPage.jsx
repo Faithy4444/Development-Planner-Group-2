@@ -3,9 +3,11 @@ import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
+
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const { executeFetch, loading, error } = useFetch();
+
   useEffect(() => {
     const fetchGoals = async () => {
       const token = localStorage.getItem("token");
@@ -36,30 +38,53 @@ const DashboardPage = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
-  return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>Your Dashboard</h1>
-        <Link to="/create-goal" className="btn-primary">
-          Create New Goal
-        </Link>
-      </div>
-      {userGoals && userGoals.length > 0 ? (
-        <GoalList
-          goals={userGoals}
-          setUserGoals={setUserGoals}
-          updateGoalPrivacy={updateGoalPrivacy}
-          deleteGoal={deleteGoal}
-        />
-      ) : (
-        <div className="empty-state">
-          <h2>Welcome to your planner!</h2>
-          <p>
-            You haven't created any goals yet. Click the button above to get
-            started.
-          </p>
+  
+   return (
+    <div className="dashboard-page">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <h2>Planner</h2>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+              <Link to="/completed-goals">Completed Goals</Link>
+            </li>
+            <li>
+              <Link to="/settings">Settings</Link>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Main content */}
+      <main className="dashboard-content">
+        <div className="dashboard-header">
+          <h1>Your Dashboard</h1>
+          <Link to="/create-goal" className="btn-primary">
+            Create New Goal
+          </Link>
         </div>
-      )}
+
+        {userGoals.length > 0 ? (
+          <GoalList
+            goals={userGoals}
+            setUserGoals={setUserGoals}
+            updateGoalPrivacy={updateGoalPrivacy}
+            deleteGoal={deleteGoal}
+          />
+        ) : (
+          <div className="empty-state">
+            <h2>Welcome to your planner!</h2>
+            <p>
+              You haven't created any goals yet. Click the button above to get
+              started.
+            </p>
+          </div>
+        )}
+      </main>
     </div>
   );
 };

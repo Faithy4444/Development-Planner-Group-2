@@ -7,3 +7,99 @@
 .dashboard-header h1 { margin: 0; font-size: 2rem; }
 .btn-primary { background-color: var(--cyf-pink); color: var(--cyf-white); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 700; }
 .empty-state { text-align: center; padding: 4rem; background-color: var(--cyf-white); border-radius: 12px; }
+
+.btn-primary { 
+  background-color: var(--cyf-pink); 
+  color: var(--cyf-white); 
+  border: none; 
+  padding: 0.75rem 1.5rem; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  font-weight: 700; 
+}
+.empty-state { 
+  text-align: center; 
+  padding: 4rem; 
+  background-color: var(--cyf-white); 
+  border-radius: 12px; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Layout */
+.dashboard-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #f5f5f5; /* neutral light background */
+  color: #333;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cyf-pink);
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar nav a:hover {
+  background-color: var(--cyf-pink);
+  color: var(--cyf-white);
+}
+
+/* Active link styling */
+.sidebar nav a.active {
+  background-color: var(--cyf-pink);
+  color: var(--cyf-white);
+}
+
+/* Main content */
+.dashboard-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin: 1rem;
+  min-height: calc(100vh - 2rem);
+}
+
+/* Hide sidebar on small screens */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .dashboard-content {
+    margin: 0;
+    border-radius: 0; 
+    box-shadow: none; 
+    padding: 1rem;
+  }
+}
