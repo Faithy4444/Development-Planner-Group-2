@@ -14,3 +14,15 @@ export async function createGoal(page, goalTitle) {
   await page.getByLabel("time-bound").fill("2026-02-02");
   await page.getByRole("button", { name: "Save Goal" }).click();
 }
+
+export async function loginAsAndrei(page) {
+  await page
+    .locator(".form-toggle")
+    .getByRole("button", { name: "Log In" })
+    .click();
+  await page.getByRole("textbox", { name: "Email" }).click();
+  await page.getByRole("textbox", { name: "Email" }).fill("andrei@example.com");
+  await page.getByRole("textbox", { name: "Password" }).click();
+  await page.getByRole("textbox", { name: "Password" }).fill("password123");
+  await page.locator("form").getByRole("button", { name: "Log In" }).click();
+}

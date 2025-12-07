@@ -5,7 +5,6 @@ import { deleteGoal, createGoal } from "./test_utils";
 test("User can see the dashboard", async ({ page }) => {
   await page.goto("/dashboard");
   await expect(page.locator(".dashboard-container")).toBeVisible();
-  // await page.pause();
 });
 
 test("User can create a goal", async ({ page }) => {

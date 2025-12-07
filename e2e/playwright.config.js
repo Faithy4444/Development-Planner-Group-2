@@ -34,9 +34,9 @@ export default defineConfig({
     trace: "on-first-retry",
 
     // this option is slowing down the test, so tester can see what app is doing in a page
-    launchOptions: {
-      slowMo: 700,
-    },
+    // launchOptions: {
+    //   slowMo: 700,
+    // },
   },
 
   /* Configure projects for major browsers */
