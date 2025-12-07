@@ -46,6 +46,8 @@ export const GoalItem = ({
   const completedTasks = tasks.filter((task) => task.is_completed).length;
   const progressPercentage =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  const showTaskWarning = tasks.length < 3;
+
 
   const handleAddTaskClick = () => setShowAddForm(true);
 
