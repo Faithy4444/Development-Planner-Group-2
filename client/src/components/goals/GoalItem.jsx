@@ -78,8 +78,6 @@ export const GoalItem = ({
       // Update state in Dashboard
       updateGoalPrivacy(goal.id, result.newValue);
     }
-
-    closePrivacyModal();
   };
 
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.

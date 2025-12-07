@@ -12,14 +12,18 @@ export const createGoal = async (req, res) => {
     );
     res.status(201).json(newGoal.rows[0]);
   } catch (err) {
-    console.error('Create goal error:', err.message);
-    if (err.code === '23505') {  // Duplicate key error
-      return res.status(409).json({ error: 'Goal creation conflict. Reset sequence or try different data.' });
+    console.error("Create goal error:", err.message);
+    if (err.code === "23505") {
+      // Duplicate key error
+      return res.status(409).json({
+        error: "Goal creation conflict. Reset sequence or try different data.",
+      });
     }
     res.status(500).json({
-      error: 'Server Error', details: err.message
+      error: "Server Error",
+      details: err.message,
     });
-    }
+  }
 };
 
 // READ ALL
@@ -77,7 +81,6 @@ ORDER BY g.id, t.id;
   }
 };
 
-
 //READ ALL GOALS FOR A SPECIFIC USER
 export const getGoalsByUser = async (req, res) => {
   const { id: userId } = req.user;
@@ -117,7 +120,7 @@ export const getGoalById = async (req, res) => {
       t.id AS task_id, t.title AS task_title, t.is_completed
       FROM goals g
       LEFT JOIN tasks t ON t.goal_id = g.id
-      WHERE g.id = $1
+      WHERE g.id = $1 and g.is_private = false
       ORDER BY t.id
     `,
       [id]
@@ -185,7 +188,6 @@ export const updateGoal = async (req, res) => {
         is_private,
         id,
       ]
-
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
@@ -262,7 +264,7 @@ export const getActiveGoals = async () => {
     `);
     return result.rows;
   } catch (err) {
-    console.error('getActiveGoalsData error:', err);
+    console.error("getActiveGoalsData error:", err);
     return [];
   }
 };
@@ -277,7 +279,7 @@ export const markGoalComplete = async (req, res) => {
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
-    
+
     const currentValue = !result.rows[0].is_completed;
 
     const updated = await pool.query(
@@ -286,8 +288,8 @@ export const markGoalComplete = async (req, res) => {
     );
 
     res.json({
-      message: `Goal ${currentValue ? 'marked complete' : 'marked incomplete'}`,
-      goal: updated.rows[0]
+      message: `Goal ${currentValue ? "marked complete" : "marked incomplete"}`,
+      goal: updated.rows[0],
     });
   } catch (err) {
     console.error(err);

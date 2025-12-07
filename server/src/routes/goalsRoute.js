@@ -11,7 +11,7 @@ import {
   deleteGoal,
   getActiveGoals,
   markGoalComplete,
-   updateGoalPrivacy,
+  updateGoalPrivacy,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
@@ -24,8 +24,7 @@ router.post("/", authMiddleware, createGoal);
 router.delete("/:id", authMiddleware, deleteGoal);
 
 router.put("/:id", updateGoal);
-
-//Not sure if we need to get goal by ID, but will keep it here, in case we need it in a future
+// endpoint for mentor who review goal. Mentor don't have an account, so we don't use auth check here
 router.get("/:id", getGoalById);
 router.put("/:id", updateGoal);
 router.put("/privacy/:id", updateGoalPrivacy);
