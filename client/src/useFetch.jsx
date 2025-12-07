@@ -31,7 +31,7 @@ export const useFetch = () => {
       let data = null;
       try {
         data = await response.json();
-      } catch (_) {
+      } catch {
         data = null;
       }
 
