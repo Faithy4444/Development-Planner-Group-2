@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
+
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const { executeFetch, loading, error } = useFetch();
@@ -24,12 +25,20 @@ const DashboardPage = () => {
     fetchGoals();
   }, [executeFetch]);
 
+  // --- SORT WITHOUT MUTATING STATE ---
+  const sortedGoals = [...userGoals].sort((a, b) => {
+    return Number(a.is_completed) - Number(b.is_completed);
+  });
   const updateGoalPrivacy = (goalId, newPrivacy) => {
     setUserGoals((prev) =>
       prev.map((g) => (g.id === goalId ? { ...g, is_private: newPrivacy } : g))
     );
   };
-
+  const updateGoalCompletion = (id, newValue) => {
+    setUserGoals((prevGoals) =>
+      prevGoals.map((g) => (g.id === id ? { ...g, is_completed: newValue } : g))
+    );
+  };
   const deleteGoal = (goalId) => {
     setUserGoals(userGoals.filter((goal) => goal.id != goalId));
   };
@@ -44,12 +53,12 @@ const DashboardPage = () => {
           Create New Goal
         </Link>
       </div>
-      {userGoals && userGoals.length > 0 ? (
+      {sortedGoals.length > 0 ? (
         <GoalList
-          goals={userGoals}
-          setUserGoals={setUserGoals}
+          goals={sortedGoals}
           updateGoalPrivacy={updateGoalPrivacy}
           deleteGoal={deleteGoal}
+          updateGoalCompletion={updateGoalCompletion}
         />
       ) : (
         <div className="empty-state">
