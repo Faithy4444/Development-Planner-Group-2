@@ -12,14 +12,18 @@ export const createGoal = async (req, res) => {
     );
     res.status(201).json(newGoal.rows[0]);
   } catch (err) {
-    console.error('Create goal error:', err.message);
-    if (err.code === '23505') {  // Duplicate key error
-      return res.status(409).json({ error: 'Goal creation conflict. Reset sequence or try different data.' });
+    console.error("Create goal error:", err.message);
+    if (err.code === "23505") {
+      // Duplicate key error
+      return res.status(409).json({
+        error: "Goal creation conflict. Reset sequence or try different data.",
+      });
     }
     res.status(500).json({
-      error: 'Server Error', details: err.message
+      error: "Server Error",
+      details: err.message,
     });
-    }
+  }
 };
 
 // READ ALL
@@ -76,7 +80,6 @@ ORDER BY g.id, t.id;
     res.status(500).send("Server error");
   }
 };
-
 
 //READ ALL GOALS FOR A SPECIFIC USER
 export const getGoalsByUser = async (req, res) => {
@@ -158,6 +161,7 @@ export const getGoalById = async (req, res) => {
 
 // UPDATE
 export const updateGoal = async (req, res) => {
+  const userId = req.user.id;
   const { id } = req.params;
   const {
     title,
@@ -173,7 +177,7 @@ export const updateGoal = async (req, res) => {
     const result = await pool.query(
       `UPDATE goals
        SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6,is_completed=$7, is_private=$8
-       WHERE id=$9 RETURNING *`,
+       WHERE id=$9 AND user_id = $10 RETURNING *`,
       [
         title,
         specific,
@@ -184,8 +188,8 @@ export const updateGoal = async (req, res) => {
         is_completed || false,
         is_private,
         id,
+        userId,
       ]
-
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
@@ -262,7 +266,7 @@ export const getActiveGoals = async () => {
     `);
     return result.rows;
   } catch (err) {
-    console.error('getActiveGoalsData error:', err);
+    console.error("getActiveGoalsData error:", err);
     return [];
   }
 };
@@ -277,7 +281,7 @@ export const markGoalComplete = async (req, res) => {
     );
     if (result.rows.length === 0)
       return res.status(404).json({ message: "Goal not found" });
-    
+
     const currentValue = !result.rows[0].is_completed;
 
     const updated = await pool.query(
@@ -286,8 +290,8 @@ export const markGoalComplete = async (req, res) => {
     );
 
     res.json({
-      message: `Goal ${currentValue ? 'marked complete' : 'marked incomplete'}`,
-      goal: updated.rows[0]
+      message: `Goal ${currentValue ? "marked complete" : "marked incomplete"}`,
+      goal: updated.rows[0],
     });
   } catch (err) {
     console.error(err);
