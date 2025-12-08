@@ -1,11 +1,6 @@
 import { expect } from "@playwright/test";
 
-export async function deleteGoal(page) {
-  const lastGoal = page.locator(".goal-item-container").last();
-  const deleteBtn = lastGoal.getByRole("button", { name: "Delete" });
-  await expect(deleteBtn).toBeVisible();
-  await deleteBtn.click();
-}
+//Feel free to extract any repetitive actions and write utils here
 
 export async function createGoal(page, goalTitle) {
   await expect(page.locator(".form-container")).toBeVisible();
@@ -25,4 +20,12 @@ export async function loginAsAndrei(page) {
   await page.getByRole("textbox", { name: "Password" }).click();
   await page.getByRole("textbox", { name: "Password" }).fill("password123");
   await page.locator("form").getByRole("button", { name: "Log In" }).click();
+}
+
+export async function deleteGoalByName(page, name) {
+  page.once("dialog", (d) => d.accept());
+  const goal = await page.locator(".goal-item-container", { hasText: name });
+  console.log(goal);
+  await expect(goal).toBeVisible();
+  await goal.getByRole("button", { name: "Delete" }).click();
 }
