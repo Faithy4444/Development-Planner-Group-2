@@ -226,6 +226,50 @@ export const updateGoalPrivacy = async (req, res) => {
   }
 };
 
+// BULK UPDATE GOAL PRIVACY
+export const bulkUpdateGoalPrivacy = async (req, res) => {
+  // Get the logged-in user's ID from the security middleware.
+  const { id: userId } = req.user;
+  
+  // Get the array of goal IDs that the user wants to make public.
+  const { publicGoalIds } = req.body;
+
+  // A quick check to make sure the frontend sent the correct data type.
+  if (!Array.isArray(publicGoalIds)) {
+    return res.status(400).json({ msg: 'Expected an array of goal IDs.' });
+  }
+
+  try {
+    // A database transaction is a safe way to perform multiple updates.
+    // It ensures that either all the updates succeed, or none of them do.
+    await pool.query('BEGIN');
+
+    // Step 1: As a reset, set ALL of this user's goals to PRIVATE.
+    await pool.query('UPDATE goals SET is_private = true WHERE user_id = $1', [userId]);
+
+    // Step 2: Then, if the user selected any goals to make public...
+    if (publicGoalIds.length > 0) {
+      // ...update only those specific goals to be PUBLIC.
+      // The '= ANY($2)' syntax is an efficient way to match multiple IDs in an array.
+      await pool.query(
+        'UPDATE goals SET is_private = false WHERE user_id = $1 AND id = ANY($2)',
+        [userId, publicGoalIds]
+      );
+    }
+
+    // If both steps were successful, finalize the changes in the database.
+    await pool.query('COMMIT'); 
+    
+    res.json({ msg: 'Privacy settings updated successfully.' });
+
+  } catch (err) {
+    // If any error occurred during the process, undo all changes.
+    await pool.query('ROLLBACK'); 
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 // DELETE
 export const deleteGoal = async (req, res) => {
   const { id: goalId } = req.params;

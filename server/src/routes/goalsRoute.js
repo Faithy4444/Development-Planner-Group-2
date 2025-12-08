@@ -12,6 +12,7 @@ import {
   getActiveGoals,
   markGoalComplete,
   updateGoalPrivacy,
+  bulkUpdateGoalPrivacy,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
@@ -28,6 +29,10 @@ router.put("/:id", updateGoal);
 router.get("/:id", getGoalById);
 router.put("/:id", updateGoal);
 router.put("/privacy/:id", updateGoalPrivacy);
+//This route is protected and will be used by the new "Share Modal"
+//to update the privacy settings for multiple goals at once.
+//PUT /api/goals/privacy
+router.put("/privacy", authMiddleware, bulkUpdateGoalPrivacy);
 router.delete("/:id", deleteGoal);
 router.get("/goals/active", getActiveGoals);
 router.patch("/:id/complete", markGoalComplete);
