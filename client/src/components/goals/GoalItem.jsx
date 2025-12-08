@@ -105,7 +105,7 @@ export const GoalItem = ({
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
-          <button className="btn-icon" onClick={openPrivacyModal}>
+          <button id="share" className="btn-icon" onClick={openPrivacyModal}>
             Change plan privacy:
             {goal.is_private ? " Private" : " Public"}
           </button>
