@@ -41,24 +41,7 @@ const DashboardPage = () => {
   
    return (
     <div className="dashboard-page">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <h2>Planner</h2>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/dashboard">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/help">Help</Link>
-            </li>
-            <li>
-              <Link to="/settings">Settings</Link>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-
+    
       {/* Main content */}
       <main className="dashboard-content">
         <div className="dashboard-header">
