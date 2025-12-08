@@ -39,18 +39,13 @@
 
 /* Hide menu button by default */
 .menu-button {
-  opacity: 0;
+  opacity: 1;
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
   padding: 4px;
   transition: opacity 0.2s ease;
-}
-
-/* Show menu button on hover */
-.task-item:hover .menu-button {
-  opacity: 1;
 }
 
 .dropdown-menu {
