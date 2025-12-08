@@ -200,33 +200,7 @@ export const updateGoal = async (req, res) => {
   }
 };
 
-//UPDATE GOAL PRIVACY
-
-export const updateGoalPrivacy = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const result = await pool.query(
-      `UPDATE goals
-       SET is_private= NOT is_private
-       WHERE id=$1
-       RETURNING *`,
-      [id]
-    );
-
-    if (result.rows.length === 0)
-      return res.status(404).json({ message: "Goal not found" });
-    console.log(
-      `user changed privacy of goal with id ${id} to ${result.rows[0].is_private}`
-    );
-    res.json({ newValue: result.rows[0].is_private });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
-
-// Add this new, corrected function to your goalsController.js file.
+//Update Goal Privacy : Bulk
 
 export const bulkUpdateGoalPrivacy = async (req, res) => {
   const { id: userId } = req.user;

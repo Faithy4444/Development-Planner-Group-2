@@ -7,7 +7,6 @@ import {
   updateGoal,
   deleteGoal,
   markGoalComplete,
-  updateGoalPrivacy,
   bulkUpdateGoalPrivacy,
   getActiveGoals,
 } from "../controllers/goalsController.js";
@@ -22,6 +21,5 @@ router.get("/:id", authMiddleware, getGoalById);
 router.put("/:id", authMiddleware, updateGoal);
 router.delete("/:id", authMiddleware, deleteGoal);
 router.patch("/:id/complete", authMiddleware, markGoalComplete);
-router.patch("/:id/toggle-privacy", authMiddleware, updateGoalPrivacy);
 
 export default router;
