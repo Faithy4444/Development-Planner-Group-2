@@ -8,6 +8,7 @@ import DashboardPage from './pages/DashboardPage';
 import CreateGoalPage from './pages/CreateGoalPage';
 import './styles/global.css';
 import HelpPage from "./pages/helpPage";
+import SettingsPage from "./pages/settingsPage";
  
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/create-goal" element={<CreateGoalPage />} />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
 
