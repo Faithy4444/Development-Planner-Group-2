@@ -145,3 +145,37 @@ export const getUserName = async (req, res) => {
     res.status(500).send('Server error');
   }
 }
+
+// This function fetches all PUBLIC goals for a specific user.
+export const getPublicUserData = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const userResult = await query('SELECT id, username FROM users WHERE id = $1', [userId]);
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ msg: 'User not found.' });
+    }
+
+    //fetch ONLY the goals for this user that are NOT private.
+    //fetch the tasks for each of those public goals.
+    const goalsResult = await query(
+      `SELECT g.*, COALESCE((SELECT json_agg(t.* ORDER BY t.created_at) FROM tasks t WHERE t.goal_id = g.id), '[]') AS tasks
+       FROM goals g
+       WHERE g.user_id = $1 AND g.is_private = false
+       ORDER BY g.created_at DESC`,
+      [userId]
+    );
+
+    // Assemble the response payload.
+    const responsePayload = {
+      owner_username: userResult.rows[0].username,
+      public_goals: goalsResult.rows,
+    };
+
+    res.json(responsePayload);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
