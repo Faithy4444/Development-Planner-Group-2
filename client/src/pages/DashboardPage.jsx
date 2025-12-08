@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
-import { ShareModal } from "../components/modals/ShareModal";
 import { SharePlanModal } from "../components/modals/SharePlanModal";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
@@ -66,7 +65,7 @@ return (
       <div className="empty-state">
       </div>
     )}
-    <ShareModal 
+    <SharePlanModal 
       isOpen={isShareModalOpen}
       onClose={() => setShareModalOpen(false)}
       goals={userGoals}

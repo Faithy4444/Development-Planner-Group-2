@@ -1,40 +1,27 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
-//import { pool } from "../db/db.js";
-//import { query as dbQuery } from "../db.js"; // Use the corrected named import //remove
 import {
   createGoal,
-  getAllGoalsWithTasks,
   getGoalsByUser,
   getGoalById,
   updateGoal,
   deleteGoal,
-  getActiveGoals,
   markGoalComplete,
   updateGoalPrivacy,
   bulkUpdateGoalPrivacy,
+  getActiveGoals,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
 
-// GET all goals for the logged-in user
-router.get("/", authMiddleware, getGoalsByUser);
-// POST a new goal for the logged-in user
-router.post("/", authMiddleware, createGoal);
-// DELETE a goal for the logged-in user
-router.delete("/:id", authMiddleware, deleteGoal);
-
-router.put("/:id", updateGoal);
-// endpoint for mentor who review goal. Mentor don't have an account, so we don't use auth check here
-router.get("/:id", getGoalById);
-router.put("/:id", updateGoal);
-router.put("/privacy/:id", updateGoalPrivacy);
-//This route is protected and will be used by the new "Share Modal"
-//to update the privacy settings for multiple goals at once.
-//PUT /api/goals/privacy
 router.put("/privacy", authMiddleware, bulkUpdateGoalPrivacy);
-router.delete("/:id", deleteGoal);
-router.get("/goals/active", getActiveGoals);
-router.patch("/:id/complete", markGoalComplete);
+router.get("/active", authMiddleware, getActiveGoals);
+router.get("/", authMiddleware, getGoalsByUser);
+router.post("/", authMiddleware, createGoal);
+router.get("/:id", authMiddleware, getGoalById);
+router.put("/:id", authMiddleware, updateGoal);
+router.delete("/:id", authMiddleware, deleteGoal);
+router.patch("/:id/complete", authMiddleware, markGoalComplete);
+router.patch("/:id/toggle-privacy", authMiddleware, updateGoalPrivacy);
 
 export default router;
