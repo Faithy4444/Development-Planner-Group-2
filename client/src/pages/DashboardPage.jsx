@@ -50,7 +50,7 @@ const DashboardPage = () => {
               <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <Link to="/completed-goals">Completed Goals</Link>
+              <Link to="/help">Help</Link>
             </li>
             <li>
               <Link to="/settings">Settings</Link>
