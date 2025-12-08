@@ -28,7 +28,7 @@
 
 .coming-soon-card h2 {
   margin-bottom: 0.5rem;
-  color: #c21884; /* or var(--cyf-pink) if you have it */
+  color: #c21884;
 }
 
 .coming-soon-card p {
@@ -38,7 +38,7 @@
 
 /* Logout Button */
 .logout-btn {
-  background: #ff5252;
+  background: #c21884;
   color: white;
   padding: 0.8rem 1.2rem;
   border: none;

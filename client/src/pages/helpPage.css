@@ -22,7 +22,7 @@
 .help-page h2 {
   font-size: 1.4rem;
   margin-bottom: 0.8rem;
-  color: var(--cyf-pink, #cc2288); /* fallback if your variable doesn't exist */
+  color: var(--cyf-pink, #cc2288);
 }
 
 .help-page p {
