@@ -120,7 +120,7 @@ export const getGoalById = async (req, res) => {
       t.id AS task_id, t.title AS task_title, t.is_completed
       FROM goals g
       LEFT JOIN tasks t ON t.goal_id = g.id
-      WHERE g.id = $1
+      WHERE g.id = $1 and g.is_private = false
       ORDER BY t.id
     `,
       [id]

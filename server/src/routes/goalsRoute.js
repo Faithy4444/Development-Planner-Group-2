@@ -1,7 +1,5 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
-//import { pool } from "../db/db.js";
-//import { query as dbQuery } from "../db.js"; // Use the corrected named import //remove
 import {
   createGoal,
   getAllGoalsWithTasks,
@@ -16,16 +14,11 @@ import {
 
 const router = express.Router();
 
-// GET all goals for the logged-in user
+
 router.get("/", authMiddleware, getGoalsByUser);
-// POST a new goal for the logged-in user
 router.post("/", authMiddleware, createGoal);
-// DELETE a goal for the logged-in user
 router.delete("/:id", authMiddleware, deleteGoal);
-
 router.put("/:id", authMiddleware, updateGoal);
-
-//Not sure if we need to get goal by ID, but will keep it here, in case we need it in a future
 router.get("/:id", getGoalById);
 router.put("/privacy/:id", updateGoalPrivacy);
 router.get("/goals/active", getActiveGoals);
