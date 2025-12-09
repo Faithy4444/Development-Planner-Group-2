@@ -39,18 +39,13 @@
 
 /* Hide menu button by default */
 .menu-button {
-  opacity: 0;
+  opacity: 1;
   background: none;
   border: none;
   font-size: 20px;
   cursor: pointer;
   padding: 4px;
   transition: opacity 0.2s ease;
-}
-
-/* Show menu button on hover */
-.task-item:hover .menu-button {
-  opacity: 1;
 }
 
 .dropdown-menu {
@@ -76,4 +71,15 @@
 
 .dropdown-menu button:hover {
   background: #f3f3f3;
+}
+
+.task-list input, .task-list textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: 1px solid var(--cyf-light-gray);
+  border-radius: 8px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }

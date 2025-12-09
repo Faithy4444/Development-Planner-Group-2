@@ -5,6 +5,7 @@ import { SharePlanModal } from "../components/modals/SharePlanModal";
 import { FeedbackList } from "../components/feedback/FeedbackList";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
+
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
@@ -39,35 +40,58 @@ useEffect(() => {
   fetchDashboardData();
 }, [executeFetch]);
 
+  // --- SORT WITHOUT MUTATING STATE ---
+  const sortedGoals = [...userGoals].sort((a, b) => {
+    return Number(a.is_completed) - Number(b.is_completed);
+  });
   const updateGoalPrivacy = (goalId, newPrivacy) => {
     setUserGoals((prev) =>
       prev.map((g) => (g.id === goalId ? { ...g, is_private: newPrivacy } : g))
     );
   };
-
+  const updateGoalCompletion = (id, newValue) => {
+    setUserGoals((prevGoals) =>
+      prevGoals.map((g) => (g.id === id ? { ...g, is_completed: newValue } : g))
+    );
+  };
   const deleteGoal = (goalId) => {
     setUserGoals(userGoals.filter((goal) => goal.id != goalId));
   };
 
+  // ADDED: Missing editGoal function
+  const editGoal = (goalId, editedGoal) => {
+    setUserGoals((prevGoals) =>
+      prevGoals.map((goal) => (goal.id === goalId ? editedGoal : goal))
+    );
+  };
+
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
- // This is the updated return statement for DashboardPage.jsx
+  // This is the updated return statement for DashboardPage.jsx
 
-return (
-  <div className="dashboard-container">
-    <div className="dashboard-header">
-      <h1>Your Dashboard</h1>
-      <div>
-        <button onClick={() => setShareModalOpen(true)} className="btn-secondary">
-          Share Goal(s)
-        </button>
-        <Link to="/create-goal" className="btn-primary" style={{ marginLeft: '1rem' }}>
-          Create New Goal
-        </Link>
+  return (
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h1>Your Dashboard</h1>
+        <div>
+          <button
+            onClick={() => setShareModalOpen(true)}
+            className="btn-primary"
+          >
+            Share Goal(s)
+          </button>
+          <Link
+            to="/create-goal"
+            className="btn-primary"
+            style={{ marginLeft: "1rem" }}
+          >
+            Create New Goal
+          </Link>
+        </div>
       </div>
-    </div>
 
-    {userGoals && userGoals.length > 0 ? (
+{userGoals && userGoals.length > 0 ? (
       <GoalList
         goals={userGoals}
         setUserGoals={setUserGoals}
@@ -87,7 +111,6 @@ return (
       updateGoalPrivacy={updateGoalPrivacy}
     />
   </div>
- 
   
 );
 };
