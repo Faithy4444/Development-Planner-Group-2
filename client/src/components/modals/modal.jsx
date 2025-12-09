@@ -34,13 +34,17 @@ export function Modal({ isOpen, onClose, privateSetting, onChange, goalId }) {
         {privateSetting && <p>No sharable link</p>}
         {!privateSetting && (
           <div className="public-link-box">
-            {linkSaved ? <p>Link has been copyied</p> : ""}
+            {linkSaved ? <p>Link has been copied</p> : ""}
             <p>
               <strong>Shareable Link:</strong>
             </p>
             <div className="link-row">
-              <input type="text" value={shareLink} readOnly />
-              <button onClick={copyToClipboard} className="btn-primary">
+              <input id="shareLink" type="text" value={shareLink} readOnly />
+              <button
+                id="copyLink"
+                onClick={copyToClipboard}
+                className="btn-primary"
+              >
                 Copy
               </button>
             </div>
