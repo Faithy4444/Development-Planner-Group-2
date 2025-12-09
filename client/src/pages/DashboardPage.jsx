@@ -45,36 +45,21 @@ const DashboardPage = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>Your Dashboard</h1>
-        <Link to="/create-goal" className="btn-primary">
-          Create New Goal
-        </Link>
+    
+    <main className="dashboard-container">
+        <div className="dashboard-header">
+          <h1>Your Dashboard</h1>
+          <Link to="/create-goal" className="btn-primary">
+            Create New Goal
+          </Link>
       </div>
-      {userGoals && userGoals.length > 0 ? (
-        <GoalList
-          goals={userGoals}
-          setUserGoals={setUserGoals}
-          updateGoalPrivacy={updateGoalPrivacy}
-          deleteGoal={deleteGoal}
-          editGoal={editGoal}
-        />
-      ) : (
-        <div className="empty-state">
-          <h2>Welcome to your planner!</h2>
-          <p>
-            You haven't created any goals yet. Click the button above to get
-            started.
-          </p>
-        </div>
-
-        {userGoals.length > 0 ? (
+        {userGoals && userGoals.length > 0 ? (
           <GoalList
             goals={userGoals}
             setUserGoals={setUserGoals}
             updateGoalPrivacy={updateGoalPrivacy}
             deleteGoal={deleteGoal}
+            editGoal={editGoal}
           />
         ) : (
           <div className="empty-state">
@@ -85,8 +70,7 @@ const DashboardPage = () => {
             </p>
           </div>
         )}
-      </main>
-    </div>
-  );
+    </main>
+  )
 };
 export default DashboardPage;
