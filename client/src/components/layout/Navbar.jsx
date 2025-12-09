@@ -5,6 +5,13 @@ import './Navbar.css';
 export const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  //logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
@@ -34,11 +41,6 @@ export const Navbar = () => {
 
     fetchUserData();
   }, []);
-//logout
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
-  };
 
   return (
     <nav className="navbar">

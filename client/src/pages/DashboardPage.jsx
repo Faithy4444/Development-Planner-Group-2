@@ -46,6 +46,14 @@ const DashboardPage = () => {
     setUserGoals(userGoals.filter((goal) => goal.id != goalId));
   };
 
+  // ADDED: Missing editGoal function
+  const editGoal = (goalId, editedGoal) => {
+    setUserGoals((prevGoals) =>
+      prevGoals.map((goal) => (goal.id === goalId ? editedGoal : goal))
+    );
+  };
+
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
   // This is the updated return statement for DashboardPage.jsx
@@ -57,7 +65,7 @@ const DashboardPage = () => {
         <div>
           <button
             onClick={() => setShareModalOpen(true)}
-            className="btn-secondary"
+            className="btn-primary"
           >
             Share Goal(s)
           </button>
@@ -76,10 +84,9 @@ const DashboardPage = () => {
           updateGoalPrivacy={updateGoalPrivacy}
           deleteGoal={deleteGoal}
           updateGoalCompletion={updateGoalCompletion}
-          deleteGoal={deleteGoal}
           editGoal={editGoal}
         />
-      ) : (--------
+      ) : (
         <div className="empty-state">
           <h2>Welcome to your planner!</h2>
           <p>
