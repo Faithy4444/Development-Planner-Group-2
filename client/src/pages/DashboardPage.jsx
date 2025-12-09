@@ -2,29 +2,42 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
 import { SharePlanModal } from "../components/modals/SharePlanModal";
+import { FeedbackList } from "../components/feedback/FeedbackList";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
+const [feedback, setFeedback] = useState([]);
   const { executeFetch, loading, error } = useFetch();
-  useEffect(() => {
-    const fetchGoals = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found. User is not authenticated.");
-        return;
-      }
-      const options = {
-        headers: {
-          "x-auth-token": token,
-        },
-      };
-      const data = await executeFetch("/api/goals", "GET", options);
-      setUserGoals(data || []);
+// This is the corrected useEffect block for your DashboardPage.jsx
+
+useEffect(() => {
+  const fetchDashboardData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found. User is not authenticated.");
+      return;
+    }
+    
+    // This options object is now CORRECT and can be reused.
+    const options = {
+      headers: {
+        'Authorization': `Bearer ${token}`, // <-- THE FIX
+      },
     };
-    fetchGoals();
-  }, [executeFetch]);
+
+    // Fetch the goals using the corrected options.
+    const goalsData = await executeFetch("/api/goals", "GET", null, options);
+    setUserGoals(goalsData || []);
+
+    // --- ADD THIS NEW PART: Fetch the feedback using the same options ---
+    const feedbackData = await execute-Fetch("/api/feedback", "GET", options);
+    setFeedback(feedbackData || []);
+  };
+
+  fetchDashboardData();
+}, [executeFetch]);
 
   const updateGoalPrivacy = (goalId, newPrivacy) => {
     setUserGoals((prev) =>
@@ -65,6 +78,7 @@ return (
       <div className="empty-state">
       </div>
     )}
+    {!loading && <FeedbackList feedbackItems={feedback} />}
     <SharePlanModal 
       isOpen={isShareModalOpen}
       onClose={() => setShareModalOpen(false)}
@@ -73,6 +87,8 @@ return (
       updateGoalPrivacy={updateGoalPrivacy}
     />
   </div>
+ 
+  
 );
 };
 export default DashboardPage;
