@@ -44,6 +44,8 @@ export const GoalItem = ({
   const completedTasks = tasks.filter((task) => task.is_completed).length;
   const progressPercentage =
     totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+  const showTaskWarning = tasks.length < 3;
+
 
   const handleAddTaskClick = () => setShowAddForm(true);
 
@@ -154,6 +156,12 @@ export const GoalItem = ({
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
+      {showTaskWarning && (
+      <p className="task-warning">
+        ⚠️ Add at least 3 tasks to help you achieve this goal.
+       </p>
+      )}
+
       <TaskList
         tasks={tasks}
         onToggle={handleToggleTask}

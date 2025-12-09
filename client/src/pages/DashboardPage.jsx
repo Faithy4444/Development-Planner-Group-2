@@ -9,6 +9,7 @@ const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
   const { executeFetch, loading, error } = useFetch();
+
   useEffect(() => {
     const fetchGoals = async () => {
       const token = localStorage.getItem("token");
@@ -75,8 +76,10 @@ const DashboardPage = () => {
           updateGoalPrivacy={updateGoalPrivacy}
           deleteGoal={deleteGoal}
           updateGoalCompletion={updateGoalCompletion}
+          deleteGoal={deleteGoal}
+          editGoal={editGoal}
         />
-      ) : (
+      ) : (--------
         <div className="empty-state">
           <h2>Welcome to your planner!</h2>
           <p>
