@@ -6,6 +6,7 @@ import { MainLayout } from './components/layout/MainLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DashboardPage from './pages/DashboardPage';
 import CreateGoalPage from './pages/CreateGoalPage';
+import SharedUserPlanPage from './pages/SharedUserPlanPage';
 import './styles/global.css';
 import HelpPage from "./pages/helpPage";
 import SettingsPage from "./pages/settingsPage";
@@ -17,6 +18,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       {/* The LandingPage now contains the login/register forms */}
       {/*private route for logged in users security checkpoint */}
+      <Route path="/share/user/:userId" element={<SharedUserPlanPage />} />
       <Route element={<ProtectedRoute />}>
         {/* All routes nested inside here are now protected */}
         <Route element={<MainLayout />}>
@@ -32,3 +34,4 @@ function App() {
 }
 
 export default App;
+

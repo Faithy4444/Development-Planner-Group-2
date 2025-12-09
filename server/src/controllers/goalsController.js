@@ -161,7 +161,6 @@ export const getGoalById = async (req, res) => {
 
 // UPDATE
 export const updateGoal = async (req, res) => {
-  const userId = req.user.id;
   const { id } = req.params;
   const {
     title,
@@ -177,7 +176,7 @@ export const updateGoal = async (req, res) => {
     const result = await pool.query(
       `UPDATE goals
        SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6,is_completed=$7, is_private=$8
-       WHERE id=$9 AND user_id = $10 RETURNING *`,
+       WHERE id=$9 RETURNING *`,
       [
         title,
         specific,
@@ -188,7 +187,6 @@ export const updateGoal = async (req, res) => {
         is_completed || false,
         is_private,
         id,
-        userId,
       ]
     );
     if (result.rows.length === 0)
@@ -202,29 +200,39 @@ export const updateGoal = async (req, res) => {
   }
 };
 
-//UPDATE GOAL PRIVACY
+//Update Goal Privacy : Bulk
 
-export const updateGoalPrivacy = async (req, res) => {
-  const { id } = req.params;
+export const bulkUpdateGoalPrivacy = async (req, res) => {
+  const { id: userId } = req.user;
+  const { publicGoalIds } = req.body;
+
+  if (!Array.isArray(publicGoalIds)) {
+    return res.status(400).json({ msg: 'Expected an array of goal IDs.' });
+  }
 
   try {
-    const result = await pool.query(
-      `UPDATE goals
-       SET is_private= NOT is_private
-       WHERE id=$1
-       RETURNING *`,
-      [id]
-    );
+    // --- THIS IS THE FIX ---
+    // All instances of 'query' have been changed to 'pool.query'
+    // to match the style of your existing, working code.
+    await pool.query('BEGIN');
 
-    if (result.rows.length === 0)
-      return res.status(404).json({ message: "Goal not found" });
-    console.log(
-      `user changed privacy of goal with id ${id} to ${result.rows[0].is_private}`
-    );
-    res.json({ newValue: result.rows[0].is_private });
+    await pool.query('UPDATE goals SET is_private = true WHERE user_id = $1', [userId]);
+
+    if (publicGoalIds.length > 0) {
+      await pool.query(
+        'UPDATE goals SET is_private = false WHERE user_id = $1 AND id = ANY($2)',
+        [userId, publicGoalIds]
+      );
+    }
+
+    await pool.query('COMMIT'); 
+    
+    res.json({ msg: 'Privacy settings updated successfully.' });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
+    await pool.query('ROLLBACK'); 
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
 };
 
@@ -286,7 +294,7 @@ export const markGoalComplete = async (req, res) => {
 
     const updated = await pool.query(
       "UPDATE goals SET is_completed = $1 WHERE id = $2 RETURNING *",
-      [!currentValue, id]
+      [currentValue, id]
     );
 
     res.json({
