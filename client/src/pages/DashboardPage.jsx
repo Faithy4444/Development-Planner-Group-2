@@ -65,7 +65,7 @@ const DashboardPage = () => {
         <div>
           <button
             onClick={() => setShareModalOpen(true)}
-            className="btn-secondary"
+            className="btn-primary"
           >
             Share Goal(s)
           </button>

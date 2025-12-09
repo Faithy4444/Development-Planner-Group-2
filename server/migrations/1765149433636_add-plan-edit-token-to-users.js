@@ -23,3 +23,4 @@ export const up = (pgm) => {
 export const down = (pgm) => {
   pgm.dropColumn('users', 'plan_edit_token');
 };
+
