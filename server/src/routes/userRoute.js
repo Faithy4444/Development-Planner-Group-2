@@ -3,8 +3,8 @@ import { body, validationResult } from "express-validator";
 import {
   register,
   login,
-  getFullUserData, 
-  getUserName , 
+  getFullUserData,
+  getUserName,
 } from "../controllers/userController.js";
 import authMiddleware from "../middleware/auth.js";
 
@@ -30,6 +30,6 @@ router.post(
 router.get("/:id/full", getFullUserData);
 
 //GET /api/users/me To load username
-router.get('/:id', authMiddleware, getUserName );
+router.get("/me", authMiddleware, getUserName);
 
 export default router;

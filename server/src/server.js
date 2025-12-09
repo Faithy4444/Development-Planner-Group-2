@@ -4,6 +4,7 @@ import "dotenv/config";
 import userRoute from "./routes/userRoute.js";
 import goalsRoutes from "./routes/goalsRoute.js";
 import taskRoutes from "./routes/tasksRoute.js";
+import publicRoute from "./routes/publicRoute.js";
 //import { pool } from "../db/db.js";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/users", userRoute);
 app.use("/api/goals", goalsRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/public", publicRoute);
 
 app.get("/", (req, res) => {
   res.send("PlanYourFuture API Server is running!");

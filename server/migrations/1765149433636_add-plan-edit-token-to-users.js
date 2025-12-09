@@ -5,20 +5,22 @@ export const shorthands = undefined;
 
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
- * @param run {() => void | undefined}
- * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-  pgm.addColumn("goals", {
-    is_private: { type: "boolean", notNull: true, default: true },
+  pgm.addColumn('users', {
+    plan_edit_token: { 
+      type: 'uuid',
+      unique: true,
+      // Let Node.js generate the UUID instead of Postgres
+      default: null 
+    }
   });
 };
 
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
- * @param run {() => void | undefined}
- * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-  pgm.dropColumn("goals", "is_private");
+  pgm.dropColumn('users', 'plan_edit_token');
 };
+
