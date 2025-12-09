@@ -1,5 +1,5 @@
 import React from "react";
-import "./HelpPage.css";
+import "./helpPage.css";
 
 
 export const HelpPage = () => {
