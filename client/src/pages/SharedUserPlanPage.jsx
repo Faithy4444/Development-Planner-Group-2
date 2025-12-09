@@ -8,6 +8,12 @@ const SharedUserPlanPage = () => {
   const { userId } = useParams();
   const { executeFetch, loading, error } = useFetch();
   const [planData, setPlanData] = useState(null);
+
+  const [mentorName, setMentorName] = useState('');
+  const [feedbackText, setFeedbackText] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
   useEffect(() => {
     const fetchPublicPlan = async () => {
       const data = await executeFetch(`/api/public/user/${userId}/plan`);
@@ -35,6 +41,29 @@ const SharedUserPlanPage = () => {
         </div>
     );
   }
+
+//Feedback submittion handler
+const handleFeedbackSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setSubmitSuccess(false);
+  const result = await executeFetch(
+    `/api/public/user/${userId}/feedback`,
+    'POST',
+    { 
+      mentorName, 
+      feedbackText 
+    }
+  );
+
+  setIsSubmitting(false);
+  if (result) {
+    setSubmitSuccess(true);
+    setMentorName('');
+    setFeedbackText('');
+  }
+};
+
   return (
     <div className="shared-plan-container">
       <header className="shared-plan-header">
