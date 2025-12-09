@@ -33,7 +33,11 @@ export const useFetch = () => {
 
       // Try to read JSON, but safely
       let data = null;
-      data = await response.json();
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
+      }
 
       if (!response.ok) {
         // Handle expired tokens

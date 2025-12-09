@@ -7,6 +7,7 @@ export const GoalList = ({
   updateGoalPrivacy,
   deleteGoal,
   updateGoalCompletion,
+  editGoal,
 }) => {
   return (
     <div className="goal-list">
@@ -17,6 +18,7 @@ export const GoalList = ({
           onDelete={deleteGoal}
           updateGoalPrivacy={updateGoalPrivacy}
           updateGoalCompletion={updateGoalCompletion}
+          editGoal={editGoal}
         />
       ))}
     </div>
