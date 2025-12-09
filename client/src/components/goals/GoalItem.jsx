@@ -3,12 +3,10 @@ import { TaskList } from "../tasks/TaskList";
 import { AddTaskForm } from "../tasks/InlineTaskForm";
 import "./GoalItem.css";
 import { useFetch } from "../../useFetch";
-import { Modal } from "../modals/modal";
-import { createPortal } from "react-dom";
+
 
 export const GoalItem = ({
   goal,
-  updateGoalPrivacy,
   updateGoalCompletion,
   onDelete,
 }) => {
@@ -36,9 +34,6 @@ export const GoalItem = ({
       alert("Couldn't update goal 😭");
     }
   };
-
-  const openPrivacyModal = () => setPrivacyModalOpen(true);
-  const closePrivacyModal = () => setPrivacyModalOpen(false);
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.is_completed).length;
