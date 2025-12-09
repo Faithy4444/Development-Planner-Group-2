@@ -179,3 +179,28 @@ export const getPublicUserData = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
+//To handle saving new feedback
+export const createMentorFeedback = async (req, res) => {
+  const { userId } = req.params;
+  const { mentorName, feedbackText } = req.body;
+  if (!mentorName || !feedbackText) {
+    return res.status(400).json({ msg: 'Mentor name and feedback text are required.' });
+  }
+  try {
+    const user = await pool.query('SELECT id FROM users WHERE id = $1', [userId]);
+    if (user.rows.length === 0) {
+      return res.status(404).json({ msg: 'User not found.' });
+    }
+    await pool.query(
+      'INSERT INTO mentor_feedback (user_id, mentor_name, feedback_text) VALUES ($1, $2, $3)',
+      [userId, mentorName, feedbackText]
+    );
+    
+    res.status(201).json({ msg: 'Feedback submitted successfully.' });
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
