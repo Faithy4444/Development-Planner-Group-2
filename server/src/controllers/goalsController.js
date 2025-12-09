@@ -161,6 +161,7 @@ export const getGoalById = async (req, res) => {
 
 // UPDATE
 export const updateGoal = async (req, res) => {
+  const userId = req.user.id;
   const { id } = req.params;
   const {
     title,
@@ -176,7 +177,7 @@ export const updateGoal = async (req, res) => {
     const result = await pool.query(
       `UPDATE goals
        SET title=$1, specific=$2, measurable=$3, achievable=$4, relevant=$5, time_bound=$6,is_completed=$7, is_private=$8
-       WHERE id=$9 RETURNING *`,
+       WHERE id=$9 AND user_id = $10 RETURNING *`,
       [
         title,
         specific,
@@ -187,6 +188,7 @@ export const updateGoal = async (req, res) => {
         is_completed || false,
         is_private,
         id,
+        userId,
       ]
     );
     if (result.rows.length === 0)
