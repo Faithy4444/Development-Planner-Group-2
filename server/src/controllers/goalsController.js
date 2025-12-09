@@ -294,7 +294,7 @@ export const markGoalComplete = async (req, res) => {
 
     const updated = await pool.query(
       "UPDATE goals SET is_completed = $1 WHERE id = $2 RETURNING *",
-      [!currentValue, id]
+      [currentValue, id]
     );
 
     res.json({

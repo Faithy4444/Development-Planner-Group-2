@@ -14,10 +14,11 @@
 } */
 
 /* Add a colored left border based on goal status */
-.goal-item-container.status-in_progress {
+.goal-item-container.completed-true {
+  background-color: var(--cyf-light-gray);
   border-left-color: var(--cyf-pink);
 }
-.goal-item-container.status-completed {
+.goal-item-container.completed-false {
   border-left-color: #28a745; /* A nice green for completed goals */
 }
 

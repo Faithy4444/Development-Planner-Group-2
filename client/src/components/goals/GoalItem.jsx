@@ -90,7 +90,7 @@ export const GoalItem = ({
   if (error) return <p>Error loading goals: {error}</p>;
 
   return (
-    <div className={`goal-item-container status-${goal.status}`}>
+    <div className={`goal-item-container completed-${goal.is_completed}`}>
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
