@@ -1,0 +1,44 @@
+.feedback-list-container {
+  margin-top: 3rem;
+  background-color: var(--cyf-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 2rem;
+}
+
+.feedback-list-container h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--cyf-light-gray);
+  padding-bottom: 1rem;
+}
+
+.feedback-item {
+  border-bottom: 1px solid var(--cyf-light-gray);
+  padding: 1rem 0;
+}
+
+.feedback-item:last-child {
+  border-bottom: none;
+}
+
+.feedback-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-item-header strong {
+  color: var(--cyf-black);
+}
+
+.feedback-date {
+  font-size: 0.8rem;
+  color: var(--cyf-text-gray);
+}
+
+.feedback-text {
+  margin: 0;
+  line-height: 1.6;
+}

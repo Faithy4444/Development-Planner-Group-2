@@ -5,6 +5,7 @@ import {
   login,
   getFullUserData, 
   getUserName , 
+  getFeedbackForUser, 
 } from "../controllers/userController.js";
 import authMiddleware from "../middleware/auth.js";
 
