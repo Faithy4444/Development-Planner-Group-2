@@ -11,6 +11,7 @@ export const GoalItem = ({
   updateGoalPrivacy,
   updateGoalCompletion,
   onDelete,
+  isPublicView = false,
 }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -92,23 +93,28 @@ export const GoalItem = ({
   return (
     <div className={`goal-item-container status-${goal.status}`}>
       <div className="goal-item-header">
-        <h3>{goal.title}</h3>
-        <div className="goal-actions">
-          <label className="btn-icon" style={{ cursor: "pointer" }}>
-            <input
-              type="checkbox"
-              checked={isCompleted}
-              onChange={handleToggleComplete}
-              style={{ marginRight: "6px" }}
-            />
-            {isCompleted ? "Completed" : "Mark Goal complete"}
-          </label>
-          <button className="btn-icon">Edit</button>
-          <button className="btn-icon" onClick={handleDelete}>
-            Delete
-          </button>
-        </div>
-      </div>
+  <h3>{goal.title}</h3>
+  
+  {/* --- THIS IS THE FIRST FIX --- */}
+  {/* Only render this entire block if it's NOT a public view */}
+  {!isPublicView && (
+    <div className="goal-actions">
+      <label className="btn-icon" style={{ cursor: "pointer" }}>
+        <input
+          type="checkbox"
+          checked={isCompleted}
+          onChange={handleToggleComplete}
+          style={{ marginRight: "6px" }}
+        />
+        {isCompleted ? "Completed" : "Mark Goal complete"}
+      </label>
+      <button className="btn-icon">Edit</button>
+      <button className="btn-icon" onClick={handleDelete}>
+        Delete
+      </button>
+    </div>
+  )}
+</div>
 
       {/* UPDATED: The SMART Details Section now uses a grid */}
       <div className="goal-smart-details-grid">
@@ -160,16 +166,18 @@ export const GoalItem = ({
         handleDeleteTask={handleDeleteTask}
       />
 
-      {/* Show Add Task Form */}
-      {showAddForm ? (
-        <AddTaskForm onSave={handleSaveTask} />
-      ) : (
-        <div className="goal-footer">
-          <button onClick={handleAddTaskClick} className="btn-add-task">
-            + Add Task
-          </button>
-        </div>
-      )}
+     {!isPublicView && (
+  showAddForm ? (
+    <AddTaskForm onSave={handleSaveTask} />
+  ) : (
+    <div className="goal-footer">
+      <button onClick={handleAddTaskClick} className="btn-add-task">
+        + Add Task
+      </button>
+    </div>
+  )
+)}
+      
     </div>
   );
 };
