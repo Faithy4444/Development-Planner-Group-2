@@ -191,3 +191,21 @@
     gap: 10px;
     padding: 10px;
 }
+
+.detail-item input, .detail-item  textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: 1px solid var(--cyf-light-gray);
+  border-radius: 8px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.edit-actions{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px;
+}
