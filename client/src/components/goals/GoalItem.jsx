@@ -15,8 +15,6 @@ export const GoalItem = ({
   const [tasks, setTasks] = useState(goal.tasks || []);
   const [showAddForm, setShowAddForm] = useState(false);
   const { executeFetch, loading, error } = useFetch();
-
-  const [PrivacyModalOpen, setPrivacyModalOpen] = useState(false);
   const [isCompleted, setIsCompleted] = useState(goal.is_completed);
 
   //toggle logic
@@ -71,15 +69,6 @@ export const GoalItem = ({
       onDelete(goal.id);
     }
   };
-
-  const handlePrivacy = async () => {
-    const result = await executeFetch(`/api/goals/privacy/${goal.id}`, "PUT");
-    if (result) {
-      // Update state in Dashboard
-      updateGoalPrivacy(goal.id, result.newValue);
-    }
-  };
-
   //I declared task save function here, because we need to know under which goal we are creating a task, which is not obvious for task form.
   const handleSaveTask = async (newTask) => {
     const body = {
@@ -105,10 +94,6 @@ export const GoalItem = ({
       <div className="goal-item-header">
         <h3>{goal.title}</h3>
         <div className="goal-actions">
-          <button className="btn-icon" onClick={openPrivacyModal}>
-            Change plan privacy:
-            {goal.is_private ? " Private" : " Public"}
-          </button>
           <label className="btn-icon" style={{ cursor: "pointer" }}>
             <input
               type="checkbox"
@@ -118,16 +103,6 @@ export const GoalItem = ({
             />
             {isCompleted ? "Completed" : "Mark Goal complete"}
           </label>
-          {createPortal(
-            <Modal
-              isOpen={PrivacyModalOpen}
-              privateSetting={goal.is_private}
-              onChange={handlePrivacy}
-              onClose={closePrivacyModal}
-              goalId={goal.id}
-            />,
-            document.body
-          )}
           <button className="btn-icon">Edit</button>
           <button className="btn-icon" onClick={handleDelete}>
             Delete

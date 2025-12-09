@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // to link to my goal form
 import { GoalList } from "../components/goals/GoalList";
+import { SharePlanModal } from "../components/modals/SharePlanModal";
 import "./DashboardPage.css";
 import { useFetch } from "../useFetch";
 
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
+  const [isShareModalOpen, setShareModalOpen] = useState(false);
   const { executeFetch, loading, error } = useFetch();
   useEffect(() => {
     const fetchGoals = async () => {
@@ -45,13 +47,27 @@ const DashboardPage = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
+  // This is the updated return statement for DashboardPage.jsx
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Your Dashboard</h1>
-        <Link to="/create-goal" className="btn-primary">
-          Create New Goal
-        </Link>
+        <div>
+          <button
+            onClick={() => setShareModalOpen(true)}
+            className="btn-secondary"
+          >
+            Share Goal(s)
+          </button>
+          <Link
+            to="/create-goal"
+            className="btn-primary"
+            style={{ marginLeft: "1rem" }}
+          >
+            Create New Goal
+          </Link>
+        </div>
       </div>
       {sortedGoals.length > 0 ? (
         <GoalList
@@ -69,6 +85,13 @@ const DashboardPage = () => {
           </p>
         </div>
       )}
+      <SharePlanModal
+        isOpen={isShareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        goals={userGoals}
+        userId={userGoals.length > 0 ? userGoals[0].user_id : null}
+        updateGoalPrivacy={updateGoalPrivacy}
+      />
     </div>
   );
 };
