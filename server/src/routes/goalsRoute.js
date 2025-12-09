@@ -2,26 +2,24 @@ import express from "express";
 import authMiddleware from "../middleware/auth.js";
 import {
   createGoal,
-  getAllGoalsWithTasks,
   getGoalsByUser,
   getGoalById,
   updateGoal,
   deleteGoal,
-  getActiveGoals,
   markGoalComplete,
-  updateGoalPrivacy,
+  bulkUpdateGoalPrivacy,
+  getActiveGoals,
 } from "../controllers/goalsController.js";
 
 const router = express.Router();
 
-
+router.put("/privacy", authMiddleware, bulkUpdateGoalPrivacy);
+router.get("/active", authMiddleware, getActiveGoals);
 router.get("/", authMiddleware, getGoalsByUser);
 router.post("/", authMiddleware, createGoal);
-router.delete("/:id", authMiddleware, deleteGoal);
+router.get("/:id", authMiddleware, getGoalById);
 router.put("/:id", authMiddleware, updateGoal);
-router.get("/:id", getGoalById);
-router.put("/privacy/:id", updateGoalPrivacy);
-router.get("/goals/active", getActiveGoals);
-router.patch("/:id/complete", markGoalComplete);
+router.delete("/:id", authMiddleware, deleteGoal);
+router.patch("/:id/complete", authMiddleware, markGoalComplete);
 
 export default router;

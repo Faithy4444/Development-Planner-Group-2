@@ -63,7 +63,7 @@ export const getTaskById = async (req, res) => {
 
 export const updateTasks = async (req, res) => {
   const { id: taskId } = req.params;
-  const { title, is_completed } = req.body;
+  const { title, description, due_date, is_completed } = req.body;
   const { id: userId } = req.user;
   try {
     const updatedTask = await pool.query(

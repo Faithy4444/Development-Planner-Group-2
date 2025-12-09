@@ -1,9 +1,22 @@
 .dashboard-header {
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+  
+  flex-wrap: wrap;
+
+  gap: 1.5rem;
   margin-bottom: 2rem;
 }
-.dashboard-header h1 { margin: 0; font-size: 2rem; }
-.btn-primary { background-color: var(--cyf-pink); color: var(--cyf-white); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 700; }
-.empty-state { text-align: center; padding: 4rem; background-color: var(--cyf-white); border-radius: 12px; }
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+.empty-state { 
+  text-align: center; 
+  padding: 4rem; 
+  background-color: var(--cyf-white); 
+  border-radius: 12px; 
+}

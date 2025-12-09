@@ -7,7 +7,6 @@ export const GoalList = ({
   setUserGoals,
   updateGoalPrivacy,
   deleteGoal,
-  editGoal,
 }) => {
   const updateGoalCompletion = (id, newValue) => {
     setUserGoals((prevGoals) =>
@@ -24,7 +23,6 @@ export const GoalList = ({
           onDelete={deleteGoal}
           updateGoalPrivacy={updateGoalPrivacy}
           updateGoalCompletion={updateGoalCompletion}
-          editGoal={editGoal}
         />
       ))}
     </div>
