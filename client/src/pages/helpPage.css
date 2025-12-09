@@ -1,0 +1,51 @@
+.help-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #333;
+}
+
+.help-page h1 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.help-page section {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.help-page h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  color: var(--cyf-pink, #cc2288);
+}
+
+.help-page p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Cute dividers for spacing */
+.help-page section + section {
+  margin-top: 2rem;
+}
+
+/* Mobile friendly */
+@media (max-width: 768px) {
+  .help-page {
+    padding: 1rem;
+  }
+
+  .help-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .help-page section {
+    padding: 1rem;
+  }
+}
