@@ -28,12 +28,9 @@ router.post(
   register
 );
 
-router.get("/:id/full", getFullUserData);
-
-//GET /api/users/me To load username
-router.get('/:id', authMiddleware, getUserName );
-
 router.get("/feedback", authMiddleware, getFeedbackForUser);
+router.get("/:id/full", getFullUserData);
+router.get("/:id", authMiddleware, getUserName);
 
 
 export default router;

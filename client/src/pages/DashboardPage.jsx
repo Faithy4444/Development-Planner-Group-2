@@ -32,7 +32,7 @@ useEffect(() => {
     setUserGoals(goalsData || []);
 
     // --- ADD THIS NEW PART: Fetch the feedback using the same options ---
-    const feedbackData = await execute-Fetch("/api/feedback", "GET", options);
+    const feedbackData = await executeFetch("/api/users/feedback", "GET", options);
     setFeedback(feedbackData || []);
   };
 
