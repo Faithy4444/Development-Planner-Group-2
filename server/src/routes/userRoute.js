@@ -32,4 +32,7 @@ router.get("/:id/full", getFullUserData);
 //GET /api/users/me To load username
 router.get('/:id', authMiddleware, getUserName );
 
+router.get("/feedback", authMiddleware, getFeedbackForUser);
+
+
 export default router;
