@@ -26,24 +26,3 @@ body {
 button{
   cursor: pointer;
 }
-
-.btn-save {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-save:hover {
-  background: #45a049;
-}
-
-.btn-cancel {
-  color: var(--cyf-black);
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}

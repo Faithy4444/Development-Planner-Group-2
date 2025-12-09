@@ -36,12 +36,6 @@ const DashboardPage = () => {
     setUserGoals(userGoals.filter((goal) => goal.id != goalId));
   };
 
-  const editGoal = (goalId, editedGoal) => {
-    setUserGoals((goals) =>
-      goals.map((goal) => (goal.id === goalId ? editedGoal : goal))
-    );
-  };
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
  // This is the updated return statement for DashboardPage.jsx

@@ -16,9 +16,13 @@ export const useFetch = () => {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : undefined,
+        Authorization: `Bearer ${token}`,
       },
     };
+
+    if (token) {
+      options.headers.Authorization = `Bearer ${token}`;
+    }
 
     if (body && method !== "GET" && method !== "HEAD") {
       options.body = JSON.stringify(body);
@@ -27,34 +31,28 @@ export const useFetch = () => {
     try {
       const response = await fetch(actualUrl, options);
 
-      // Try parsing JSON (may fail for 204 or empty error responses)
+      // Try to read JSON, but safely
       let data = null;
-      try {
-        data = await response.json();
-      } catch {
-        data = null;
-      }
+      data = await response.json();
 
-      // Handle unauthorized
-      if (response.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/";
-        return null;
-      }
-
-      // Error case
       if (!response.ok) {
+        // Handle expired tokens
+        if (response.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+          return null;
+        }
+
         const message =
-          data?.error || data?.message || `HTTP Error ${response.status}`;
-        setError(message);
+          data?.message || `HTTP error! status: ${response.status}`;
+
         throw new Error(message);
       }
 
-      // Success
       return data;
     } catch (err) {
       console.error("Fetch error:", err);
-      setError(err.message || "An unknown error occurred");
+      setError(err.message || "An unknown error occurred.");
       return null;
     } finally {
       setLoading(false);
