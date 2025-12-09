@@ -48,7 +48,7 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
     <div className="share-plan-modal-overlay" onClick={onClose}>
       <div className="share-plan-modal-content" onClick={e => e.stopPropagation()}>
         <button className="close-modal-btn" onClick={onClose}>&times;</button>
-        <h2>Share Your Plan</h2>
+        <h2>Share Your Goal (s) </h2>
         
         <div className="modal-section">
           <h4>Step 1: Choose which goals to share</h4>
@@ -73,7 +73,7 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
         </div>
 
         <div className="modal-section">
-          <h4>Step 2: Generate link for your mentor</h4>
+          <h4>Step 2: Generate link for your mentor </h4>
           <button onClick={handleGetShareLink} className="btn-secondary" disabled={selectedGoalIds.length === 0}>
             Get Share Link
           </button>

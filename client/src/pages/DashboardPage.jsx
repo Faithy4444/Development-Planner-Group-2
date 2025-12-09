@@ -46,7 +46,7 @@ return (
       <h1>Your Dashboard</h1>
       <div>
         <button onClick={() => setShareModalOpen(true)} className="btn-secondary">
-          Share Plan
+          Share Goal(s)
         </button>
         <Link to="/create-goal" className="btn-primary" style={{ marginLeft: '1rem' }}>
           Create New Goal
