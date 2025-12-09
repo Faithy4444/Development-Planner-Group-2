@@ -146,7 +146,6 @@ export const GoalItem = ({
               type="checkbox"
               checked={isCompleted}
               onChange={handleToggleComplete}
-              style={{ marginRight: "6px" }}
             />
             {isCompleted ? "Completed" : "Mark Goal complete"}
           </label>

@@ -21,9 +21,9 @@ export const LoginForm = () => {
     try {
       const response = await executeFetch("/api/users/login", "POST", data);
 
-      if (!response.token) {
+      if (!response?.token) {
         throw new Error(
-          "Invalid credentials. Please check your email and password."
+          "Invalid login details. Please check your email and password."
         );
       }
 

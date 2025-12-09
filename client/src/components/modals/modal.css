@@ -9,6 +9,8 @@
 
 .modal-content {
     position: fixed;
+    display: flex;
+    flex-direction: column;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -17,7 +19,8 @@
     padding: 14px 28px;
     border-radius: 3px;
     max-width: 600px;
-    min-width: 300px;
+    min-width: 330px;
+    min-height: 320px;
 }
 
 .close-modal {

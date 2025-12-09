@@ -31,7 +31,7 @@ export function Modal({ isOpen, onClose, privateSetting, onChange, goalId }) {
           <option value="restricted">Restricted</option>
           <option value="withLink">Anyone with the link</option>
         </select>
-
+        {privateSetting && <p>No sharable link</p>}
         {!privateSetting && (
           <div className="public-link-box">
             {linkSaved ? <p>Link has been copyied</p> : ""}
