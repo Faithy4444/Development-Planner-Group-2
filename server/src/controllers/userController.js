@@ -204,3 +204,20 @@ export const createMentorFeedback = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
+export const getFeedbackForUser = async (req, res) => {
+  const { id: userId } = req.user;
+
+  try {
+    const feedbackResult = await pool.query(
+      'SELECT * FROM mentor_feedback WHERE user_id = $1 ORDER BY created_at DESC',
+      [userId]
+    );
+    
+    res.json(feedbackResult.rows);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
