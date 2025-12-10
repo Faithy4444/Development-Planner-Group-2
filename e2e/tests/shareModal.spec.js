@@ -2,75 +2,51 @@
 import { test, expect } from "@playwright/test";
 import { deleteGoalByName, createGoal, loginAsAndrei } from "./test_utils";
 
-// Tests are written for this cases:
-// A "Share" button on the dashboard opens a modal.
-// The modal contains a toggle to switch the plan's visibility.
-// When public, the modal displays the share link and a "Copy" button.
-// The UI reflects the plan's current state.
-
-test.describe("Goal sharing modal", () => {
+test.describe("Master Plan Sharing Modal", () => {
   let goalName;
+  let userId;
 
+  //before testing log in and create a fresh goal
   test.beforeEach(async ({ page }) => {
-    // Login
     await page.goto("/");
     await loginAsAndrei(page);
-
-    // Create a fresh goal for each test
-    goalName = `goal-${Date.now()}`;
+    goalName = `A goal to test sharing - ${Date.now()}`;
+    
+    const responsePromise = page.waitForResponse("**/api/goals");
     await page.getByRole("link", { name: "Create New Goal" }).click();
     await createGoal(page, goalName);
+    const response = await responsePromise;
+    const createdGoal = await response.json();
+    userId = createdGoal.user_id;
   });
 
+  //Aftetest clean up by deleting the goal
   test.afterEach(async ({ page }) => {
-    // Cleanup (delete the goal)
     await deleteGoalByName(page, goalName);
   });
 
-  test("opens a modal when clicking Share", async ({ page }) => {
-    const goal = page.locator(".goal-item-container", { hasText: goalName });
-    await goal.locator("#share").click();
-    await expect(page.locator(".modal")).toBeVisible();
-
-    await page.locator(".close-modal").click();
+  test("Dashboard 'Share Plan' button opens the master share modal", async ({ page }) => {
+    await page.getByRole("button", { name: "Share Plan" }).click();
+    await expect(page.locator(".share-plan-modal-content")).toBeVisible();
+    await expect(page.getByText("Step 1: Choose which goals to share")).toBeVisible();
   });
 
-  test("modal contains a visibility toggle", async ({ page }) => {
-    const goal = page.locator(".goal-item-container", { hasText: goalName });
-    await goal.locator("#share").click();
-
-    await expect(page.locator("#privacy-select")).toBeVisible();
-    await page.locator(".close-modal").click();
+  test("Modal lists goals and allows selection", async ({ page }) => {
+    await page.getByRole("button", { name: "Share Plan" }).click();
+    const goalCheckbox = page.locator(".goal-checkbox-item", { hasText: goalName });
+    await expect(goalCheckbox).toBeVisible();
+    await goalCheckbox.click();
+    await expect(goalCheckbox.locator("input[type=checkbox]")).toBeChecked();
   });
 
-  test("public mode shows share link and Copy button", async ({ page }) => {
-    const goal = page.locator(".goal-item-container", { hasText: goalName });
+  test("'Get Share Link' button provides the correct user plan URL", async ({ page }) => {
+    await page.getByRole("button", { name: "Share Plan" }).click();
 
-    await goal.locator("#share").click();
-    await page.locator("#privacy-select").selectOption("withLink");
+    page.on('dialog', async dialog => {
+      expect(dialog.defaultValue()).toContain(`/share/user/${userId}`);
+      await dialog.dismiss();
+    });
 
-    const input = page.locator("#shareLink");
-
-    await expect(input).toHaveValue(
-      /https?:\/\/[a-zA-Z0-9.-]+(?::\d+)?(?:\/\S*)?/
-    );
-
-    await expect(page.getByRole("button", { name: "Copy" })).toBeVisible();
-    await page.locator(".close-modal").click();
-  });
-
-  test("UI reflects current privacy state (even after reload)", async ({
-    page,
-  }) => {
-    const goal = page.locator(".goal-item-container", { hasText: goalName });
-    const goalButtons = goal.locator(".goal-actions");
-
-    await goal.locator("#share").click();
-    await page.locator("#privacy-select").selectOption("withLink");
-    await page.locator(".close-modal").click();
-
-    await expect(goalButtons.locator("#share")).toContainText("Public");
-    await page.reload();
-    await expect(goalButtons.locator("#share")).toContainText("Public");
+    await page.getByRole("button", { name: "Get Share Link" }).click();
   });
 });
