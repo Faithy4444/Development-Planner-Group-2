@@ -97,6 +97,7 @@ useEffect(() => {
         setUserGoals={setUserGoals}
         updateGoalPrivacy={updateGoalPrivacy}
         deleteGoal={deleteGoal}
+        updateGoalCompletion={updateGoalCompletion}
       />
     ) : (
       <div className="empty-state">
