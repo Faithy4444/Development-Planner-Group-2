@@ -168,7 +168,7 @@ export const GoalItem = ({
         {/* Title */}
         <div className="detail-item">
           <strong>Title</strong>
-          {isEditing ? (
+          {!isPublicView && isEditing ? (
             <input
               value={editedGoal.title}
               onChange={(e) =>
@@ -263,7 +263,7 @@ export const GoalItem = ({
         </div>
       </div>
 
-      {isEditing && (
+      {!isPublicView && isEditing && (
         <div className="edit-actions">
           <button onClick={handleSaveEdit} className="btn-save">
             Save
@@ -285,7 +285,7 @@ export const GoalItem = ({
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      {showTaskWarning && (
+      {!isPublicView && showTaskWarning && (
         <p className="task-warning">
           ⚠️ Add at least 3 tasks to help you achieve this goal.
         </p>
@@ -296,6 +296,7 @@ export const GoalItem = ({
         onToggle={handleToggleTask}
         handleDeleteTask={handleDeleteTask}
         handleEditTask={handleEditTask}
+        isPublicView={isPublicView}
       />
 
      {!isPublicView && (

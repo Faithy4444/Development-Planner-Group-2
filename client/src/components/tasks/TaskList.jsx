@@ -8,6 +8,7 @@ export const TaskList = ({
   onToggle,
   handleDeleteTask,
   handleEditTask,
+  isPublicView = false,
 }) => {
   const { executeFetch, error } = useFetch();
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -91,9 +92,10 @@ export const TaskList = ({
                 type="checkbox"
                 checked={task.is_completed}
                 onChange={() => checkTask(task.id)}
+                disabled={isPublicView}
               />
 
-              {!isEditing ? (
+              {(!isEditing || isPublicView) ? (
                 <span>{task.title}</span>
               ) : (
                 <input
@@ -111,7 +113,7 @@ export const TaskList = ({
             </div>
 
             {/* RIGHT SIDE: MENU OR ACTION BUTTONS */}
-            {!isEditing ? (
+            {!isPublicView && ( !isEditing ? (
               <div className="menu-wrapper">
                 <button
                   className="menu-button"
@@ -136,7 +138,7 @@ export const TaskList = ({
                   Cancel
                 </button>
               </div>
-            )}
+            ))}
           </li>
         );
       })}
