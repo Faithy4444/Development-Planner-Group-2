@@ -93,7 +93,8 @@ useEffect(() => {
 
 {userGoals && userGoals.length > 0 ? (
       <GoalList
-        goals={userGoals}
+        goals={sortedGoals}
+        editGoal={editGoal}
         setUserGoals={setUserGoals}
         updateGoalPrivacy={updateGoalPrivacy}
         deleteGoal={deleteGoal}
