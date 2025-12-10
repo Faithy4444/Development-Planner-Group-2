@@ -8,6 +8,12 @@ const SharedUserPlanPage = () => {
   const { userId } = useParams();
   const { executeFetch, loading, error } = useFetch();
   const [planData, setPlanData] = useState(null);
+
+  const [mentorName, setMentorName] = useState('');
+  const [feedbackText, setFeedbackText] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
   useEffect(() => {
     const fetchPublicPlan = async () => {
       const data = await executeFetch(`/api/public/user/${userId}/plan`);
@@ -35,6 +41,29 @@ const SharedUserPlanPage = () => {
         </div>
     );
   }
+
+//Feedback submittion handler
+const handleFeedbackSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setSubmitSuccess(false);
+  const result = await executeFetch(
+    `/api/public/user/${userId}/feedback`,
+    'POST',
+    { 
+      mentorName, 
+      feedbackText 
+    }
+  );
+
+  setIsSubmitting(false);
+  if (result) {
+    setSubmitSuccess(true);
+    setMentorName('');
+    setFeedbackText('');
+  }
+};
+
   return (
     <div className="shared-plan-container">
       <header className="shared-plan-header">
@@ -47,10 +76,45 @@ const SharedUserPlanPage = () => {
           <GoalItem key={goal.id} goal={goal} isPublicView={true} />
         ))}
       </div>
+      
 
       <div className="feedback-section">
         <h2>Leave Feedback on this Plan</h2>
-        <p>The feedback form will be implemented in a future ticket.</p>
+        {submitSuccess ? (
+          <div className="feedback-success">
+            <p>Thank you! Your feedback has been sent successfully.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleFeedbackSubmit}>
+            <div className="form-group">
+              <label htmlFor="mentorName">Your Name</label>
+              <input 
+                id="mentorName"
+                type="text"
+                value={mentorName}
+                onChange={(e) => setMentorName(e.target.value)}
+                placeholder="e.g., Jane Doe"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="feedbackText">Your Feedback</label>
+              <textarea
+                id="feedbackText"
+                rows="5"
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                placeholder="Your advice and suggestions for this plan..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" className="btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : 'Submit Feedback'}
+            </button>
+            {/*a general error from the fetch hook if one occurs */}
+            {error && <p className="error-message">{error}</p>}
+          </form>
+        )}
       </div>
     </div>
   );

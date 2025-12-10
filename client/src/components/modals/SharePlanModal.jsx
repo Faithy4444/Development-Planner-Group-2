@@ -31,7 +31,7 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
         }
       });
       alert('Privacy settings saved!');
-      onClose();
+      //onClose();
     }
   };
 
@@ -73,7 +73,13 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
         </div>
 
         <div className="modal-section">
-          <h4>Step 2: Generate link for your mentor </h4>
+          <h4>Step 2: Save Settings to generate Link </h4>
+          <div className="modal-actions">
+          <button onClick={handleSavePrivacy} className="btn-primary" disabled={loading}>
+            {loading ? 'Saving...' : 'Save Settings'}
+          </button>
+        </div>
+          <h4>Step 3: Generate link for your mentor </h4>
           <button onClick={handleGetShareLink} className="btn-secondary" disabled={selectedGoalIds.length === 0}>
             Get Share Link
           </button>
@@ -82,9 +88,6 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
         
         <div className="modal-actions">
           <button onClick={onClose} className="btn-tertiary">Cancel</button>
-          <button onClick={handleSavePrivacy} className="btn-primary" disabled={loading}>
-            {loading ? 'Saving...' : 'Save Settings'}
-          </button>
         </div>
         
         {error && <p className="error-message modal-error">{error}</p>}

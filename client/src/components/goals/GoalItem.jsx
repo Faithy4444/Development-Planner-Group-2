@@ -9,6 +9,7 @@ export const GoalItem = ({
   goal,
   updateGoalCompletion,
   onDelete,
+  isPublicView = false,
   editGoal,
 }) => {
   const [tasks, setTasks] = useState(goal.tasks || []);
@@ -139,31 +140,35 @@ export const GoalItem = ({
   return (
     <div className={`goal-item-container completed-${goal.is_completed}`}>
       <div className="goal-item-header">
-        <h3>{goal.title}</h3>
-        <div className="goal-actions">
-          <label className="btn-icon" style={{ cursor: "pointer" }}>
-            <input
-              type="checkbox"
-              checked={isCompleted}
-              onChange={handleToggleComplete}
-            />
-            {isCompleted ? "Completed" : "Mark Goal complete"}
-          </label>
 
-          <button className="btn-icon" onClick={handleGoalEdit}>
-            Edit
-          </button>
-          <button className="btn-icon" onClick={handleGoalDelete}>
-            Delete
-          </button>
-        </div>
+        <h3>{goal.title}</h3>
+        
+        {/* --- THIS IS THE FIRST FIX --- */}
+        {/* Only render this entire block if it's NOT a public view */}
+        {!isPublicView && (
+          <div className="goal-actions">
+            <label className="btn-icon" style={{ cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={isCompleted}
+                onChange={handleToggleComplete}
+                style={{ marginRight: "6px" }}
+              />
+              {isCompleted ? "Completed" : "Mark Goal complete"}
+            </label>
+            <button className="btn-icon" onClick={handleGoalEdit}>Edit</button>
+            <button className="btn-icon" onClick={handleGoalDelete}>
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="goal-smart-details-grid">
         {/* Title */}
         <div className="detail-item">
           <strong>Title</strong>
-          {isEditing ? (
+          {!isPublicView && isEditing ? (
             <input
               value={editedGoal.title}
               onChange={(e) =>
@@ -258,7 +263,7 @@ export const GoalItem = ({
         </div>
       </div>
 
-      {isEditing && (
+      {!isPublicView && isEditing && (
         <div className="edit-actions">
           <button onClick={handleSaveEdit} className="btn-save">
             Save
@@ -280,7 +285,7 @@ export const GoalItem = ({
       </div>
 
       <h4 className="tasks-header">Tasks</h4>
-      {showTaskWarning && (
+      {!isPublicView && showTaskWarning && (
         <p className="task-warning">
           ⚠️ Add at least 3 tasks to help you achieve this goal.
         </p>
@@ -291,18 +296,21 @@ export const GoalItem = ({
         onToggle={handleToggleTask}
         handleDeleteTask={handleDeleteTask}
         handleEditTask={handleEditTask}
+        isPublicView={isPublicView}
       />
 
-      {/* Show Add Task Form */}
-      {showAddForm ? (
-        <AddTaskForm onSave={handleSaveTask} />
-      ) : (
-        <div className="goal-footer">
-          <button onClick={handleAddTaskClick} className="btn-add-task">
-            + Add Task
-          </button>
-        </div>
-      )}
+     {!isPublicView && (
+  showAddForm ? (
+    <AddTaskForm onSave={handleSaveTask} />
+  ) : (
+    <div className="goal-footer">
+      <button onClick={handleAddTaskClick} className="btn-add-task">
+        + Add Task
+      </button>
+    </div>
+  )
+)}
+      
     </div>
   );
 };
