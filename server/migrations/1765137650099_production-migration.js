@@ -7,9 +7,9 @@ export const shorthands = undefined;
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
  */
 export const up = (pgm) => {
-  // -------------------------
+  // ------------------------------------------------------
   // 1. Users table
-  // -------------------------
+  // ------------------------------------------------------
   pgm.createTable("users", {
     id: "bigserial primary key",
     username: { type: "varchar(50)", notNull: true },
@@ -19,12 +19,12 @@ export const up = (pgm) => {
       type: "uuid",
       unique: true,
       default: null,
-    }
+    },
   });
 
-  // -------------------------
+  // ------------------------------------------------------
   // 2. Goals table
-  // -------------------------
+  // ------------------------------------------------------
   pgm.createTable("goals", {
     id: "bigserial primary key",
     user_id: { type: "bigint", notNull: true },
@@ -49,9 +49,9 @@ export const up = (pgm) => {
     },
   });
 
-  // -------------------------
+  // ------------------------------------------------------
   // 3. Tasks table
-  // -------------------------
+  // ------------------------------------------------------
   pgm.createTable("tasks", {
     id: "bigserial primary key",
     user_id: { type: "bigint", notNull: true },
@@ -78,12 +78,43 @@ export const up = (pgm) => {
       onDelete: "CASCADE",
     },
   });
+
+  // ------------------------------------------------------
+  // 4. Mentor Feedback table
+  // ------------------------------------------------------
+  pgm.createTable("mentor_feedback", {
+    id: "bigserial primary key",
+
+    user_id: { 
+      type: "bigint",
+      notNull: true,
+      references: "users(id)",
+      onDelete: "CASCADE",
+    },
+
+    mentor_name: { 
+      type: "varchar(255)",
+      notNull: true,
+    },
+
+    feedback_text: { 
+      type: "text",
+      notNull: true,
+    },
+
+    created_at: {
+      type: "timestamp",
+      notNull: true,
+      default: pgm.func("current_timestamp"),
+    },
+  });
 };
 
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
  */
 export const down = (pgm) => {
+  pgm.dropTable("mentor_feedback");
   pgm.dropTable("tasks");
   pgm.dropTable("goals");
   pgm.dropTable("users");
