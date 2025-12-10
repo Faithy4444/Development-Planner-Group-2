@@ -72,3 +72,27 @@
   gap: 1rem;
   margin-top: 2rem;
 }
+
+.btn-tertiary {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid var(--cyf-grey, #ccc);
+  background-color: transparent;
+  color: var(--cyf-dark, #333);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-tertiary:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-tertiary:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn-tertiary:focus {
+  outline: 2px solid var(--cyf-pink, #ff80b5);
+  outline-offset: 2px;
+}

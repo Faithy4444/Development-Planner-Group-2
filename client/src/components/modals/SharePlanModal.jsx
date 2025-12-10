@@ -80,7 +80,7 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
           </button>
         </div>
           <h4>Step 3: Generate link for your mentor </h4>
-          <button onClick={handleGetShareLink} className="btn-secondary" disabled={selectedGoalIds.length === 0}>
+          <button onClick={handleGetShareLink} className="btn-primary" disabled={selectedGoalIds.length === 0}>
             Get Share Link
           </button>
           {selectedGoalIds.length === 0 && <p className="disabled-note">You must select at least one goal to generate a link.</p>}
