@@ -1,0 +1,115 @@
+:root {
+  --cyf-pink: #D9448A;
+  --cyf-black: #000000;
+  --cyf-white: #FFFFFF;
+  --cyf-light-gray: #CCCCCC;
+  --cyf-text-gray: #6c757d;
+  --cyf-error-red: #D32F2F; 
+  --font-family-base: 'Lato', sans-serif;
+}
+ 
+.form-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: var(--cyf-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h1 {
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--cyf-black);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cyf-black);
+  margin-bottom: 0.25rem;
+}
+
+.form-group .helper-text {
+  font-family: var(--font-family-base);
+  font-size: 0.875rem;
+  color: var(--cyf-text-gray);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: 1px solid var(--cyf-light-gray);
+  border-radius: 8px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--cyf-pink);
+  box-shadow: 0 0 0 3px rgba(217, 68, 138, 0.2);
+}
+
+/* Styles for validation errors */
+.input-error {
+  border-color: var(--cyf-error-red) !important;
+}
+
+.error-message {
+  color: var(--cyf-error-red);
+  font-family: var(--font-family-base);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.server-error {
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(211, 47, 47, 0.1);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.form-actions {
+  text-align: right;
+  margin-top: 2rem;
+}
+
+.btn-primary {
+  background-color: var(--cyf-pink);
+  color: var(--cyf-white);
+  border: none;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-family: var(--font-family-base);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #c43b7b;
+}
+
+.btn-primary:disabled {
+  background-color: var(--cyf-light-gray);
+  cursor: not-allowed;
+}

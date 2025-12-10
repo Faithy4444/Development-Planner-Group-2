@@ -1,0 +1,40 @@
+.task-inline-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.task-inline-form input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-save-task {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cancel-task {
+  background: #eee;
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-save-task:hover {
+  background: #45a049;
+}
+
+.btn-cancel-task:hover {
+  background: #ddd;
+}

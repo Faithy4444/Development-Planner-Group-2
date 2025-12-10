@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
+import LandingPage from './pages/LandingPage';
+import { MainLayout } from './components/layout/MainLayout';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import DashboardPage from './pages/DashboardPage';
+import CreateGoalPage from './pages/CreateGoalPage';
+import SharedUserPlanPage from './pages/SharedUserPlanPage';
+import './styles/global.css';
+import HelpPage from "./pages/helpPage";
+import SettingsPage from "./pages/settingsPage";
+ 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      {/* --- Public Routes --- */}
+      <Route path="/" element={<LandingPage />} />
+      {/* The LandingPage now contains the login/register forms */}
+      {/*private route for logged in users security checkpoint */}
+      <Route path="/share/user/:userId" element={<SharedUserPlanPage />} />
+      <Route element={<ProtectedRoute />}>
+        {/* All routes nested inside here are now protected */}
+        <Route element={<MainLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/create-goal" element={<CreateGoalPage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Route>
+      </Route>
+
+    </Routes>
+  );
 }
 
-export default App
+export default App;
+

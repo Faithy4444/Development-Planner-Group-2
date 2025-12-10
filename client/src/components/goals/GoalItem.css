@@ -1,0 +1,211 @@
+.goal-item-container {
+  background-color: var(--cyf-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-left: 5px solid transparent; /* A subtle border for status */
+  transition: all 0.2s ease-in-out;
+}
+/* 
+.goal-item-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+} */
+
+/* Add a colored left border based on goal status */
+.goal-item-container.completed-true {
+  background-color: var(--cyf-light-gray);
+  border-left-color: var(--cyf-pink);
+}
+.goal-item-container.completed-false {
+  border-left-color: #28a745; /* A nice green for completed goals */
+}
+
+.goal-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.goal-item-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cyf-black);
+}
+
+.goal-actions .btn-icon {
+  background: none; border: none; cursor: pointer; color: var(--cyf-text-gray);
+}
+
+/* --- NEW: The Grid Layout for SMART Details --- */
+.goal-smart-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Create two equal columns */
+  gap: 1.5rem; /* Space between the grid items */
+  padding: 1rem 0;
+  border-top: 1px solid var(--cyf-light-gray);
+  border-bottom: 1px solid var(--cyf-light-gray);
+  margin-bottom: 1rem;
+}
+
+.detail-item strong {
+  display: inline-block; /* Crucial for the badge effect */
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--cyf-black); /* Make it pop against the gray background */
+  background-color: var(--cyf-light-gray);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem; /* More space below the badge */
+}
+
+/* This styles the user-provided data with a blockquote effect */
+.detail-item p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--cyf-text-gray); /* Use the softer gray for the content */
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--cyf-light-gray); /* The vertical line */
+}
+
+.tasks-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cyf-black);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.goal-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.progress-bar-container {
+  flex-grow: 1;
+  height: 10px;
+  background-color: var(--cyf-light-gray);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--cyf-pink);
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--cyf-text-gray);
+}
+
+.goal-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cyf-light-gray);
+}
+
+.btn-add-task {
+  background: none; border: none; cursor: pointer; color: var(--cyf-pink); font-weight: 700;
+}
+
+.goal-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--cyf-text-gray);
+  padding: 0.25rem 0.4rem;
+  border-radius: 4px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-icon:hover {
+  background-color: var(--cyf-light-gray);
+  color: var(--cyf-black);
+}
+
+@media (max-width: 600px) {
+  .goal-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.task-list-container {
+  margin-bottom: 1rem;
+}
+
+.goal-item-container {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.task-warning {
+  background-color: #ffe5e5;
+  color: #d8000c;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #d8000c;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.detail-item input, .detail-item  textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: 1px solid var(--cyf-light-gray);
+  border-radius: 8px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.edit-actions{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px;
+}
+
+.detail-item input, .detail-item  textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--font-family-base);
+  font-size: 1rem;
+  border: 1px solid var(--cyf-light-gray);
+  border-radius: 8px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.edit-actions{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px;
+}

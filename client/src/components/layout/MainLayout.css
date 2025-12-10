@@ -1,0 +1,23 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 220px;
+  background: #fff;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.app-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}

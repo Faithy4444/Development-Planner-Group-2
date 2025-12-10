@@ -1,0 +1,51 @@
+/*
+ * Styles for the Public Shared User Plan Page
+ */
+
+.shared-plan-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.shared-plan-header {
+  text-align: center;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--cyf-light-gray);
+}
+
+.shared-plan-header h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--cyf-black);
+  margin: 0 0 0.5rem 0;
+}
+
+.shared-plan-header p {
+  font-size: 1.1rem;
+  color: var(--cyf-text-gray);
+  margin: 0;
+}
+
+/* We can reuse the GoalItem component, but this ensures the list has spacing */
+.goals-list-public {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Adds space between the goal cards */
+}
+
+.feedback-section {
+  background-color: var(--cyf-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-top: 3rem;
+  padding: 1.5rem 2rem;
+}
+
+.feedback-section h2 {
+  font-size: 1.25rem;
+  margin-top: 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cyf-light-gray);
+}
