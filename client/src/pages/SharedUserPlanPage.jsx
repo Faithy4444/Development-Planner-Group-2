@@ -76,6 +76,7 @@ const handleFeedbackSubmit = async (e) => {
           <GoalItem key={goal.id} goal={goal} isPublicView={true} />
         ))}
       </div>
+      
 
       <div className="feedback-section">
         <h2>Leave Feedback on this Plan</h2>
