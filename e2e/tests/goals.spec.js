@@ -23,19 +23,12 @@ test("User goals are private by default", async ({ page }) => {
   await page.goto("/");
   await loginAsAndrei(page);
   const goalName = `goal-${Date.now()}`;
-
+  const responsePromise = page.waitForResponse("**/api/goals");
   await page.getByRole("link", { name: "Create New Goal" }).click();
-  await expect(page.locator(".form-container")).toBeVisible();
-
   await createGoal(page, goalName);
-
-  const goal = page.locator(".goal-item-container", { hasText: goalName });
-  const goalButtons = goal.locator(".goal-actions");
-
-  await expect(
-    goalButtons.getByText("Change plan privacy: Private")
-  ).toBeVisible();
-
+  const response = await responsePromise;
+  const createdGoal = await response.json();
+  expect(createdGoal.is_private).toBe(true);
   await deleteGoalByName(page, goalName);
 });
 
