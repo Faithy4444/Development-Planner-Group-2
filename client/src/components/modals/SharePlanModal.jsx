@@ -86,7 +86,7 @@ export const SharePlanModal = ({ isOpen, onClose, goals, userId, updateGoalPriva
           {selectedGoalIds.length === 0 && <p className="disabled-note">You must select at least one goal to generate a link.</p>}
         </div>
         
-        <div className="modal-actions">
+        <div className="tertiary-cancel">
           <button onClick={onClose} className="btn-tertiary">Cancel</button>
         </div>
         

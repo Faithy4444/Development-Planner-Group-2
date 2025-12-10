@@ -68,11 +68,16 @@
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: left;
   gap: 1rem;
   margin-top: 2rem;
 }
-
+.tertiary-cancel{
+  display: flex;
+  justify-content: right;
+  gap: 1rem;
+  margin-top: 2rem;
+}
 .btn-tertiary {
   padding: 0.6rem 1.2rem;
   font-size: 0.95rem;
