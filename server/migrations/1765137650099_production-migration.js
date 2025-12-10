@@ -15,6 +15,11 @@ export const up = (pgm) => {
     username: { type: "varchar(50)", notNull: true },
     email: { type: "varchar(50)", notNull: true, unique: true },
     password: { type: "varchar(250)", notNull: true },
+    plan_edit_token: { 
+      type: "uuid",
+      unique: true,
+      default: null,
+    }
   });
 
   // -------------------------
@@ -83,4 +88,3 @@ export const down = (pgm) => {
   pgm.dropTable("goals");
   pgm.dropTable("users");
 };
-
