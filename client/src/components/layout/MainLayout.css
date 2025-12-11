@@ -21,3 +21,19 @@
   padding: 2rem;
   overflow-y: auto;
 }
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-nav ul {
+  padding: 0;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #DDD;
+
+} 
+.github-link{
+  margin-top: 20px;
+}
+
