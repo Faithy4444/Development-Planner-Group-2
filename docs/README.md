@@ -2,7 +2,7 @@
 
 **PlanYourFuture** is a full-stack web application designed to help CodeYourFuture graduates take control of their professional development. It provides a platform for setting SMART goals, tracking progress through actionable tasks, and collaborating with mentors to receive valuable feedback.
 
-This project was built by [Your Name], [Teammate's Name], and [Teammate's Name].
+This project was built by Faith, Miki, and Andrei.
 
 **Live Staging URL:** [Link to your planyourfuture-g2... Coolify URL]
 
