@@ -184,3 +184,26 @@ Our repository is a monorepo with a clear separation of concerns.
 *   `/client`: Contains the frontend React/Vite application.
 *   `/server`: Contains the backend Node.js/Express application.
 *   `/e2e`: Contains all our Playwright End-to-End tests.
+  ---
+
+## Authors & Contributors
+
+This project was brought to life by the collaborative effort of our team.
+
+| Name                 | Role                      | GitHub Profile                                |
+| -------------------- | ------------------------- | --------------------------------------------- |
+| **Andrei Filippov** | Software Developer  | [**@Droid-An**](https://github.com/Droid-An) |
+| **Faith Muzondo**  | Software Developer   | [**@Faithy4444**](https://github.com/Faithy4444) |
+| **Mikiyas Gebremichael**  | Software developer | [**@Mikiyas-STP**](https://github.com/Mikiyas-STP) |
+
+---
+
+Supportive mentors
+
+| Name                 | LINKED-IN Profile                                                   |
+| -------------------- | ---------------------------------------------                       |
+| **Arthur Parmentier**|  [**Arthur P.**](https://www.linkedin.com/in/parmentier/)           |
+| **Erdo Dwiputra**    | [**Erdo Dwiputra**](https://www.linkedin.com/in/erdo-dwiputra/)     |
+| **Massimo Bazzani**  | [**Massimo Bazzani**](https://www.linkedin.com/in/bazzanimassimo/)  |
+
+---
