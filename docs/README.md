@@ -4,7 +4,7 @@
 
 This project was built by Faith, Miki, and Andrei.
 
-**Live Staging URL:** [Link to your planyourfuture-g2... Coolify URL]
+**Live Staging URL:** https://planyourfuture-frontend.hosting.codeyourfuture.io/
 
 ---
 
