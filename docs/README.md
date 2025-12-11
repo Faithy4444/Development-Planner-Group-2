@@ -183,4 +183,4 @@ To update the live application, simply merge new, tested features into the `main
 Our repository is a monorepo with a clear separation of concerns.
 *   `/client`: Contains the frontend React/Vite application.
 *   `/server`: Contains the backend Node.js/Express application.
-*   `/tests`: Contains all our Playwright End-to-End tests.
+*   `/e2e`: Contains all our Playwright End-to-End tests.
