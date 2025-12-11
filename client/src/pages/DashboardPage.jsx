@@ -9,36 +9,40 @@ import { useFetch } from "../useFetch";
 const DashboardPage = () => {
   const [userGoals, setUserGoals] = useState([]);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
-const [feedback, setFeedback] = useState([]);
+  const [feedback, setFeedback] = useState([]);
   const { executeFetch, loading, error } = useFetch();
-// This is the corrected useEffect block for your DashboardPage.jsx
+  // This is the corrected useEffect block for your DashboardPage.jsx
 
-useEffect(() => {
-  const fetchDashboardData = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found. User is not authenticated.");
-      return;
-    }
-    
-    // This options object is now CORRECT and can be reused.
-    const options = {
-      headers: {
-        'Authorization': `Bearer ${token}`, // <-- THE FIX
-      },
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found. User is not authenticated.");
+        return;
+      }
+
+      // This options object is now CORRECT and can be reused.
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`, // <-- THE FIX
+        },
+      };
+
+      // Fetch the goals using the corrected options.
+      const goalsData = await executeFetch("/api/goals", "GET", null, options);
+      setUserGoals(goalsData || []);
+
+      // --- ADD THIS NEW PART: Fetch the feedback using the same options ---
+      const feedbackData = await executeFetch(
+        "/api/users/feedback",
+        "GET",
+        options
+      );
+      setFeedback(feedbackData || []);
     };
 
-    // Fetch the goals using the corrected options.
-    const goalsData = await executeFetch("/api/goals", "GET", null, options);
-    setUserGoals(goalsData || []);
-
-    // --- ADD THIS NEW PART: Fetch the feedback using the same options ---
-    const feedbackData = await executeFetch("/api/users/feedback", "GET", options);
-    setFeedback(feedbackData || []);
-  };
-
-  fetchDashboardData();
-}, [executeFetch]);
+    fetchDashboardData();
+  }, [executeFetch]);
 
   // --- SORT WITHOUT MUTATING STATE ---
   const sortedGoals = [...userGoals].sort((a, b) => {
@@ -65,7 +69,6 @@ useEffect(() => {
     );
   };
 
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading goals: {error}</p>;
   // This is the updated return statement for DashboardPage.jsx
@@ -91,29 +94,33 @@ useEffect(() => {
         </div>
       </div>
 
-{userGoals && userGoals.length > 0 ? (
-      <GoalList
-        goals={sortedGoals}
-        editGoal={editGoal}
-        setUserGoals={setUserGoals}
+      {userGoals && userGoals.length > 0 ? (
+        <GoalList
+          goals={sortedGoals}
+          editGoal={editGoal}
+          setUserGoals={setUserGoals}
+          updateGoalPrivacy={updateGoalPrivacy}
+          deleteGoal={deleteGoal}
+          updateGoalCompletion={updateGoalCompletion}
+        />
+      ) : (
+        <div className="empty-state">
+          <h2>Welcome to your planner!</h2>
+          <p>
+            You haven't created any goals yet. Click the button above to get
+            started.
+          </p>
+        </div>
+      )}
+      {!loading && <FeedbackList feedbackItems={feedback} />}
+      <SharePlanModal
+        isOpen={isShareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        goals={userGoals}
+        userId={userGoals.length > 0 ? userGoals[0].user_id : null}
         updateGoalPrivacy={updateGoalPrivacy}
-        deleteGoal={deleteGoal}
-        updateGoalCompletion={updateGoalCompletion}
       />
-    ) : (
-      <div className="empty-state">
-      </div>
-    )}
-    {!loading && <FeedbackList feedbackItems={feedback} />}
-    <SharePlanModal 
-      isOpen={isShareModalOpen}
-      onClose={() => setShareModalOpen(false)}
-      goals={userGoals}
-      userId={userGoals.length > 0 ? userGoals[0].user_id : null}
-      updateGoalPrivacy={updateGoalPrivacy}
-    />
-  </div>
-  
-);
+    </div>
+  );
 };
 export default DashboardPage;
