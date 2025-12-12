@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { LoginForm } from "../components/auth/LoginForm";
 import { RegisterForm } from "../components/auth/RegisterForm";
 import "./LandingPage.css";
+import { Navigate } from "react-router-dom";
 
 const LandingPage = () => {
   const [activeForm, setActiveForm] = useState("register");
+
+  const useAuth = () => {
+    const token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+  const isAuth = useAuth();
+  if (isAuth) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return (
     <div className="landing-container">
