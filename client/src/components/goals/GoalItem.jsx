@@ -103,7 +103,7 @@ export const GoalItem = ({
 
     if (result) {
       // update the goal in the dashboard (parent)
-      editGoal(goal.id, editedGoal);
+      editGoal(goal.id, result);
       setIsEditing(false);
     }
   };
@@ -140,9 +140,8 @@ export const GoalItem = ({
   return (
     <div className={`goal-item-container completed-${goal.is_completed}`}>
       <div className="goal-item-header">
-
         <h3>{goal.title}</h3>
-        
+
         {/* --- THIS IS THE FIRST FIX --- */}
         {/* Only render this entire block if it's NOT a public view */}
         {!isPublicView && (
@@ -156,7 +155,9 @@ export const GoalItem = ({
               />
               {isCompleted ? "Completed" : "Mark Goal complete"}
             </label>
-            <button className="btn-icon" onClick={handleGoalEdit}>Edit</button>
+            <button className="btn-icon" onClick={handleGoalEdit}>
+              Edit
+            </button>
             <button className="btn-icon" onClick={handleGoalDelete}>
               Delete
             </button>
@@ -299,18 +300,16 @@ export const GoalItem = ({
         isPublicView={isPublicView}
       />
 
-     {!isPublicView && (
-  showAddForm ? (
-    <AddTaskForm onSave={handleSaveTask} />
-  ) : (
-    <div className="goal-footer">
-      <button onClick={handleAddTaskClick} className="btn-add-task">
-        + Add Task
-      </button>
-    </div>
-  )
-)}
-      
+      {!isPublicView &&
+        (showAddForm ? (
+          <AddTaskForm onSave={handleSaveTask} />
+        ) : (
+          <div className="goal-footer">
+            <button onClick={handleAddTaskClick} className="btn-add-task">
+              + Add Task
+            </button>
+          </div>
+        ))}
     </div>
   );
 };
