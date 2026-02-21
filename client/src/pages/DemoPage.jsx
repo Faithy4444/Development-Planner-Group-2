@@ -1,6 +1,17 @@
 import { Navbar } from "../components/layout/Navbar";
 import "./DemoPage.css";
+import { Navigate } from "react-router-dom";
+
 const DemoPage = () => {
+  const useAuth = () => {
+    const token = localStorage.getItem("token");
+    return token ? true : false;
+  };
+  const isAuth = useAuth();
+  if (isAuth) {
+    return <Navigate to="/dashboard" />;
+  }
+
   return (
     <>
       <Navbar />
