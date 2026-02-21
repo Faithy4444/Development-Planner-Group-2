@@ -1,21 +1,21 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import LandingPage from './pages/LandingPage';
-import { MainLayout } from './components/layout/MainLayout';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import DashboardPage from './pages/DashboardPage';
-import CreateGoalPage from './pages/CreateGoalPage';
-import SharedUserPlanPage from './pages/SharedUserPlanPage';
-import './styles/global.css';
+import LandingPage from "./pages/LandingPage";
+import { MainLayout } from "./components/layout/MainLayout";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import DashboardPage from "./pages/DashboardPage";
+import CreateGoalPage from "./pages/CreateGoalPage";
+import SharedUserPlanPage from "./pages/SharedUserPlanPage";
+import "./styles/global.css";
 import HelpPage from "./pages/helpPage";
 import SettingsPage from "./pages/settingsPage";
- 
+import DemoPage from "./pages/DemoPage";
 function App() {
   return (
     <Routes>
       {/* --- Public Routes --- */}
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<DemoPage />} />
+      <Route path="/login" element={<LandingPage />} />
       {/* The LandingPage now contains the login/register forms */}
       {/*private route for logged in users security checkpoint */}
       <Route path="/share/user/:userId" element={<SharedUserPlanPage />} />
@@ -28,10 +28,8 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
-
     </Routes>
   );
 }
 
 export default App;
-
