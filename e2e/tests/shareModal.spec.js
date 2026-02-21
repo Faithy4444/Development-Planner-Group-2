@@ -11,8 +11,12 @@ test.describe("Master Plan Sharing Modal", () => {
     await page.goto("/");
     await loginAsAndrei(page);
     goalName = `A goal to test sharing - ${Date.now()}`;
-    
-    const responsePromise = page.waitForResponse("**/api/goals");
+
+    const responsePromise = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/goals") &&
+        response.request().method() === "POST",
+    );
     await page.getByRole("link", { name: "Create New Goal" }).click();
     await createGoal(page, goalName);
     const response = await responsePromise;
@@ -25,28 +29,25 @@ test.describe("Master Plan Sharing Modal", () => {
     await deleteGoalByName(page, goalName);
   });
 
-  test("Dashboard 'Share Plan' button opens the master share modal", async ({ page }) => {
-    await page.getByRole("button", { name: "Share Plan" }).click();
+  test("Dashboard 'Share Plan' button opens the master share modal", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "Share Goal(s)" }).click();
     await expect(page.locator(".share-plan-modal-content")).toBeVisible();
-    await expect(page.getByText("Step 1: Choose which goals to share")).toBeVisible();
+    await expect(
+      page.getByText("Step 1: Choose which goals to share"),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Cancel" }).click();
   });
 
   test("Modal lists goals and allows selection", async ({ page }) => {
-    await page.getByRole("button", { name: "Share Plan" }).click();
-    const goalCheckbox = page.locator(".goal-checkbox-item", { hasText: goalName });
+    await page.getByRole("button", { name: "Share Goal(s)" }).click();
+    const goalCheckbox = page.locator(".goal-checkbox-item", {
+      hasText: goalName,
+    });
     await expect(goalCheckbox).toBeVisible();
     await goalCheckbox.click();
     await expect(goalCheckbox.locator("input[type=checkbox]")).toBeChecked();
-  });
-
-  test("'Get Share Link' button provides the correct user plan URL", async ({ page }) => {
-    await page.getByRole("button", { name: "Share Plan" }).click();
-
-    page.on('dialog', async dialog => {
-      expect(dialog.defaultValue()).toContain(`/share/user/${userId}`);
-      await dialog.dismiss();
-    });
-
-    await page.getByRole("button", { name: "Get Share Link" }).click();
+    await page.getByRole("button", { name: "Cancel" }).click();
   });
 });

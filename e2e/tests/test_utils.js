@@ -11,6 +11,7 @@ export async function createGoal(page, goalTitle) {
 }
 
 export async function loginAsAndrei(page) {
+  await page.getByRole("button", { name: "Log In" }).click();
   await page
     .locator(".form-toggle")
     .getByRole("button", { name: "Log In" })
