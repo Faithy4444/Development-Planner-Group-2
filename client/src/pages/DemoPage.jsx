@@ -30,7 +30,7 @@ const DemoPage = () => {
             through actionable tasks, and collaborating with mentors to receive
             valuable feedback.
           </p>
-          <img src="src/assets/Screenshot 2026-02-20 at 18.24.48.png"></img>
+          <img src="/Screenshot 2026-02-20 at 18.24.48.png"></img>
         </section>
         <section>
           <h2>Read-Only Mentor Page</h2>
@@ -40,7 +40,7 @@ const DemoPage = () => {
             selected public goals and tasks. All editing controls are hidden on
             this page.
           </p>
-          <img src="/src/assets/Screenshot 2026-02-20 at 18.53.53.png"></img>
+          <img src="/Screenshot 2026-02-20 at 18.53.53.png"></img>
         </section>
         <section>
           <h2>Mentor Feedback System</h2>
@@ -48,7 +48,7 @@ const DemoPage = () => {
             The public share page includes a functional feedback form. This
             feedback will appear in dedicated section on graduate's dashboard.
           </p>
-          <img src="src/assets/Screenshot 2026-02-20 at 18.54.01.png"></img>
+          <img src="/Screenshot 2026-02-20 at 18.54.01.png"></img>
         </section>
         <section>
           <h2>Email reminders</h2>
@@ -57,7 +57,7 @@ const DemoPage = () => {
             of each month, as well as upcoming reminders one week before a
             goal's deadline.
           </p>
-          <img src="src/assets/Screenshot 2026-01-13 at 19.54.36 copy.png"></img>
+          <img src="/Screenshot 2026-01-13 at 19.54.36 copy.png"></img>
         </section>
       </div>
     </>
