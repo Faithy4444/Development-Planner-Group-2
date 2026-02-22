@@ -13,7 +13,7 @@ test("User can create a goal", async ({ page }) => {
 
   await expect(page).toHaveURL("/dashboard");
   await expect(
-    page.locator(".goal-item-container", { hasText: goalName })
+    page.locator(".goal-item-container", { hasText: goalName }),
   ).toBeVisible();
 
   await deleteGoalByName(page, goalName);
@@ -23,7 +23,11 @@ test("User goals are private by default", async ({ page }) => {
   await page.goto("/");
   await loginAsAndrei(page);
   const goalName = `goal-${Date.now()}`;
-  const responsePromise = page.waitForResponse("**/api/goals");
+  const responsePromise = page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/goals") &&
+      response.request().method() === "POST",
+  );
   await page.getByRole("link", { name: "Create New Goal" }).click();
   await createGoal(page, goalName);
   const response = await responsePromise;

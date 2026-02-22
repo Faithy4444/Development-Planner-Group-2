@@ -3,6 +3,7 @@ import { loginAsAndrei } from "./test_utils";
 
 test("User can log in and see the dashboard", async ({ page }) => {
   await page.goto("/");
+  await page.getByRole("button", { name: "Log In" }).click();
   await expect(page.locator(".auth-form-container")).toBeVisible();
   await loginAsAndrei(page);
   await expect(page.locator(".dashboard-container")).toBeVisible();
@@ -10,6 +11,7 @@ test("User can log in and see the dashboard", async ({ page }) => {
 
 test("User can't log in with invalid credentials", async ({ page }) => {
   await page.goto("/");
+  await page.getByRole("button", { name: "Log In" }).click();
   await expect(page.locator(".auth-form-container")).toBeVisible();
   await page
     .locator(".form-toggle")
