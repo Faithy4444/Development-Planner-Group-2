@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --watch src/server.js",
+    "start:prod": "node src/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "migrate": "node-pg-migrate -m migrations",

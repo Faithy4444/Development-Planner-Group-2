@@ -1,0 +1,8 @@
+FROM node:alpine
+ENV NODE_ENV=production
+
+WORKDIR /app/server
+COPY ./package*.json ./
+RUN npm --omit=dev ci
+COPY . .
+CMD ["npm run migrate up -- --no-check-order && npm run start:prod"]
