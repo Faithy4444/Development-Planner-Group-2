@@ -5,4 +5,5 @@ WORKDIR /app/server
 COPY ./package*.json ./
 RUN npm --omit=dev ci
 COPY . .
-CMD ["npm run migrate up -- --no-check-order && npm run start:prod"]
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT ["./docker-entrypoint.sh"]
